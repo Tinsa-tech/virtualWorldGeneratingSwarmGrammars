@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cdk0xqe8gpv8f"]
+
+[ext_resource type="Shader" path="res://Materials/Checkerboard.gdshader" id="1_sayjy"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_sayjy")
+shader_parameter/line_width = 0.04
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/fill_color = Color(0, 0, 0, 1)
+shader_parameter/gridSize = 1.0

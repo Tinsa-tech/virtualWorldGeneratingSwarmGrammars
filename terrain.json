@@ -1,0 +1,98 @@
+{
+	"agents": [
+		{
+			"Actor": {
+				"type": "TerrainAgent"
+			},
+			"Agent": {
+				"a_max": 0.5,
+				"beta": 180,
+				"constraints": [1, 0.5, 1],
+				"distance_params": {
+					"separation": 5,
+					"view": 100
+				},
+				"energy_calculations": {
+					"move": [
+						"const",
+						0.1
+					],
+					"persist": [
+						"const",
+						0
+					],
+					"successor": [
+						"const",
+						10
+					]
+				},
+				"energy_l_system": [
+					{
+						"mode": "constant",
+						"type": "successor",
+						"value": 10
+					},
+					{
+						"mode": "constant",
+						"type": "persist",
+						"value": 0
+					}
+				],
+				"energy_zero": {
+					"empty": true,
+					"energy_successor": 0,
+					"successor": []
+				},
+				"influences": {
+
+				},
+				"movement_urges": {
+					"center": 0.001,
+					"noclip": 1,
+					"pace": 0.1,
+					"random": 0.2
+				},
+				"velocity_params": {
+					"max": 2,
+					"norm": 1
+				}
+			}
+		}
+	],
+	"artifacts": [
+		{
+			"Actor": {
+				"type": "TerrainArtifact"
+			},
+			"Artifact": {
+				"influence_on_terrain": 8,
+				"influences": {
+
+				}
+			}
+		}
+	],
+	"first_generation": [
+		"TerrainAgent"
+	],
+	"productions": [
+		{
+			"context": "",
+			"distance": 0,
+			"persist": true,
+			"predecessor": "TerrainAgent",
+			"successor": [],
+			"theta": 11
+		},
+		{
+			"context": "",
+			"distance": 0,
+			"persist": true,
+			"predecessor": "TerrainAgent",
+			"successor": [
+				"TerrainArtifact"
+			],
+			"theta": 1
+		}
+	]
+}

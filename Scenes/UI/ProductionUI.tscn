@@ -1,0 +1,180 @@
+[gd_scene load_steps=9 format=3 uid="uid://d4b56o8i5kgjv"]
+
+[ext_resource type="Script" path="res://Skripts/UI/ProductionUI.gd" id="1_5cm3a"]
+[ext_resource type="Script" path="res://Skripts/UI/StringValueUI.gd" id="1_uvksx"]
+[ext_resource type="Script" path="res://Skripts/UI/FloatValueUI.gd" id="2_3o7bu"]
+[ext_resource type="Script" path="res://Skripts/UI/ToggleHiddenUI.gd" id="3_577nk"]
+[ext_resource type="Script" path="res://Skripts/UI/UIList.gd" id="4_4f2oh"]
+[ext_resource type="PackedScene" uid="uid://brlquc24yftlm" path="res://Scenes/UI/UIListElementString.tscn" id="5_cm5sf"]
+[ext_resource type="Script" path="res://Skripts/UI/BoolValueUI.gd" id="6_wtcje"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ixqnv"]
+bg_color = Color(1, 0.313479, 0.456498, 1)
+
+[node name="Production" type="PanelContainer" node_paths=PackedStringArray("predecessor_obj", "context_obj", "distance_obj", "successors_obj", "theta_obj", "persist_obj", "prod_label", "delete_button")]
+script = ExtResource("1_5cm3a")
+predecessor_obj = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Predecessor")
+context_obj = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Context")
+distance_obj = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Distance")
+successors_obj = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Successors/SuccessorList")
+theta_obj = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Theta")
+persist_obj = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Persist")
+prod_label = NodePath("VBoxContainer/HBoxContainer/Label")
+delete_button = NodePath("VBoxContainer/HBoxContainer/DeleteButton")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ixqnv")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("3_577nk")
+to_toggle = NodePath("../PanelContainer")
+toggle_button = NodePath("ExpandButton")
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "production"
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DeleteButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "-"
+
+[node name="ExpandButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "<"
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Predecessor" type="HBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("1_uvksx")
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/VBoxContainer/Predecessor"]
+layout_mode = 2
+text = "predecessor"
+
+[node name="Control" type="Control" parent="VBoxContainer/PanelContainer/VBoxContainer/Predecessor"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/PanelContainer/VBoxContainer/Predecessor"]
+layout_mode = 2
+expand_to_text_length = true
+
+[node name="Context" type="HBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("1_uvksx")
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/VBoxContainer/Context"]
+layout_mode = 2
+text = "context
+"
+
+[node name="Control" type="Control" parent="VBoxContainer/PanelContainer/VBoxContainer/Context"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/PanelContainer/VBoxContainer/Context"]
+layout_mode = 2
+expand_to_text_length = true
+
+[node name="Distance" type="HBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("2_3o7bu")
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/VBoxContainer/Distance"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "distance"
+
+[node name="HSlider" type="HSlider" parent="VBoxContainer/PanelContainer/VBoxContainer/Distance"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/PanelContainer/VBoxContainer/Distance"]
+layout_mode = 2
+
+[node name="Successors" type="VBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer/Successors" node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("3_577nk")
+to_toggle = NodePath("../SuccessorList")
+toggle_button = NodePath("ExpandButton")
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/VBoxContainer/Successors/HBoxContainer"]
+layout_mode = 2
+text = "successors"
+
+[node name="Control" type="Control" parent="VBoxContainer/PanelContainer/VBoxContainer/Successors/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ExpandButton" type="Button" parent="VBoxContainer/PanelContainer/VBoxContainer/Successors/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "<"
+
+[node name="SuccessorList" type="VBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer/Successors" node_paths=PackedStringArray("add_button", "list_parent")]
+visible = false
+layout_mode = 2
+script = ExtResource("4_4f2oh")
+add_button = NodePath("AddButton")
+scene_to_add = ExtResource("5_cm5sf")
+list_parent = NodePath(".")
+
+[node name="AddButton" type="Button" parent="VBoxContainer/PanelContainer/VBoxContainer/Successors/SuccessorList"]
+layout_mode = 2
+text = "+"
+
+[node name="Theta" type="HBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("2_3o7bu")
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/VBoxContainer/Theta"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "theta"
+
+[node name="HSlider" type="HSlider" parent="VBoxContainer/PanelContainer/VBoxContainer/Theta"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/PanelContainer/VBoxContainer/Theta"]
+layout_mode = 2
+
+[node name="Persist" type="HBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("6_wtcje")
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/VBoxContainer/Persist"]
+layout_mode = 2
+text = "persist"
+
+[node name="Control" type="Control" parent="VBoxContainer/PanelContainer/VBoxContainer/Persist"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/PanelContainer/VBoxContainer/Persist"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2

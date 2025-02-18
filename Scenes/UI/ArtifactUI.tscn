@@ -1,0 +1,123 @@
+[gd_scene load_steps=8 format=3 uid="uid://b30hfnx3h7qoa"]
+
+[ext_resource type="Script" path="res://Skripts/UI/ArtifactUI.gd" id="1_40ggn"]
+[ext_resource type="Script" path="res://Skripts/UI/ToggleHiddenUI.gd" id="1_x0kyx"]
+[ext_resource type="Script" path="res://Skripts/UI/FloatValueUI.gd" id="2_gdrql"]
+[ext_resource type="Script" path="res://Skripts/UI/StringValueUI.gd" id="2_pdshn"]
+[ext_resource type="Script" path="res://Skripts/UI/UIList.gd" id="3_vohp1"]
+[ext_resource type="PackedScene" uid="uid://bxwpsaad71848" path="res://Scenes/UI/UIInfluence.tscn" id="4_242dq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_veigs"]
+bg_color = Color(0.319443, 0.695199, 0.363721, 1)
+
+[node name="Artifact" type="PanelContainer" node_paths=PackedStringArray("type_obj", "influence_terrain_obj", "influences_obj", "artifact_label")]
+script = ExtResource("1_40ggn")
+type_obj = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Type")
+influence_terrain_obj = NodePath("VBoxContainer/PanelContainer/VBoxContainer/InfluenceTerrain")
+influences_obj = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Influences/VBoxContainer")
+artifact_label = NodePath("VBoxContainer/HBoxContainer/Label")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_veigs")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("1_x0kyx")
+to_toggle = NodePath("../PanelContainer")
+toggle_button = NodePath("ExpandButton")
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "artifact"
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DeleteButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "-"
+
+[node name="ExpandButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "<"
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Type" type="HBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("2_pdshn")
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/VBoxContainer/Type"]
+layout_mode = 2
+text = "type"
+
+[node name="Control" type="Control" parent="VBoxContainer/PanelContainer/VBoxContainer/Type"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/PanelContainer/VBoxContainer/Type"]
+layout_mode = 2
+placeholder_text = "artifact name"
+expand_to_text_length = true
+
+[node name="InfluenceTerrain" type="HBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("2_gdrql")
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/VBoxContainer/InfluenceTerrain"]
+layout_mode = 2
+text = "influence on terrain"
+
+[node name="HSlider" type="HSlider" parent="VBoxContainer/PanelContainer/VBoxContainer/InfluenceTerrain"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/PanelContainer/VBoxContainer/InfluenceTerrain"]
+layout_mode = 2
+
+[node name="Influences" type="VBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer/Influences" node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("1_x0kyx")
+to_toggle = NodePath("../VBoxContainer")
+toggle_button = NodePath("Expand")
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/VBoxContainer/Influences/HBoxContainer"]
+layout_mode = 2
+text = "influences"
+
+[node name="Control" type="Control" parent="VBoxContainer/PanelContainer/VBoxContainer/Influences/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Expand" type="Button" parent="VBoxContainer/PanelContainer/VBoxContainer/Influences/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "<"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer/Influences" node_paths=PackedStringArray("add_button", "list_parent")]
+visible = false
+layout_mode = 2
+script = ExtResource("3_vohp1")
+add_button = NodePath("Button")
+scene_to_add = ExtResource("4_242dq")
+list_parent = NodePath(".")
+
+[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/VBoxContainer/Influences/VBoxContainer"]
+layout_mode = 2
+text = "+"

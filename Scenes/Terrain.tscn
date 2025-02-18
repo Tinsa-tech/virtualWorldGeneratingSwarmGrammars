@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://c2nlcvjr0c4cq"]
+
+[ext_resource type="Script" path="res://Skripts/vSG/Terrain.gd" id="1_ybm2l"]
+[ext_resource type="Material" uid="uid://cdk0xqe8gpv8f" path="res://Materials/Checkerboard.tres" id="2_ropwa"]
+
+[node name="Terrain" type="Node3D" node_paths=PackedStringArray("mesh")]
+script = ExtResource("1_ybm2l")
+material = ExtResource("2_ropwa")
+mesh = NodePath("MeshInstance3D")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]

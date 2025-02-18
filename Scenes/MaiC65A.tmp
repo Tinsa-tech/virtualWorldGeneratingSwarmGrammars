@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3lfiwv0crfwg"]
+
+[ext_resource type="Script" path="res://Skripts/FreeLookCamera.gd" id="1_atydh"]
+[ext_resource type="Script" path="res://Skripts/vSG/vSG.gd" id="2_aju4x"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.813963, 0.580916, 0, -0.580916, 0.813963, 0, 1.8284, 1.59893)
+fov = 110.3
+script = ExtResource("1_atydh")
+
+[node name="vSG" type="Node3D" parent="."]
+script = ExtResource("2_aju4x")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.891576, 0.45287, 0, -0.45287, 0.891576, 0, 0.576882, 0)
+light_energy = 10.0
+light_indirect_energy = 2.524
+shadow_enabled = true
+
+[node name="OmniLight3D" type="OmniLight3D" parent="DirectionalLight3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0878067)
+shadow_enabled = true

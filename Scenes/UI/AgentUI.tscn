@@ -1,0 +1,1029 @@
+[gd_scene load_steps=16 format=3 uid="uid://df4jyaendlpnl"]
+
+[ext_resource type="Script" path="res://Skripts/UI/ToggleHiddenUI.gd" id="1_3q7uj"]
+[ext_resource type="Script" path="res://Skripts/UI/AgentUI.gd" id="1_xsyva"]
+[ext_resource type="Script" path="res://Skripts/UI/StringValueUI.gd" id="2_ib0hq"]
+[ext_resource type="Script" path="res://Skripts/UI/FloatValueUI.gd" id="3_7d8kd"]
+[ext_resource type="Script" path="res://Skripts/UI/Vector3ValueUI.gd" id="4_uhivs"]
+[ext_resource type="Script" path="res://Skripts/UI/BoolValueUI.gd" id="5_4rn61"]
+[ext_resource type="Script" path="res://Skripts/UI/UIList.gd" id="6_4eqej"]
+[ext_resource type="Script" path="res://Skripts/UI/EnumValueUI.gd" id="8_uf1bn"]
+[ext_resource type="PackedScene" uid="uid://brlquc24yftlm" path="res://Scenes/UI/UIListElementString.tscn" id="9_m7sa1"]
+[ext_resource type="PackedScene" uid="uid://bxwpsaad71848" path="res://Scenes/UI/UIInfluence.tscn" id="10_og4pe"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kmb0e"]
+bg_color = Color(0.0627451, 0.145098, 0.309804, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v3yo5"]
+bg_color = Color(0.00139229, 0.257346, 0.276334, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bexec"]
+bg_color = Color(0.365532, 0.0708485, 0.0050055, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wj541"]
+bg_color = Color(8.12206e-08, 0.236916, 0.0669734, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ayvob"]
+bg_color = Color(0.285514, 0.0265422, 0.286977, 1)
+
+[node name="PanelContainer" type="PanelContainer" node_paths=PackedStringArray("type_obj", "sep_obj", "ali_obj", "coh_obj", "ran_obj", "bia_obj", "cen_obj", "flo_obj", "nor_obj", "gra_obj", "slo_obj", "pac_obj", "noc_obj", "see_obj", "energy_move_mode_obj", "energy_move_value_obj", "energy_successor_mode_obj", "energy_successor_value_obj", "energy_successor_value_2_obj", "energy_persist_mode_obj", "energy_persist_value_obj", "energy_zero_successors_obj", "energy_zero_value_obj", "a_max_obj", "v_max_obj", "v_norm_obj", "view_distance_obj", "beta_obj", "separation_distance_obj", "constraints_obj", "influences_obj", "agent_label", "delete_button")]
+offset_top = 35.0
+offset_right = 116.0
+offset_bottom = 35.0
+script = ExtResource("1_xsyva")
+type_obj = NodePath("Agent/AgentContainer/VBoxContainer/Type")
+sep_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Separation")
+ali_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Alignment")
+coh_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Cohesion")
+ran_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Random")
+bia_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Bias")
+cen_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Center")
+flo_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Floor")
+nor_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Normal")
+gra_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Gradient")
+slo_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Slope")
+pac_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Pace")
+noc_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Noclip")
+see_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Seed")
+energy_move_mode_obj = NodePath("Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move/VBoxContainer/Mode")
+energy_move_value_obj = NodePath("Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move/VBoxContainer/Value")
+energy_successor_mode_obj = NodePath("Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer/Mode")
+energy_successor_value_obj = NodePath("Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer/Value")
+energy_successor_value_2_obj = NodePath("Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer/Value2")
+energy_persist_mode_obj = NodePath("Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Persist/VBoxContainer/Mode")
+energy_persist_value_obj = NodePath("Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Persist/VBoxContainer/Value")
+energy_zero_successors_obj = NodePath("Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Zero/VBoxContainer/SuccessorsList")
+energy_zero_value_obj = NodePath("Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Zero/VBoxContainer/Energy")
+a_max_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/AMax")
+v_max_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/VMax")
+v_norm_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/VNorm")
+view_distance_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/ViewDistance")
+beta_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Beta")
+separation_distance_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/SeparationDistance")
+constraints_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Constraints")
+influences_obj = NodePath("Agent/AgentContainer/VBoxContainer/InfluencesContainer/VBoxContainer/PanelContainer/InfluencesList")
+agent_label = NodePath("Agent/HBoxContainer/Label")
+delete_button = NodePath("Agent/HBoxContainer/DeleteButton")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kmb0e")
+
+[node name="Agent" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Agent" node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("1_3q7uj")
+to_toggle = NodePath("../AgentContainer")
+toggle_button = NodePath("ExtendButton")
+
+[node name="Label" type="Label" parent="Agent/HBoxContainer"]
+layout_mode = 2
+text = "agent"
+
+[node name="Control" type="Control" parent="Agent/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DeleteButton" type="Button" parent="Agent/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "-"
+
+[node name="ExtendButton" type="Button" parent="Agent/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "<"
+
+[node name="AgentContainer" type="PanelContainer" parent="Agent"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Agent/AgentContainer"]
+layout_mode = 2
+
+[node name="Type" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("2_ib0hq")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/Type"]
+layout_mode = 2
+text = "type"
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/Type"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/Type"]
+layout_mode = 2
+placeholder_text = "type"
+alignment = 1
+expand_to_text_length = true
+
+[node name="MovementUrgesContainer" type="PanelContainer" parent="Agent/AgentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_v3yo5")
+
+[node name="MovementUrgesContainer" type="VBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer" node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("1_3q7uj")
+to_toggle = NodePath("../MovementUrges")
+toggle_button = NodePath("Button")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/HBoxContainer"]
+layout_mode = 2
+text = "movement urges"
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "<"
+
+[node name="MovementUrges" type="PanelContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges"]
+layout_mode = 2
+
+[node name="Separation" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Separation"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "separation"
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Separation"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Separation"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Alignment" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Alignment"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "alignment"
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Alignment"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Alignment"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Cohesion" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Cohesion"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "cohesion"
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Cohesion"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Cohesion"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Random" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Random"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "random
+"
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Random"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Random"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Bias" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer" node_paths=PackedStringArray("x", "y", "z")]
+layout_mode = 2
+script = ExtResource("4_uhivs")
+x = NodePath("x")
+y = NodePath("y")
+z = NodePath("z")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Bias"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "bias
+"
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Bias"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Bias"]
+layout_mode = 2
+text = "x:"
+
+[node name="x" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Bias"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Label3" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Bias"]
+layout_mode = 2
+text = "y:"
+
+[node name="y" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Bias"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Label4" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Bias"]
+layout_mode = 2
+text = "z:"
+
+[node name="z" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Bias"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Center" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Center"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "center
+"
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Center"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Center"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Floor" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Floor"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "floor
+"
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Floor"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Floor"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Normal" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Normal"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "normal
+"
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Normal"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Normal"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Gradient" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Gradient"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "gradient
+"
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Gradient"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Gradient"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Slope" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Slope"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "slope"
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Slope"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Slope"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Pace" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Pace"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Pace"
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Pace"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Pace"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Noclip" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("5_4rn61")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Noclip"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "noclip"
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Noclip"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CheckButton" type="CheckButton" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Noclip"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Seed" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("5_4rn61")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Seed"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "seed"
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Seed"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CheckButton" type="CheckButton" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Seed"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="EnergyCalculations" type="PanelContainer" parent="Agent/AgentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bexec")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer" node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("1_3q7uj")
+to_toggle = NodePath("../PanelContainer")
+toggle_button = NodePath("Button")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "energy calculations"
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "<"
+
+[node name="PanelContainer" type="PanelContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Successor" type="VBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor" node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("1_3q7uj")
+to_toggle = NodePath("../VBoxContainer")
+toggle_button = NodePath("Button")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+text = "successor"
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+text = "<"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor"]
+visible = false
+layout_mode = 2
+
+[node name="Mode" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("8_uf1bn")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer/Mode"]
+layout_mode = 2
+text = "mode"
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer/Mode"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OptionButton" type="OptionButton" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer/Mode"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Value" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer/Value"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "value"
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer/Value"]
+layout_mode = 2
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer/Value"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer/Value"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Value2" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer/Value2"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "const dist"
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer/Value2"]
+layout_mode = 2
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer/Value2"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer/Value2"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Persist" type="VBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Persist" node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("1_3q7uj")
+to_toggle = NodePath("../VBoxContainer")
+toggle_button = NodePath("Button")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Persist/HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+text = "persist
+"
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Persist/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Persist/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "<"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Persist"]
+visible = false
+layout_mode = 2
+
+[node name="Mode" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Persist/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("8_uf1bn")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Persist/VBoxContainer/Mode"]
+layout_mode = 2
+text = "mode"
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Persist/VBoxContainer/Mode"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OptionButton" type="OptionButton" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Persist/VBoxContainer/Mode"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Value" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Persist/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Persist/VBoxContainer/Value"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "value"
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Persist/VBoxContainer/Value"]
+layout_mode = 2
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Persist/VBoxContainer/Value"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Persist/VBoxContainer/Value"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Move" type="VBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move" node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("1_3q7uj")
+to_toggle = NodePath("../VBoxContainer")
+toggle_button = NodePath("Button")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move/HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+text = "move
+"
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "<"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move"]
+visible = false
+layout_mode = 2
+
+[node name="Mode" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("8_uf1bn")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move/VBoxContainer/Mode"]
+layout_mode = 2
+text = "mode"
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move/VBoxContainer/Mode"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OptionButton" type="OptionButton" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move/VBoxContainer/Mode"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Value" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move/VBoxContainer/Value"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "value"
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move/VBoxContainer/Value"]
+layout_mode = 2
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move/VBoxContainer/Value"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move/VBoxContainer/Value"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Zero" type="VBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Zero" node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("1_3q7uj")
+to_toggle = NodePath("../VBoxContainer")
+toggle_button = NodePath("Button")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Zero/HBoxContainer"]
+layout_mode = 2
+text = "zero"
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Zero/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Zero/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "<"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Zero"]
+visible = false
+layout_mode = 2
+
+[node name="Successors" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Zero/VBoxContainer" node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("1_3q7uj")
+to_toggle = NodePath("../SuccessorsList")
+toggle_button = NodePath("Button")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Zero/VBoxContainer/Successors"]
+layout_mode = 2
+text = "successors"
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Zero/VBoxContainer/Successors"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Zero/VBoxContainer/Successors"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "<"
+
+[node name="SuccessorsList" type="VBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Zero/VBoxContainer" node_paths=PackedStringArray("add_button", "list_parent")]
+visible = false
+layout_mode = 2
+script = ExtResource("6_4eqej")
+add_button = NodePath("Button")
+scene_to_add = ExtResource("9_m7sa1")
+list_parent = NodePath(".")
+
+[node name="Button" type="Button" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Zero/VBoxContainer/SuccessorsList"]
+layout_mode = 2
+text = "+"
+
+[node name="Energy" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Zero/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Zero/VBoxContainer/Energy"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "energy"
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Zero/VBoxContainer/Energy"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Zero/VBoxContainer/Energy"]
+layout_mode = 2
+
+[node name="MovementParamsContainer" type="PanelContainer" parent="Agent/AgentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wj541")
+
+[node name="MovementUrgesContainer" type="VBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer" node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("1_3q7uj")
+to_toggle = NodePath("../MovementUrges")
+toggle_button = NodePath("Button")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/HBoxContainer"]
+layout_mode = 2
+text = "movement parameters"
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "<"
+
+[node name="MovementUrges" type="PanelContainer" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges"]
+layout_mode = 2
+
+[node name="AMax" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/AMax"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "a max"
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/AMax"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/AMax"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="VMax" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/VMax"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "v max"
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/VMax"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/VMax"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="VNorm" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/VNorm"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "v norm"
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/VNorm"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/VNorm"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="ViewDistance" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/ViewDistance"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "view distance
+"
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/ViewDistance"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/ViewDistance"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Beta" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Beta"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "view angle"
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Beta"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Beta"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="SeparationDistance" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("3_7d8kd")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/SeparationDistance"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "sep distance
+"
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/SeparationDistance"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="LineEdit" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/SeparationDistance"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Constraints" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer" node_paths=PackedStringArray("x", "y", "z")]
+layout_mode = 2
+script = ExtResource("4_uhivs")
+x = NodePath("x")
+y = NodePath("y")
+z = NodePath("z")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Constraints"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "constraints
+"
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Constraints"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Constraints"]
+layout_mode = 2
+text = "x:"
+
+[node name="x" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Constraints"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Label3" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Constraints"]
+layout_mode = 2
+text = "y:"
+
+[node name="y" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Constraints"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="Label4" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Constraints"]
+layout_mode = 2
+text = "z:"
+
+[node name="z" type="LineEdit" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Constraints"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="InfluencesContainer" type="PanelContainer" parent="Agent/AgentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="Agent/AgentContainer/VBoxContainer/InfluencesContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ayvob")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Agent/AgentContainer/VBoxContainer/InfluencesContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/InfluencesContainer/VBoxContainer" node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("1_3q7uj")
+to_toggle = NodePath("../PanelContainer")
+toggle_button = NodePath("Button")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/InfluencesContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "influences"
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/InfluencesContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Agent/AgentContainer/VBoxContainer/InfluencesContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "<"
+
+[node name="PanelContainer" type="PanelContainer" parent="Agent/AgentContainer/VBoxContainer/InfluencesContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="InfluencesList" type="VBoxContainer" parent="Agent/AgentContainer/VBoxContainer/InfluencesContainer/VBoxContainer/PanelContainer" node_paths=PackedStringArray("add_button", "list_parent")]
+layout_mode = 2
+script = ExtResource("6_4eqej")
+add_button = NodePath("Button")
+scene_to_add = ExtResource("10_og4pe")
+list_parent = NodePath(".")
+
+[node name="Button" type="Button" parent="Agent/AgentContainer/VBoxContainer/InfluencesContainer/VBoxContainer/PanelContainer/InfluencesList"]
+layout_mode = 2
+text = "+"

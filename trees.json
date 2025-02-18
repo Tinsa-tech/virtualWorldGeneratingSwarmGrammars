@@ -1,0 +1,86 @@
+{
+	"agents": [
+		{
+			"Actor": {
+				"type": "Twig"
+			},
+			"Agent": {
+				"a_max": 0.2,
+				"beta": 170,
+				"constraints": [0.9, 1, 0.9],
+				"distance_params": {
+					"separation": 10,
+					"view": 20
+				},
+				"energy_calculations": {
+					"move": 0.2,
+					"move_mode": "distance",
+					"predecessor": 0.0,
+					"predecessor_mode": "constant",
+					"successor": 0.85,
+					"successor_constdist": 0.0,
+					"successor_mode": "inherit",
+					"zero_successors": ["Wood"],
+					"zero_energy": 10
+				},
+				"influences": {
+					"Twig" : 1.0
+				},
+				"movement_urges": {
+					"bias" : [0.0, 0.02, 0.0],
+					"separation" : 2,
+					"alignment" : 1,
+					"center": 0.0001,
+					"noclip": 0,
+					"pace": 0.1,
+					"random": 0.1,
+					"floor": -0.002,
+					"normal" : 0.1,
+				},
+				"velocity_params": {
+					"max": 0.6,
+					"norm": 0.4
+				}
+			}
+		}
+	],
+	"artifacts": [
+		{
+			"Actor": {
+				"type": "Wood"
+			},
+			"Artifact": {
+				"influence_on_terrain": 0,
+				"influences": {
+					"Twig" : 0.1
+				}
+			}
+		}
+	],
+	"first_generation": [
+		"Twig"
+	],
+	"productions": [
+		{
+			"context": "",
+			"distance": 0,
+			"persist": true,
+			"predecessor": "Twig",
+			"successor": ["Wood"],
+			"theta": 6
+		},
+		{
+			"context": "",
+			"distance": 0,
+			"persist": true,
+			"predecessor": "Twig",
+			"successor": [
+				"Twig",
+				"Wood"
+			],
+			"theta": 3
+		}
+	],
+	"t": 1.0,
+	"terrain_size": 100,
+}
