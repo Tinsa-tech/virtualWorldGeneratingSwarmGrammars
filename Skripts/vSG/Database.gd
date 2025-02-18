@@ -22,7 +22,7 @@ static func getInstance() -> Database:
 		instance = Database.new()
 		return instance
 
-func save_data():
+func save_data(path_to_save : String):
 	var dict = {
 		"first_generation" : first_generation,
 	}
@@ -49,11 +49,12 @@ func save_data():
 	dict["t"] = t
 	dict["terrain_size"] = terrain_size
 	
-	var save_file = FileAccess.open("res://save.json", FileAccess.WRITE)
+	var save_file = FileAccess.open(path_to_save, FileAccess.WRITE)
 	save_file.store_line(JSON.stringify(dict, "\t"))
+	save_file.close()
 
-func load_data() -> void:
-	var save_file = FileAccess.open("res://trees.json", FileAccess.READ)
+func load_data(path_to_load : String) -> void:
+	var save_file = FileAccess.open(path_to_load, FileAccess.READ)
 	var json_string = save_file.get_as_text()
 	
 	var dict = JSON.parse_string(json_string)
@@ -80,6 +81,8 @@ func load_data() -> void:
 	
 	t = dict["t"]
 	terrain_size = dict["terrain_size"]
+	
+	save_file.close()
 
 #func _init() -> void:
 #

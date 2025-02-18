@@ -28,5 +28,13 @@ func from_artifact(arti : ArtifactTemplate):
 		added.set_influence_on(key)
 		added.set_value(arti.influences[key])
 
+func get_data():
+	artifact.type = type_obj.value
+	var dict 
+	for influence : UIInfluence in influences_obj.list_elements:
+		dict[influence.influence_on] = influence.value
+	artifact.influences = dict
+	artifact.influence_on_terrain = influence_terrain_obj.value
+
 func _on_type_changed(new_type : String):
 	artifact_label.text = new_type

@@ -35,5 +35,16 @@ func from_production(prod : Production):
 	theta_obj.set_value(prod.theta)
 	persist_obj.set_value(prod.persist)
 
+func get_data():
+	production.context = context_obj.value
+	production.distance = distance_obj.value
+	production.persist = persist_obj.value
+	production.predecessor = predecessor_obj.value
+	var arr
+	for succ : UIListElementString in successors_obj.list_elements:
+		arr.append(succ.value)
+	production.successor = arr
+	production.theta = theta_obj.value
+
 func _on_predecessor_changed(new_value : String):
 	prod_label.text = new_value

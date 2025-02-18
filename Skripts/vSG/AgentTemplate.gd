@@ -3,7 +3,7 @@ class_name AgentTemplate
 extends ActorTemplate
 
 var movement_urges : Dictionary
-var energy_calculations : Energy
+var energy_calculations : Energy = Energy.new()
 var a_max : float
 var velocity_params : Dictionary
 var constraints : Vector3

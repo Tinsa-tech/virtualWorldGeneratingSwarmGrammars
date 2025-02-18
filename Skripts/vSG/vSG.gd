@@ -23,10 +23,10 @@ var terrain_scene : PackedScene = preload("res://Scenes/Terrain.tscn")
 func _ready() -> void:
 	database = Database.getInstance()
 	# database.save_data()
-	database.load_data()
+	# database.load_data()
 	
 	terrain = terrain_scene.instantiate()
-	terrain.generate_terrain(1, 100)
+	terrain.generate_terrain(database.t, database.terrain_size)
 	get_tree().root.add_child.call_deferred(terrain)
 	
 	for actor in database.first_generation:

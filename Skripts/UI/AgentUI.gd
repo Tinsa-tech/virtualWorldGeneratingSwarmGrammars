@@ -92,6 +92,54 @@ func from_template(template : AgentTemplate):
 	set_movement_parameters(template)
 	set_influences(template.influences)
 
+func get_data():
+	agent_template.type = type_obj.value
+	agent_template.a_max = a_max_obj.value
+	agent_template.beta = beta_obj.value
+	agent_template.constraints = constraints_obj.value
+	agent_template.distance_params = {
+		Database.distance_params.VIEW : view_distance_obj.value,
+		Database.distance_params.SEPARATION : separation_distance_obj.value
+	}
+	
+	agent_template.energy_calculations.move_value = energy_move_value_obj.value
+	agent_template.energy_calculations.move_mode = energy_move_mode_obj.value
+	agent_template.energy_calculations.successor_value = energy_successor_value_obj.value
+	agent_template.energy_calculations.successor_value_constdist = energy_successor_value_2_obj.value
+	agent_template.energy_calculations.successor_mode = energy_successor_mode_obj.value
+	agent_template.energy_calculations.predecessor_value = energy_persist_value_obj.value
+	agent_template.energy_calculations.predecessor_mode = energy_persist_mode_obj.value
+	agent_template.energy_calculations.zero_energy = energy_zero_value_obj.value
+	
+	for member : UIListElementString in energy_zero_successors_obj.list_elements:
+		agent_template.energy_calculations.zero_successors.append(member.value)
+
+	var dict : Dictionary
+	for influence : UIInfluence in influences_obj.list_elements:
+		dict[influence.influence_on] = influence.value
+	
+	agent_template.influences = dict
+	
+	agent_template.movement_urges = {
+		Database.movement_urges.SEPARATION : sep_obj.value,
+		Database.movement_urges.ALIGNMENT : ali_obj.value,
+		Database.movement_urges.COHESION : coh_obj.value,
+		Database.movement_urges.RANDOM : ran_obj.value,
+		Database.movement_urges.BIAS : bia_obj.value,
+		Database.movement_urges.CENTER : cen_obj.value,
+		Database.movement_urges.FLOOR : flo_obj.value,
+		Database.movement_urges.NORMAL : nor_obj.value,
+		Database.movement_urges.GRADIENT : gra_obj.value,
+		Database.movement_urges.SLOPE : slo_obj.value,
+		Database.movement_urges.PACE : pac_obj.value,
+		Database.movement_urges.NOCLIP : noc_obj.value,
+		Database.movement_urges.SEED : see_obj.value
+	}
+	agent_template.velocity_params = {
+		Database.velocity_params.NORM : v_norm_obj.value,
+		Database.velocity_params.MAX : v_max_obj.value
+	}
+
 func set_type(new_type : String):
 	type_obj.set_value(new_type)
 	agent_label.text = new_type

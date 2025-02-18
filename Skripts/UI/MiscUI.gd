@@ -16,3 +16,10 @@ func fill():
 	
 	t_obj.set_value(data.t)
 	terrain_size_obj.set_value(data.terrain_size)
+
+func get_data():
+	var data = Database.getInstance()
+	for member : UIListElementString in first_gen_obj.list_elements:
+		data.first_generation.append(member.value)
+	data.t = t_obj.value
+	data.terrain_size = terrain_size_obj.value
