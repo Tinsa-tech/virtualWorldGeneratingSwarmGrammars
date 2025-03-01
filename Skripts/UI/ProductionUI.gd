@@ -40,7 +40,7 @@ func get_data():
 	production.distance = distance_obj.value
 	production.persist = persist_obj.value
 	production.predecessor = predecessor_obj.value
-	var arr
+	var arr : Array[String] = []
 	for succ : UIListElementString in successors_obj.list_elements:
 		arr.append(succ.value)
 	production.successor = arr

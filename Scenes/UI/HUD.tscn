@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=3 uid="uid://daiyl4pnslsqs"]
+
+[ext_resource type="Script" path="res://Scenes/UI/hud.gd" id="1_j22xi"]
+
+[node name="CanvasLayer" type="CanvasLayer" node_paths=PackedStringArray("agent_count", "artifact_count")]
+script = ExtResource("1_j22xi")
+agent_count = NodePath("Control/VBoxContainer/HBoxContainer/AgentCount")
+artifact_count = NodePath("Control/VBoxContainer/HBoxContainer2/ArtifactCount")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Agents: "
+
+[node name="AgentCount" type="Label" parent="Control/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Artifacts: "
+
+[node name="ArtifactCount" type="Label" parent="Control/VBoxContainer/HBoxContainer2"]
+layout_mode = 2

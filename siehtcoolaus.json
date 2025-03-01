@@ -1,0 +1,435 @@
+{
+	"agents": [
+		{
+			"Actor": {
+				"type": "agent0"
+			},
+			"Agent": {
+				"a_max": 0.439497351646423,
+				"beta": 190.549530029297,
+				"constraints": [
+					-0.14190822839737,
+					0.919585824012756,
+					0.419111251831055
+				],
+				"distance_params": {
+					"separation": 3.8328959941864,
+					"view": 3.59106254577637
+				},
+				"energy_calculations": {
+					"move": 0.604998409748077,
+					"move_mode": "constant",
+					"predecessor": 0.409701943397522,
+					"predecessor_mode": "equal",
+					"successor": 1.50642788410187,
+					"successor_constdist": 0.353219449520111,
+					"successor_mode": "inherit",
+					"zero_energy": 3.19783067703247,
+					"zero_successors": [
+						"agent1",
+						"agent4",
+						"agent2",
+						"agent1",
+						"agent4",
+						"agent2",
+						"agent1",
+						"agent4",
+						"agent2",
+						"agent1",
+						"agent4",
+						"agent2",
+						"agent1",
+						"agent4",
+						"agent2",
+						"agent1",
+						"agent4",
+						"agent2"
+					]
+				},
+				"influences": {
+					"": 0
+				},
+				"movement_urges": {
+					"alignment": 9.84370994567871,
+					"bias": [
+						-0.82436740398407,
+						-0.10933476686478,
+						-0.60142195224762
+					],
+					"center": 5.18261241912842,
+					"cohesion": 6.13642024993896,
+					"floor": 8.85509872436523,
+					"gradient": 6.53351831436157,
+					"noclip": false,
+					"normal": 7.59858989715576,
+					"pace": 0.0251219142228365,
+					"random": 5.23154497146606,
+					"seed": true,
+					"separation": 9.44626617431641,
+					"slope": 8.27507400512695
+				},
+				"velocity_params": {
+					"max": 4.69842433929443,
+					"norm": 2.99369835853577
+				}
+			}
+		},
+		{
+			"Actor": {
+				"type": "agent1"
+			},
+			"Agent": {
+				"a_max": 0.79687112569809,
+				"beta": 281.524810791016,
+				"constraints": [
+					0.336925268173218,
+					0.581383466720581,
+					0.335492014884949
+				],
+				"distance_params": {
+					"separation": 0.83621621131897,
+					"view": 2.0659294128418
+				},
+				"energy_calculations": {
+					"move": 1.65560388565063,
+					"move_mode": "distance",
+					"predecessor": 1.77048969268799,
+					"predecessor_mode": "constant distribution",
+					"successor": 1.22633588314056,
+					"successor_constdist": 0.950671792030334,
+					"successor_mode": "constant_distribute",
+					"zero_energy": 1.56550586223602,
+					"zero_successors": []
+				},
+				"influences": {
+					"": 0
+				},
+				"movement_urges": {
+					"alignment": 8.52857875823975,
+					"bias": [
+						-0.1824586391449,
+						0.995351552963257,
+						-0.22812390327454
+					],
+					"center": 1.04030287265778,
+					"cohesion": 2.37750053405762,
+					"floor": 3.27122569084167,
+					"gradient": 4.26054096221924,
+					"noclip": false,
+					"normal": 6.9343957901001,
+					"pace": 5.69472217559814,
+					"random": 8.6561164855957,
+					"seed": false,
+					"separation": 6.76662921905518,
+					"slope": 1.98680520057678
+				},
+				"velocity_params": {
+					"max": 2.99775505065918,
+					"norm": 4.28402137756348
+				}
+			}
+		},
+		{
+			"Actor": {
+				"type": "agent2"
+			},
+			"Agent": {
+				"a_max": 0.76469624042511,
+				"beta": 288.611480712891,
+				"constraints": [
+					0.518511772155762,
+					-0.09492748975754,
+					0.887469172477722
+				],
+				"distance_params": {
+					"separation": 1.3367292881012,
+					"view": 0.165930613875389
+				},
+				"energy_calculations": {
+					"move": 1.36938786506653,
+					"move_mode": "distance",
+					"predecessor": 0.399088829755783,
+					"predecessor_mode": "constant distribution",
+					"successor": 1.17536759376526,
+					"successor_constdist": 0.929414331912994,
+					"successor_mode": "distribute",
+					"zero_energy": 2.34015130996704,
+					"zero_successors": [
+						"agent1",
+						"agent3",
+						"agent1",
+						"agent3",
+						"agent1",
+						"agent3",
+						"agent1",
+						"agent3",
+						"agent1",
+						"agent3",
+						"agent1",
+						"agent3"
+					]
+				},
+				"influences": {
+					"": 0
+				},
+				"movement_urges": {
+					"alignment": 8.95111179351807,
+					"bias": [
+						-0.11612737178802,
+						0.58456289768219,
+						-0.08825093507767
+					],
+					"center": 5.21344661712646,
+					"cohesion": 4.51386165618896,
+					"floor": 7.10910081863403,
+					"gradient": 3.32747220993042,
+					"noclip": true,
+					"normal": 8.99381542205811,
+					"pace": 9.86002731323242,
+					"random": 7.71672916412354,
+					"seed": false,
+					"separation": 6.68961620330811,
+					"slope": 0.718320310115814
+				},
+				"velocity_params": {
+					"max": 3.41473937034607,
+					"norm": 0.742422103881836
+				}
+			}
+		},
+		{
+			"Actor": {
+				"type": "agent3"
+			},
+			"Agent": {
+				"a_max": 0.839292705059052,
+				"beta": 123.954627990723,
+				"constraints": [
+					0.308587074279785,
+					0.952553510665894,
+					-0.61125695705414
+				],
+				"distance_params": {
+					"separation": 1.50455057621002,
+					"view": 2.80621075630188
+				},
+				"energy_calculations": {
+					"move": 0.104414492845535,
+					"move_mode": "constant",
+					"predecessor": 1.09484267234802,
+					"predecessor_mode": "equal",
+					"successor": 0.824999272823334,
+					"successor_constdist": 1.24474787712097,
+					"successor_mode": "distribute",
+					"zero_energy": 6.37705087661743,
+					"zero_successors": [
+						"agent0",
+						"agent1",
+						"artifact1",
+						"agent4",
+						"agent0",
+						"agent1",
+						"artifact1",
+						"agent4",
+						"agent0",
+						"agent1",
+						"artifact1",
+						"agent4",
+						"agent0",
+						"agent1",
+						"artifact1",
+						"agent4",
+						"agent0",
+						"agent1",
+						"artifact1",
+						"agent4",
+						"agent0",
+						"agent1",
+						"artifact1",
+						"agent4"
+					]
+				},
+				"influences": {
+					"": 0
+				},
+				"movement_urges": {
+					"alignment": 4.46884822845459,
+					"bias": [
+						0.857349514961243,
+						0.843646287918091,
+						-0.28716748952866
+					],
+					"center": 4.34265995025635,
+					"cohesion": 2.6824963092804,
+					"floor": 8.4826192855835,
+					"gradient": 4.4307336807251,
+					"noclip": false,
+					"normal": 4.89648771286011,
+					"pace": 5.07484531402588,
+					"random": 6.86054706573486,
+					"seed": false,
+					"separation": 8.20938301086426,
+					"slope": 2.24697494506836
+				},
+				"velocity_params": {
+					"max": 2.44154977798462,
+					"norm": 3.17456912994385
+				}
+			}
+		},
+		{
+			"Actor": {
+				"type": "agent4"
+			},
+			"Agent": {
+				"a_max": 0.486401736736298,
+				"beta": 351.560485839844,
+				"constraints": [
+					0.525539636611938,
+					0.107346415519714,
+					-0.79251039028168
+				],
+				"distance_params": {
+					"separation": 1.44449007511139,
+					"view": 1.6408166885376
+				},
+				"energy_calculations": {
+					"move": 0.0929762795567513,
+					"move_mode": "constant",
+					"predecessor": 0.989908814430237,
+					"predecessor_mode": "per_successor",
+					"successor": 0.263792514801025,
+					"successor_constdist": 0.0149269411340356,
+					"successor_mode": "distribute",
+					"zero_energy": 6.98384380340576,
+					"zero_successors": [
+						"agent3",
+						"agent3",
+						"agent3",
+						"agent3",
+						"agent3",
+						"agent3"
+					]
+				},
+				"influences": {
+					"": 0
+				},
+				"movement_urges": {
+					"alignment": 5.01352596282959,
+					"bias": [
+						-0.89093053340912,
+						-0.96732544898987,
+						-0.92613059282303
+					],
+					"center": 5.00521659851074,
+					"cohesion": 1.76808142662048,
+					"floor": 5.00175666809082,
+					"gradient": 1.22796821594238,
+					"noclip": true,
+					"normal": 0.583958208560944,
+					"pace": 4.94818782806396,
+					"random": 3.60402250289917,
+					"seed": true,
+					"separation": 3.42347812652588,
+					"slope": 0.135557979345322
+				},
+				"velocity_params": {
+					"max": 1.56777036190033,
+					"norm": 3.94297003746033
+				}
+			}
+		}
+	],
+	"artifacts": [
+		{
+			"Actor": {
+				"type": "artifact0"
+			},
+			"Artifact": {
+				"influence_on_terrain": 7.37962135028095,
+				"influences": {
+					"": 0
+				}
+			}
+		},
+		{
+			"Actor": {
+				"type": "artifact1"
+			},
+			"Artifact": {
+				"influence_on_terrain": 9.34057271465868,
+				"influences": {
+					"": 0
+				}
+			}
+		}
+	],
+	"first_generation": [
+		"agent0",
+		"agent1",
+		"agent2",
+		"agent3",
+		"agent4",
+		"agent0",
+		"agent1",
+		"agent2",
+		"agent3",
+		"agent4",
+		"agent0",
+		"agent1",
+		"agent2",
+		"agent3",
+		"agent4",
+		"agent0",
+		"agent1",
+		"agent2",
+		"agent3",
+		"agent4"
+	],
+	"productions": [
+		{
+			"context": "",
+			"distance": 0.0289812237024307,
+			"persist": true,
+			"predecessor": "agent2",
+			"successor": [
+				"agent4",
+				"agent1"
+			],
+			"theta": 66.8213806152344
+		},
+		{
+			"context": "",
+			"distance": 0.893265068531036,
+			"persist": true,
+			"predecessor": "agent0",
+			"successor": [
+				"artifact1",
+				"agent2"
+			],
+			"theta": 99.9823684692383
+		},
+		{
+			"context": "agent4",
+			"distance": 0.286299139261246,
+			"persist": false,
+			"predecessor": "agent1",
+			"successor": [
+				"agent4"
+			],
+			"theta": 10.2638349533081
+		},
+		{
+			"context": "agent4",
+			"distance": 2.92918181419373,
+			"persist": true,
+			"predecessor": "agent3",
+			"successor": [
+				"agent4"
+			],
+			"theta": 44.192699432373
+		}
+	],
+	"t": 1,
+	"terrain_size": 100
+}

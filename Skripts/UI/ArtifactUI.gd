@@ -30,7 +30,7 @@ func from_artifact(arti : ArtifactTemplate):
 
 func get_data():
 	artifact.type = type_obj.value
-	var dict 
+	var dict : Dictionary = {}
 	for influence : UIInfluence in influences_obj.list_elements:
 		dict[influence.influence_on] = influence.value
 	artifact.influences = dict

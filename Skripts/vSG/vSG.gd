@@ -1,9 +1,9 @@
 extends Node3D
 
 var l_system : LSystem
-var actors : Array[Actor]
-var agents : Array[Agent]
-var artifacts : Array[Artifact]
+var actors : Array[ActorObject]
+var agents : Array[AgentObject]
+var artifacts : Array[ArtifactObject]
 
 var database : Database
 
@@ -19,6 +19,14 @@ var agent_scene : PackedScene = preload("res://Scenes/Agent.tscn")
 var artifact_scene : PackedScene = preload("res://Scenes/Artifact.tscn")
 var terrain_scene : PackedScene = preload("res://Scenes/Terrain.tscn")
 
+var octree : Octree
+var grid : SpaceGrid
+
+@export
+var hud : HUD
+@export
+var visualize_octree : VisualizeOctree
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	database = Database.getInstance()
@@ -29,55 +37,113 @@ func _ready() -> void:
 	terrain.generate_terrain(database.t, database.terrain_size)
 	get_tree().root.add_child.call_deferred(terrain)
 	
+	octree = Octree.new(10, database.t * database.terrain_size / 2)
+	
+	var min_view_dist = 1000
+	for template in database.templates:
+		if template is AgentTemplate:
+			if template.distance_params[Database.distance_params.VIEW] < min_view_dist:
+				min_view_dist = template.distance_params[Database.distance_params.VIEW]
+	
+	grid = SpaceGrid.new(database.t * database.terrain_size, min_view_dist)
+	
+	#for i in range(1000):
+		#database.first_generation.append(database.templates[0].type)
+	
 	for actor in database.first_generation:
 		for template in database.templates:
 			if actor == template.type:
 				var obj = instantiate(template)
-				obj.energy = 30
-				obj.id = get_new_id()
-				obj.position = Vector3(0, 0, 0)
+				var real_actor = obj.actor
+				real_actor.energy = 30
+				real_actor.id = get_new_id()
+				real_actor.actor_position = Vector3(0, 0, 0)
+				obj.position = Vector3.ZERO
 				# obj.velocity = Vector3.UP
 				get_tree().root.add_child.call_deferred(obj)
+				# add_to_octree(real_actor)
+				add_to_grid(obj)
 	
 	l_system = LSystem.new()
 	l_system.productions = database.productions
+	
+	hud.set_agent_count(agents.size())
+	hud.set_artifact_count(artifacts.size())
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	
 	if play or step:
 		if reproduce:
 			apply_productions()
 		reproduce = !reproduce
-		#apply_productions()
+		# apply_productions()
 		
-		movement()
+		hud.set_agent_count(agents.size())
+		hud.set_artifact_count(artifacts.size())
+		
+		var task_id = WorkerThreadPool.add_group_task(movement_agent, agents.size())
+		WorkerThreadPool.wait_for_group_task_completion(task_id)
+		update_agent_positions()
+		
+		# update_octree()
+		update_grid()
+		
+		#if delta >= 5:
+			#kill_all_agents()
+		if agents.size() > 2000 or artifacts.size() > 2000:
+			kill_all_agents()
+		
+		step = false
+		
 		if (len(artifacts) == 0):
 			return
 		if !terrain_changed:
 			return
 		recalculate_terrain()
 		terrain_changed = false
-		step = false
+
+		
+func update_agent_positions():
+	for agent in agents:
+		agent.update_position(terrain)
+
+func update_octree():
+	octree = Octree.new(10, database.t * database.terrain_size / 2)
+	for actor in actors:
+		var ele : OctreeElement = OctreeElement.new()
+		ele.position = actor.position
+		ele.obj = actor.actor
+		octree.add_element(ele)
+
+func update_grid():
+	grid.update_grid()
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed():
 		if event.keycode == KEY_SPACE:
 			play = !play
 		elif event.keycode == KEY_RIGHT:
 			step = true
+		elif event.keycode == KEY_V:
+			visualize_octree.visualize(octree)
 
-func instantiate(template : ActorTemplate) -> Actor:
+func instantiate(template : ActorTemplate) -> ActorObject:
 	if template is AgentTemplate:
-		var obj : Agent = agent_scene.instantiate()
-		obj.take_values(template)
-		obj.id = get_new_id()
+		var obj : AgentObject = agent_scene.instantiate()
+		var agent : Agent = Agent.new()
+		agent.take_values(template)
+		agent.id = get_new_id()
+		obj.actor = agent
+		obj.instantiate()
 		actors.append(obj)
 		agents.append(obj)
 		return obj
 	else:
-		var obj : Artifact = artifact_scene.instantiate()
-		obj.take_values(template)
-		obj.id = get_new_id()
+		var obj : ArtifactObject = artifact_scene.instantiate()
+		var artifact : Artifact = Artifact.new()
+		artifact.take_values(template)
+		artifact.id = get_new_id()
+		obj.actor = artifact
 		actors.append(obj)
 		artifacts.append(obj)
 		terrain_changed = true
@@ -85,6 +151,8 @@ func instantiate(template : ActorTemplate) -> Actor:
 
 func apply_productions():
 	var arr = l_system.apply_productions(actors)
+	if arr.is_empty():
+		return
 	var ids_apply_productions_to = arr[0]
 	var persist = arr[1]
 	var types_to_instantiate = arr[2]
@@ -99,29 +167,33 @@ func apply_productions():
 					batch.append(obj)
 		instantiated.append(batch)
 	
-	var remove : Array[Agent]
+	var remove : Array[AgentObject]
 	var i : int = 0
 	for id_a_p in ids_apply_productions_to:
-		for agent in agents: 
+		for agent_obj in agents:
+			var agent = agent_obj.actor 
 			if id_a_p == agent.id:
 				var successors = instantiated[i]
 				#print("i: " + str(i) + " successor_count: " + str(len(successors)))
 				#for successor in successors:
 					#print(successor.get_parent())
-				for successor in successors:
-					
+				for successor_obj in successors:
+					var successor = successor_obj.actor
 					successor.back_reference = agent
-					successor.position = agent.position
-					successor.name = successor.type + str(successor.id)
+					successor.actor_position = agent.actor_position
+					successor_obj.position = agent_obj.position
+					successor_obj.name = successor.type + str(successor.id)
 					if successor is Agent:
 						successor.velocity = agent.velocity
 						if agent.movement_urges.has(database.movement_urges.SEED):
-							successor.individual_world_center = successor.position
-					get_tree().get_root().add_child(successor)
+							successor.individual_world_center = agent.actor_position
+					get_tree().get_root().add_child(successor_obj)
+					# add_to_octree(successor)
+					add_to_grid(successor_obj)
 					
 				calculate_energies(successors, agent, persist[i])
 				if !persist[i]:
-					remove.append(agent)
+					remove.append(agent_obj)
 		i += 1
 	
 	# print("------------productions applied----------------")
@@ -129,12 +201,20 @@ func apply_productions():
 	for r in remove:
 		agents.erase(r)
 		actors.erase(r)
+		r._on_destroyed()
 		r.queue_free()
 
 func movement():
 	for agent in agents:
-		agent.movement(actors, terrain)
+		# agent.movement(agent.get_neighbours_octree(octree), terrain)
+		# agent.movement(agent.get_neighbours(actors), terrain)
+		agent.movement(agent.get_neighbours_grid(grid), terrain)
 
+func movement_agent(agent_index : int):
+	var agent = agents[agent_index].actor
+	var neighbours = agent.get_neighbours_grid(grid)
+	agent.movement(neighbours, terrain)
+	
 func recalculate_terrain():
 	terrain.update_terrain(artifacts)
 
@@ -144,23 +224,23 @@ func calculate_energies(successors : Array, predecessor : Agent, persist : bool)
 		Energy.successor.CONST:
 			var value = predecessor.energy_calculations.successor_value
 			for successor in successors:
-				successor.energy = value
+				successor.actor.energy = value
 		Energy.successor.INHERIT:
 			var factor = predecessor.energy_calculations.successor_value
 			for successor in successors:
-				successor.energy = predecessor.energy * factor
+				successor.actor.energy = predecessor.energy * factor
 		Energy.successor.DISTRIBUTE:
 			var offset = predecessor.energy_calculations.successor_value
 			if persist:
 				count += 1
 			for successor in successors:
-				successor.energy = (predecessor.energy - offset) / float(count)
+				successor.actor.energy = (predecessor.energy - offset) / float(count)
 			predecessor.energy = 0
 		Energy.successor.CONSTDIST:
 			var amount = predecessor.energy_calculations.successor_value
 			var offset = predecessor.energy_calculations.successor_value_constdist
 			for successor in successors:
-				successor.energy = min(
+				successor.actor.energy = min(
 					amount, 
 					(predecessor.energy - offset)/ float(count))
 		_:
@@ -177,12 +257,32 @@ func calculate_energies(successors : Array, predecessor : Agent, persist : bool)
 			var factor = predecessor.energy_calculations.predecessor_value
 			predecessor.energy -= count * factor
 		Energy.predecessor.EQUAL:
-			predecessor.energy = successors[0].energy
+			predecessor.energy = successors[0].actor.energy
 		Energy.predecessor.CONSTDIST:
 			var offset = predecessor.energy_calculations.predecessor_value
-			predecessor.energy = predecessor.energy - offset - count * successors[0].energy
+			predecessor.energy = predecessor.energy - offset - count * successors[0].actor.energy
 
 func get_new_id() -> int:
 	var ret = id
 	id += 1
 	return ret
+
+func add_to_octree(obj : Actor):
+	var octree_element = OctreeElement.new()
+	octree_element.position = obj.actor_position
+	octree_element.obj = obj
+	octree.add_element(octree_element)
+
+func add_to_grid(obj : ActorObject):
+	var grid_element = GridElement.new(obj)
+	grid_element.position = obj.actor.actor_position
+	grid.add_element(grid_element)
+
+func kill_all_agents():
+	for agent in agents:
+		agent._on_destroyed()
+		actors.erase(agent)
+		agent.queue_free()
+	
+	agents.clear()
+		

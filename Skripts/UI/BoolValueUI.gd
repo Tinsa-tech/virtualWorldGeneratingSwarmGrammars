@@ -14,9 +14,6 @@ func _ready() -> void:
 				check_button.toggled.connect(_on_button_toggled)
 	else:
 		check_button.toggled.connect(_on_button_toggled)
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 func _on_button_toggled(new_value : bool):
 	value = new_value

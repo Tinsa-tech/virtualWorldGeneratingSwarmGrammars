@@ -123,9 +123,10 @@ func get_height_at(point : Vector3) -> float:
 	var p_h = (h_s + A.y) * (ass.length() / ap.length())
 	return p_h
 
-func update_terrain(artifacts : Array[Artifact]) -> void:
+func update_terrain(artifacts : Array[ArtifactObject]) -> void:
 	var influencers : Array[Artifact]
-	for artifact in artifacts:
+	for artifact_obj in artifacts:
+		var artifact = artifact_obj.actor
 		if artifact.influence_on_terrain > 0:
 			influencers.append(artifact)
 	
@@ -141,11 +142,11 @@ func update_terrain(artifacts : Array[Artifact]) -> void:
 		var influences : float = 0.0
 		
 		for influencer in influencers:
-			var influencer_xz = Vector2(influencer.position.x, influencer.position.z)
+			var influencer_xz = Vector2(influencer.actor_position.x, influencer.actor_position.z)
 			var dist = vertex_xz.distance_to(influencer_xz)
 			var influence_fact : float = 1.0 / pow((1 + dist), influencer.influence_on_terrain)
 			
-			avg_height += (influencer.position.y - vertex.y) * influence_fact
+			avg_height += (influencer.actor_position.y - vertex.y) * influence_fact
 			influences += influence_fact
 		
 		avg_height /= influences

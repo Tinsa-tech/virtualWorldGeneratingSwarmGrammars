@@ -57,3 +57,10 @@ func get_item(index : int) -> UIListElement:
 
 func size() -> int:
 	return list_elements.size()
+
+func clear():
+	for element in list_elements:
+		remove_child(element)
+		element.queue_free()
+	
+	list_elements.clear()

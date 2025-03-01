@@ -1,11 +1,10 @@
 class_name Actor
 
-extends Node3D
-
 var energy : float
 var id : int
 var back_reference : Actor
 var type : String
+var actor_position : Vector3
 
 func equals(other : Actor) -> bool:
 	if other.type == self.type:

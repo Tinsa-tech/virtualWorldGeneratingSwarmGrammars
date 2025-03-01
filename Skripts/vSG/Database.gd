@@ -84,73 +84,115 @@ func load_data(path_to_load : String) -> void:
 	
 	save_file.close()
 
-#func _init() -> void:
-#
-	#var terrain_agent_template = AgentTemplate.new()
-	#terrain_agent_template.type = "TerrainAgent"
-	#terrain_agent_template.movement_urges = {
-		#movement_urges.CENTER : 0.001,
-		#movement_urges.RANDOM : 0.2,
-		#movement_urges.PACE : 0.1,
-		#movement_urges.NOCLIP : 1
-	#}
-	#terrain_agent_template.a_max = 0.5
-	#terrain_agent_template.velocity_params = {
-		#velocity_params.MAX : 2,
-		#velocity_params.NORM : 1
-	#}
-	#terrain_agent_template.constraints = Vector3(1, 0.5, 1)
-	#terrain_agent_template.distance_params = {
-		#distance_params.SEPARATION : 5,
-		#distance_params.VIEW : 100
-	#}
-	#terrain_agent_template.beta = 180
-	#
-	#var e_suc = EnergyLSystem.new()
-	#e_suc.type = energy_params.SUCCESSOR
-	#e_suc.value = 10
-	#e_suc.mode = e_suc.Mode.CONST
-	#
-	#var e_persist = EnergyLSystem.new()
-	#e_persist.type = energy_params.PERSIST
-	#e_persist.value = 0
-	#e_persist.mode = e_persist.Mode.CONST
-	#
-	#terrain_agent_template.energy_l_system.append_array([e_suc, e_persist])
-	#
-	#terrain_agent_template.energy_calculations = {
-		#energy_params.SUCCESSOR : [energy_params_modes.CONST, 10],
-		#energy_params.PERSIST : [energy_params_modes.CONST, 0],
-		#energy_params.MOVE : [energy_params_modes.CONST, 0.1],
-	#}
-	#var ezero = EnergyZero.new()
-	#ezero.empty = true
-	#terrain_agent_template.energy_zero = ezero
-	#
-	#templates.append(terrain_agent_template)
-	#
-	#var terrain_artifact = ArtifactTemplate.new()
-	#terrain_artifact.type = "TerrainArtifact"
-	#terrain_artifact.influence_on_terrain = 2
-	#
-	#templates.append(terrain_artifact)
-	#
-	#var prod1 = Production.new()
-	#prod1.predecessor = terrain_agent_template.type
-	#prod1.theta = 11
-	#prod1.persist = true
-	#
-	#productions.append(prod1)
-	#
-	#var prod2 = Production.new()
-	#prod2.predecessor = terrain_agent_template.type
-	#prod2.theta = 1
-	#prod2.persist = true
-	#prod2.successor.append(terrain_artifact.type)
-	#
-	#productions.append(prod2)
-	#
-	#first_generation.append("TerrainAgent")
+## generates a random vSG
+func random():
+	var rng = RandomNumberGenerator.new	()
+	var nr_agents = rng.randi_range(1,5)
+	var agents : Array[AgentTemplate] = []
+	
+	for i in range(nr_agents):
+		var agent = AgentTemplate.new()
+		agent.type = "agent" + str(i)
+		agent.movement_urges[Database.movement_urges.SEPARATION] = rng.randf_range(0.0, 10.0)
+		agent.movement_urges[Database.movement_urges.ALIGNMENT] = rng.randf_range(0.0, 10.0)
+		agent.movement_urges[Database.movement_urges.COHESION] = rng.randf_range(0.0, 10.0)
+		agent.movement_urges[Database.movement_urges.RANDOM] = rng.randf_range(0.0, 10.0)
+		agent.movement_urges[Database.movement_urges.CENTER] = rng.randf_range(0.0, 10.0)
+		agent.movement_urges[Database.movement_urges.FLOOR] = rng.randf_range(0.0, 10.0)
+		agent.movement_urges[Database.movement_urges.GRADIENT] = rng.randf_range(0.0, 10.0)
+		agent.movement_urges[Database.movement_urges.NORMAL] = rng.randf_range(0.0, 10.0)
+		agent.movement_urges[Database.movement_urges.SLOPE] = rng.randf_range(0.0, 10.0)
+		agent.movement_urges[Database.movement_urges.NOCLIP] = rng.randf() > 0.5
+		agent.movement_urges[Database.movement_urges.PACE] = rng.randf_range(0.0, 10.0)
+		agent.movement_urges[Database.movement_urges.SEED] = rng.randf() > 0.5
+		agent.movement_urges[Database.movement_urges.BIAS] = Vector3(rng.randf_range(-1.0, 1.0), rng.randf_range(-1.0, 1.0), rng.randf_range(-1.0, 1.0))
+		
+		agent.a_max = rng.randf() # between 0 and 1 inclusive
+		agent.beta = rng.randf_range(0.0, 360.0)
+		agent.constraints = Vector3(rng.randf_range(-1.0, 1.0), rng.randf_range(-1.0, 1.0), rng.randf_range(-1.0, 1.0))
+		
+		agent.distance_params[Database.distance_params.VIEW] = rng.randf_range(1.0, 5.0)
+		agent.distance_params[Database.distance_params.SEPARATION] = rng.randf_range(0.0, 5.0)
+		
+		var e_calc = Energy.new()
+		e_calc.move_mode = rng.randi_range(0, Energy.move.size() - 1)
+		e_calc.move_value = rng.randf_range(0.0, 2.0)
+		e_calc.predecessor_mode = rng.randi_range(0, Energy.predecessor.size() - 1)
+		e_calc.predecessor_value = rng.randf_range(0.0, 2.0)
+		e_calc.successor_mode = rng.randi_range(0, Energy.successor.size() - 1)
+		e_calc.successor_value = rng.randf_range(0.0, 2.0)
+		e_calc.successor_value_constdist = rng.randf_range(0.0, 2.0)
+		e_calc.zero_energy = rng.randf_range(0.0, 10.0)
+		# successors need to be done later
+		agent.energy_calculations = e_calc
+		
+		agent.velocity_params[Database.velocity_params.NORM] = rng.randf_range(0.0, 5.0)
+		agent.velocity_params[Database.velocity_params.MAX] = rng.randf_range(0.0, 5.0)
+		
+		# influences need to be done later as well
+		
+		templates.append(agent)
+		agents.append(agent)
+	
+	var nr_artifacts = rng.randi_range(1, 5)
+	var artifacts : Array[ArtifactTemplate] = []
+	
+	for i in range(nr_artifacts):
+		var artifact = ArtifactTemplate.new()
+		artifact.type = "artifact" + str(i)
+		
+		artifact.influence_on_terrain = randf_range(0.0, 10.0)
+		
+		#influences can only be done when all artifacts and agents are created
+		templates.append(artifact)
+		artifacts.append(artifact)
+	
+	# do all influences
+	for template in templates:
+		for influenced in agents:
+			template.influences[influenced.type] = rng.randf_range(0.0, 5.0)
+		
+		if template is AgentTemplate:
+			var e_zero_successor_count = rng.randi_range(0, 5)
+			for i in range(e_zero_successor_count):
+				var selected = rng.randi_range(0, templates.size() - 2)
+				var self_index = templates.find(template)
+				if selected >= self_index:
+					selected += 1
+				template.energy_calculations.zero_successors.append(templates[selected].type)
+			print(template.type)
+			print(e_zero_successor_count)
+	var prod_count = rng.randi_range(0, 5)
+	
+	for i in range(prod_count):
+		var production = Production.new()
+		
+		production.predecessor = Utility.select_random_from_array(agents, rng).type
+		
+		var has_context = rng.randf()
+		if has_context > 0.5:
+			production.context = Utility.select_random_from_array(templates, rng).type
+		
+		production.distance = rng.randf_range(0.0, 5.0)
+		production.persist = rng.randf() > 0.5
+		production.theta = rng.randf_range(0.0, 100)
+		
+		var successor_count = rng.randi_range(1, 3)
+		
+		for j in range(successor_count):
+			production.successor.append(Utility.select_random_from_array(templates, rng).type)
+		
+		productions.append(production)
+	
+	for agent in agents:
+		first_generation.append(agent.type)
+
+func clear():
+	templates.clear()
+	productions.clear()
+	first_generation.clear()
+	t = 1.0
+	terrain_size = 100
 
 static func movement_urge_to_string(movement_urge : int) -> String:
 	var ret : String

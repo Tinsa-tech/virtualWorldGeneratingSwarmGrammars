@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cj67y8wkwxko"]
+
+[ext_resource type="ArrayMesh" uid="uid://d26py2ydl7id5" path="res://Resources/WireframeCube.obj" id="1_8klh1"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WireframeCube" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+mesh = ExtResource("1_8klh1")

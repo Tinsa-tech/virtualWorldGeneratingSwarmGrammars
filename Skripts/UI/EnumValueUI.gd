@@ -17,10 +17,6 @@ func _ready() -> void:
 				options_button = child
 	options_button.item_selected.connect(_on_item_selected)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func _on_item_selected(index : int):
 	value = index
 	value_changed.emit(value)

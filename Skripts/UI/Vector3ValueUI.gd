@@ -22,10 +22,6 @@ func _ready() -> void:
 	y.text_changed.connect(_on_y_changed)
 	z.text_changed.connect(_on_z_changed)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func _on_x_changed(new_value : String):
 	value = Vector3(float(new_value), value.y, value.z)
 

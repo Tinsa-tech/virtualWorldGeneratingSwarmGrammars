@@ -14,10 +14,6 @@ func _ready() -> void:
 	else:
 		toggle_button.pressed.connect(_on_button_pressed)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func _on_button_pressed():
 	if hidden:
 		to_toggle.show()

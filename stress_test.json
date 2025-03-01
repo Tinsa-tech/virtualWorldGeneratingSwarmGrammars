@@ -1,0 +1,66 @@
+{
+	"agents": [
+		{
+			"Actor": {
+				"type": "move"
+			},
+			"Agent": {
+				"a_max": 11,
+				"beta": 99,
+				"constraints": [
+					0.100000001490116,
+					0.100000001490116,
+					0.100000001490116
+				],
+				"distance_params": {
+					"separation": 0,
+					"view": 4
+				},
+				"energy_calculations": {
+					"move": 0,
+					"move_mode": "constant",
+					"predecessor": 0,
+					"predecessor_mode": "constant",
+					"successor": 0,
+					"successor_constdist": 0,
+					"successor_mode": "constant",
+					"zero_energy": 0,
+					"zero_successors": []
+				},
+				"influences": {
+					"": 0
+				},
+				"movement_urges": {
+					"alignment": 3,
+					"bias": [
+						0,
+						0,
+						0
+					],
+					"center": 1,
+					"cohesion": 3,
+					"floor": 1,
+					"gradient": 0,
+					"noclip": false,
+					"normal": 0,
+					"pace": 1,
+					"random": 1,
+					"seed": false,
+					"separation": 1,
+					"slope": 0
+				},
+				"velocity_params": {
+					"max": 31,
+					"norm": 12
+				}
+			}
+		}
+	],
+	"artifacts": [],
+	"first_generation": [
+		"move"
+	],
+	"productions": [],
+	"t": 1,
+	"terrain_size": 100
+}
