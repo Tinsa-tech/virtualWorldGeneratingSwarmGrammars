@@ -19,6 +19,7 @@ func fill():
 
 func get_data():
 	var data = Database.getInstance()
+	data.first_generation.clear()
 	for member : UIListElementString in first_gen_obj.list_elements:
 		data.first_generation.append(member.value)
 	data.t = t_obj.value

@@ -9,3 +9,4 @@ material = ExtResource("2_ropwa")
 mesh = NodePath("MeshInstance3D")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+cast_shadow = 2

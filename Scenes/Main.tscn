@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://d3lfiwv0crfwg"]
+[gd_scene load_steps=4 format=3 uid="uid://d3lfiwv0crfwg"]
 
 [ext_resource type="Script" path="res://Skripts/FreeLookCamera.gd" id="1_atydh"]
 [ext_resource type="Script" path="res://Skripts/vSG/vSG.gd" id="2_aju4x"]
 [ext_resource type="PackedScene" uid="uid://daiyl4pnslsqs" path="res://Scenes/UI/HUD.tscn" id="2_ef4an"]
-[ext_resource type="Script" path="res://Skripts/Octree/VisualizeOctree.gd" id="4_c5oqp"]
 
 [node name="Node3D" type="Node3D"]
 
@@ -14,10 +13,10 @@ script = ExtResource("1_atydh")
 
 [node name="CanvasLayer" parent="Camera3D" instance=ExtResource("2_ef4an")]
 
-[node name="vSG" type="Node3D" parent="." node_paths=PackedStringArray("hud", "visualize_octree")]
+[node name="vSG" type="Node3D" parent="." node_paths=PackedStringArray("hud", "camera")]
 script = ExtResource("2_aju4x")
 hud = NodePath("../Camera3D/CanvasLayer")
-visualize_octree = NodePath("../Node3D")
+camera = NodePath("../Camera3D")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.891576, 0.45287, 0, -0.45287, 0.891576, 0, 0.576882, 0)
@@ -28,6 +27,3 @@ shadow_enabled = true
 [node name="OmniLight3D" type="OmniLight3D" parent="DirectionalLight3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0878067)
 shadow_enabled = true
-
-[node name="Node3D" type="Node3D" parent="."]
-script = ExtResource("4_c5oqp")

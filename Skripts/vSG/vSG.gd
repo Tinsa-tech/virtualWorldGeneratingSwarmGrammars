@@ -22,22 +22,27 @@ var terrain_scene : PackedScene = preload("res://Scenes/Terrain.tscn")
 var octree : Octree
 var grid : SpaceGrid
 
+var finished : bool = false
+
 @export
 var hud : HUD
 @export
-var visualize_octree : VisualizeOctree
+var camera : FreeLookCamera
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	database = Database.getInstance()
 	# database.save_data()
 	# database.load_data()
+	var terrain_size = database.t * database.terrain_size
+	camera.position = Vector3(0, terrain_size / 4, terrain_size /2)
+	camera.rotation = Vector3(-45, 0, 0)
 	
 	terrain = terrain_scene.instantiate()
 	terrain.generate_terrain(database.t, database.terrain_size)
 	get_tree().root.add_child.call_deferred(terrain)
 	
-	octree = Octree.new(10, database.t * database.terrain_size / 2)
+	#octree = Octree.new(10, database.t * database.terrain_size / 2)
 	
 	var min_view_dist = 1000
 	for template in database.templates:
@@ -72,6 +77,8 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if finished: 
+		return
 	if play or step:
 		if reproduce:
 			apply_productions()
@@ -90,8 +97,12 @@ func _process(delta: float) -> void:
 		
 		#if delta >= 5:
 			#kill_all_agents()
-		if agents.size() > 2000 or artifacts.size() > 2000:
-			kill_all_agents()
+		if agents.size() > 2000 or artifacts.size() > 2000 or agents.size() <= 0:
+			clean_up()
+			print("finished")
+			finished = true
+			return
+		
 		
 		step = false
 		
@@ -124,8 +135,6 @@ func _input(event: InputEvent) -> void:
 			play = !play
 		elif event.keycode == KEY_RIGHT:
 			step = true
-		elif event.keycode == KEY_V:
-			visualize_octree.visualize(octree)
 
 func instantiate(template : ActorTemplate) -> ActorObject:
 	if template is AgentTemplate:
@@ -187,6 +196,9 @@ func apply_productions():
 						successor.velocity = agent.velocity
 						if agent.movement_urges.has(database.movement_urges.SEED):
 							successor.individual_world_center = agent.actor_position
+					else:
+						if successor.influence_on_terrain > 0:
+							terrain.influencers.append(successor)
 					get_tree().get_root().add_child(successor_obj)
 					# add_to_octree(successor)
 					add_to_grid(successor_obj)
@@ -217,6 +229,7 @@ func movement_agent(agent_index : int):
 	
 func recalculate_terrain():
 	terrain.update_terrain(artifacts)
+
 
 func calculate_energies(successors : Array, predecessor : Agent, persist : bool):
 	var count = successors.size()
@@ -286,3 +299,10 @@ func kill_all_agents():
 	
 	agents.clear()
 		
+func clean_up():
+	kill_all_agents()
+	hud.set_agent_count(agents.size())
+	hud.set_artifact_count(artifacts.size())
+	recalculate_terrain()
+	terrain.smooth_normals()
+	grid.clean_up()

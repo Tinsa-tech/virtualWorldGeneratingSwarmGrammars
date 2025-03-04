@@ -3,7 +3,7 @@ class_name GridCell
 var position : Vector3
 var elements : Array[GridElement] = []
 
-var neighbours : Array[GridCell] = []
+var neighbours : Array[int] = []
 
 var index : int
 var nr_elements : int = 0

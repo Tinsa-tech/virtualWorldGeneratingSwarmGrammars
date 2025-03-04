@@ -14,6 +14,7 @@ var vertices : PackedVector3Array
 var normals : PackedVector3Array
 var indices : PackedInt32Array
 
+var influencers : Array[Artifact] = []
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# generate_terrain(2, 100, 100)
@@ -124,36 +125,12 @@ func get_height_at(point : Vector3) -> float:
 	return p_h
 
 func update_terrain(artifacts : Array[ArtifactObject]) -> void:
-	var influencers : Array[Artifact]
-	for artifact_obj in artifacts:
-		var artifact = artifact_obj.actor
-		if artifact.influence_on_terrain > 0:
-			influencers.append(artifact)
-	
 	if len(influencers) == 0:
 		return
 	
-	# var e = 0.0001
-	var new_vertice_arr : Array
+	var task_id = WorkerThreadPool.add_group_task(update_vertex, vertices.size())
+	WorkerThreadPool.wait_for_group_task_completion(task_id)
 	
-	for vertex in vertices:
-		var vertex_xz = Vector2(vertex.x, vertex.z)
-		var avg_height : float = 0.0
-		var influences : float = 0.0
-		
-		for influencer in influencers:
-			var influencer_xz = Vector2(influencer.actor_position.x, influencer.actor_position.z)
-			var dist = vertex_xz.distance_to(influencer_xz)
-			var influence_fact : float = 1.0 / pow((1 + dist), influencer.influence_on_terrain)
-			
-			avg_height += (influencer.actor_position.y - vertex.y) * influence_fact
-			influences += influence_fact
-		
-		avg_height /= influences
-		var new_vertex = Vector3(vertex.x, vertex.y + avg_height, vertex.z)
-		new_vertice_arr.append(new_vertex)
-	
-	vertices = new_vertice_arr.duplicate(true)
 	mesh.mesh.clear_surfaces()
 	
 	var surface_array : Array = []
@@ -168,4 +145,74 @@ func update_terrain(artifacts : Array[ArtifactObject]) -> void:
 			
 		
 
+func update_vertex(vertex_index : int):
+	var vertex = vertices[vertex_index]
+	var vertex_xz = Vector2(vertex.x, vertex.z)
+	var avg_height : float
+	var influences : float
+	for influencer in influencers:
+		var influencer_xz = Vector2(influencer.actor_position.x, influencer.actor_position.z)
+		var dist = vertex_xz.distance_to(influencer_xz)
+		var influence_fact : float = 1.0 / pow((1 + dist), influencer.influence_on_terrain)
+		
+		avg_height += (influencer.actor_position.y - vertex.y) * influence_fact
+		influences += influence_fact
+	
+	avg_height /= influences
+	vertex = Vector3(vertex.x, vertex.y + avg_height, vertex.z)
+	vertices[vertex_index] = vertex
+
+func smooth_normals():
+	var vertex_normals : Array = []
+	vertex_normals.resize(vertices.size())
+	var i = 0
+	while i < indices.size() - 2:
+		var p0 = vertices[indices[i]]
+		var p1 = vertices[indices[i + 1]]
+		var p2 = vertices[indices[i + 2]]
+		
+		var normal : Vector3 = (p1 - p0).cross(p2 - p0)
+		
+		var a0 = (p1 - p0).angle_to(p2 - p0)
+		var a1 = (p2 - p1).angle_to(p0 - p1)
+		var a2 = (p0 - p2).angle_to(p1 - p2)
+		
+		if !vertex_normals[indices[i]]:
+			vertex_normals[indices[i]] = [normal * a0]
+		else:
+			vertex_normals[indices[i]].append(normal * a0)
+		
+		if !vertex_normals[indices[i + 1]]:
+			vertex_normals[indices[i + 1]] = [normal * a1]
+		else:
+			vertex_normals[indices[i + 1]].append(normal * a1)
+		
+		if !vertex_normals[indices[i + 2]]:
+			vertex_normals[indices[i + 2]] = [normal * a2]
+		else:
+			vertex_normals[indices[i + 2]].append(normal * a2)
+		
+		i += 3
+	
+	for v in range(vertices.size()):
+		var normal : Vector3
+		
+		for v_normal in vertex_normals[v]:
+			normal = normal + v_normal
+		
+		normal = normal.normalized()
+		normals[v] = -normal
+	
+	mesh.mesh.clear_surfaces()
+	
+	var surface_array : Array = []
+	surface_array.resize(Mesh.ARRAY_MAX)
+	
+	surface_array[Mesh.ARRAY_VERTEX] = vertices
+	surface_array[Mesh.ARRAY_NORMAL] = normals
+	surface_array[Mesh.ARRAY_INDEX] = indices
+	
+	mesh.mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface_array)
+	mesh.mesh.surface_set_material(0, material)
+	
 	
