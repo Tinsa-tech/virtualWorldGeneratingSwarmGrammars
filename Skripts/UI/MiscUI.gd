@@ -7,20 +7,18 @@ var t_obj : FloatValueUI
 @export
 var terrain_size_obj : FloatValueUI
 
-func fill():
-	var data = Database.getInstance()
-	for member in data.first_generation:
+func fill(database : Database):
+	for member in database.first_generation:
 		first_gen_obj.add_item()
 		var obj = first_gen_obj.get_item(first_gen_obj.size() - 1)
 		obj.set_value(member)
 	
-	t_obj.set_value(data.t)
-	terrain_size_obj.set_value(data.terrain_size)
+	t_obj.set_value(database.t)
+	terrain_size_obj.set_value(database.terrain_size)
 
-func get_data():
-	var data = Database.getInstance()
-	data.first_generation.clear()
+func get_data(database : Database):
+	database.first_generation.clear()
 	for member : UIListElementString in first_gen_obj.list_elements:
-		data.first_generation.append(member.value)
-	data.t = t_obj.value
-	data.terrain_size = terrain_size_obj.value
+		database.first_generation.append(member.value)
+	database.t = t_obj.value
+	database.terrain_size = terrain_size_obj.value

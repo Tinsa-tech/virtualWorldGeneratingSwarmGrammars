@@ -15,12 +15,12 @@ func add_element(element : GridElement):
 	nr_elements += 1
 
 func remove_element(element : GridElement):
-	var index = element.index_in_cell
-	if index == nr_elements - 1:
+	var element_index = element.index_in_cell
+	if element_index == nr_elements - 1:
 		elements.pop_back()
 		nr_elements -= 1
 		return
 	var last = elements.pop_back()
-	last.index_in_cell = index
-	elements[index] = last
+	last.index_in_cell = element_index
+	elements[element_index] = last
 	nr_elements -= 1

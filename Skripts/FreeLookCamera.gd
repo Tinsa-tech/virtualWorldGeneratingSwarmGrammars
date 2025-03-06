@@ -28,6 +28,8 @@ var _e = false
 var _shift = false
 var _alt = false
 
+var active : bool = true
+
 func _input(event):
 	# Receives mouse motion
 	if event is InputEventMouseMotion:
@@ -65,6 +67,8 @@ func _input(event):
 
 # Updates mouselook and movement every frame
 func _process(delta):
+	if !active:
+		return
 	_update_mouselook()
 	_update_movement(delta)
 

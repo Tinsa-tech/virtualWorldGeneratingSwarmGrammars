@@ -6,21 +6,12 @@ var productions : Array[Production]
 var t : float = 1.0
 var terrain_size : int = 100
 
-static var instance
-
 enum movement_urges {SEPARATION, ALIGNMENT, COHESION, RANDOM, BIAS,
 CENTER, FLOOR, NORMAL, GRADIENT, SLOPE, NOCLIP, PACE, SEED}
 enum velocity_params {NORM, MAX}
 enum distance_params {VIEW, SEPARATION}
 enum energy_params {SUCCESSOR, PERSIST, MOVE}
 enum energy_params_modes {CONST, INHERIT, DISTANCE}
-
-static func getInstance() -> Database:
-	if instance:
-		return instance
-	else: 
-		instance = Database.new()
-		return instance
 
 func save_data(path_to_save : String):
 	var dict = {
@@ -116,7 +107,7 @@ func random():
 		
 		var e_calc = Energy.new()
 		e_calc.move_mode = rng.randi_range(0, Energy.move.size() - 1)
-		e_calc.move_value = rng.randf_range(0.0, 2.0)
+		e_calc.move_value = rng.randf_range(0.1, 2.0)
 		e_calc.predecessor_mode = rng.randi_range(0, Energy.predecessor.size() - 1)
 		e_calc.predecessor_value = rng.randf_range(0.0, 2.0)
 		e_calc.successor_mode = rng.randi_range(0, Energy.successor.size() - 1)
@@ -160,8 +151,6 @@ func random():
 				if selected >= self_index:
 					selected += 1
 				template.energy_calculations.zero_successors.append(templates[selected].type)
-			print(template.type)
-			print(e_zero_successor_count)
 	var prod_count = rng.randi_range(0, 5)
 	
 	for i in range(prod_count):

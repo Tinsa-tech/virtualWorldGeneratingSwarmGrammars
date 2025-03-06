@@ -124,10 +124,12 @@ func get_height_at(point : Vector3) -> float:
 	var p_h = (h_s + A.y) * (ass.length() / ap.length())
 	return p_h
 
-func update_terrain(artifacts : Array[ArtifactObject]) -> void:
+func update_terrain() -> void:
 	if len(influencers) == 0:
 		return
 	
+	#for i in range(vertices.size()):
+		#update_vertex(i)
 	var task_id = WorkerThreadPool.add_group_task(update_vertex, vertices.size())
 	WorkerThreadPool.wait_for_group_task_completion(task_id)
 	
@@ -148,8 +150,8 @@ func update_terrain(artifacts : Array[ArtifactObject]) -> void:
 func update_vertex(vertex_index : int):
 	var vertex = vertices[vertex_index]
 	var vertex_xz = Vector2(vertex.x, vertex.z)
-	var avg_height : float
-	var influences : float
+	var avg_height : float = 0.0
+	var influences : float = 0.0
 	for influencer in influencers:
 		var influencer_xz = Vector2(influencer.actor_position.x, influencer.actor_position.z)
 		var dist = vertex_xz.distance_to(influencer_xz)

@@ -1,4 +1,4 @@
-extends Node3D
+class_name vSG extends Node3D
 
 var l_system : LSystem
 var actors : Array[ActorObject]
@@ -15,10 +15,6 @@ var reproduce : bool = false
 var play : bool = false
 var step : bool = false
 
-var agent_scene : PackedScene = preload("res://Scenes/Agent.tscn")
-var artifact_scene : PackedScene = preload("res://Scenes/Artifact.tscn")
-var terrain_scene : PackedScene = preload("res://Scenes/Terrain.tscn")
-
 var octree : Octree
 var grid : SpaceGrid
 
@@ -28,19 +24,23 @@ var finished : bool = false
 var hud : HUD
 @export
 var camera : FreeLookCamera
+@export
+var parent : Node3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	database = Database.getInstance()
+	database = Database.new()
 	# database.save_data()
-	# database.load_data()
+	database.random()
+	database.t = 1
+	database.terrain_size = 100
 	var terrain_size = database.t * database.terrain_size
 	camera.position = Vector3(0, terrain_size / 4, terrain_size /2)
 	camera.rotation = Vector3(-45, 0, 0)
 	
-	terrain = terrain_scene.instantiate()
+	terrain = SceneManager.get_instance().terrain_scene.instantiate()
 	terrain.generate_terrain(database.t, database.terrain_size)
-	get_tree().root.add_child.call_deferred(terrain)
+	parent.add_child.call_deferred(terrain)
 	
 	#octree = Octree.new(10, database.t * database.terrain_size / 2)
 	
@@ -65,7 +65,7 @@ func _ready() -> void:
 				real_actor.actor_position = Vector3(0, 0, 0)
 				obj.position = Vector3.ZERO
 				# obj.velocity = Vector3.UP
-				get_tree().root.add_child.call_deferred(obj)
+				parent.add_child.call_deferred(obj)
 				# add_to_octree(real_actor)
 				add_to_grid(obj)
 	
@@ -88,6 +88,7 @@ func _process(delta: float) -> void:
 		hud.set_agent_count(agents.size())
 		hud.set_artifact_count(artifacts.size())
 		
+		#movement()
 		var task_id = WorkerThreadPool.add_group_task(movement_agent, agents.size())
 		WorkerThreadPool.wait_for_group_task_completion(task_id)
 		update_agent_positions()
@@ -138,7 +139,7 @@ func _input(event: InputEvent) -> void:
 
 func instantiate(template : ActorTemplate) -> ActorObject:
 	if template is AgentTemplate:
-		var obj : AgentObject = agent_scene.instantiate()
+		var obj : AgentObject = SceneManager.get_instance().agent_scene.instantiate()
 		var agent : Agent = Agent.new()
 		agent.take_values(template)
 		agent.id = get_new_id()
@@ -148,7 +149,7 @@ func instantiate(template : ActorTemplate) -> ActorObject:
 		agents.append(obj)
 		return obj
 	else:
-		var obj : ArtifactObject = artifact_scene.instantiate()
+		var obj : ArtifactObject = SceneManager.get_instance().artifact_scene.instantiate()
 		var artifact : Artifact = Artifact.new()
 		artifact.take_values(template)
 		artifact.id = get_new_id()
@@ -199,7 +200,7 @@ func apply_productions():
 					else:
 						if successor.influence_on_terrain > 0:
 							terrain.influencers.append(successor)
-					get_tree().get_root().add_child(successor_obj)
+					parent.add_child(successor_obj)
 					# add_to_octree(successor)
 					add_to_grid(successor_obj)
 					
@@ -220,7 +221,7 @@ func movement():
 	for agent in agents:
 		# agent.movement(agent.get_neighbours_octree(octree), terrain)
 		# agent.movement(agent.get_neighbours(actors), terrain)
-		agent.movement(agent.get_neighbours_grid(grid), terrain)
+		agent.actor.movement(agent.actor.get_neighbours_grid(grid), terrain)
 
 func movement_agent(agent_index : int):
 	var agent = agents[agent_index].actor
@@ -228,7 +229,7 @@ func movement_agent(agent_index : int):
 	agent.movement(neighbours, terrain)
 	
 func recalculate_terrain():
-	terrain.update_terrain(artifacts)
+	terrain.update_terrain()
 
 
 func calculate_energies(successors : Array, predecessor : Agent, persist : bool):

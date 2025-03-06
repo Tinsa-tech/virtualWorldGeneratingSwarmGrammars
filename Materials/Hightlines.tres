@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cdk0xqe8gpv8f"]
 
-[ext_resource type="Shader" path="res://Materials/Checkerboard.gdshader" id="1_sayjy"]
+[ext_resource type="Shader" path="res://Materials/Hightlines.gdshader" id="1_sayjy"]
 
 [resource]
 render_priority = 0

@@ -15,7 +15,7 @@ void vertex() {
 void fragment(){
 	grid_pos = mod(world_position.y, gridSize);
 	float line = step(line_width, grid_pos);
-	
+
 	vec3 col = mix(line_color.rgb, fill_color.rgb, line);
 	ALBEDO = col;
 }

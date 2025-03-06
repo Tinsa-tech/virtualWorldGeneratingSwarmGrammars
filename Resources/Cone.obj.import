@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://lfgytrqpw8c7"
+path="res://.godot/imported/Cone.obj-f1e0fe63228fcfb75c1ed36f80ee476b.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Cone.obj-f1e0fe63228fcfb75c1ed36f80ee476b.mesh"]
+
+source_file="res://Resources/Cone.obj"
+dest_files=["res://.godot/imported/Cone.obj-f1e0fe63228fcfb75c1ed36f80ee476b.mesh", "res://.godot/imported/Cone.obj-f1e0fe63228fcfb75c1ed36f80ee476b.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

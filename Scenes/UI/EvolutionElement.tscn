@@ -1,0 +1,102 @@
+[gd_scene load_steps=4 format=3 uid="uid://cqsdxdcqs26ll"]
+
+[ext_resource type="PackedScene" uid="uid://d3lfiwv0crfwg" path="res://Scenes/Main.tscn" id="1_57kwe"]
+[ext_resource type="Script" path="res://Skripts/UI/EvoElement.gd" id="1_850mx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1qjvr"]
+bg_color = Color(0.197937, 0.197937, 0.197937, 1)
+
+[node name="Control" type="Control" node_paths=PackedStringArray("viewport", "slider", "label", "swarm_scene", "panel", "play", "step", "end")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 2
+script = ExtResource("1_850mx")
+viewport = NodePath("PanelContainer/MarginContainer/VBoxContainer/SubViewportContainer")
+slider = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HSlider")
+label = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Label")
+swarm_scene = NodePath("PanelContainer/MarginContainer/VBoxContainer/SubViewportContainer/SubViewport/Node3D")
+panel = NodePath("PanelContainer/Panel")
+play = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/Play")
+step = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/Step")
+end = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/End")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="PanelContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1qjvr")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+focus_mode = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="PanelContainer/MarginContainer/VBoxContainer/SubViewportContainer"]
+own_world_3d = true
+handle_input_locally = false
+size = Vector2i(1142, 569)
+render_target_update_mode = 4
+
+[node name="Node3D" parent="PanelContainer/MarginContainer/VBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("1_57kwe")]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 2
+
+[node name="HSlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 7.0
+value = 1.0
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "1"
+horizontal_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Play" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Play"
+
+[node name="Step" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Step"
+
+[node name="Control" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 2
+
+[node name="End" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "End"

@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://coi6wrq5vkuuu"]
 
-[ext_resource type="Script" path="res://UI.gd" id="1_sdbs3"]
+[ext_resource type="Script" path="res://Skripts/UI/UI.gd" id="1_sdbs3"]
 [ext_resource type="Script" path="res://Skripts/UI/ToggleHiddenUI.gd" id="2_88kfb"]
 [ext_resource type="PackedScene" uid="uid://df4jyaendlpnl" path="res://Scenes/UI/AgentUI.tscn" id="2_rcqxb"]
 [ext_resource type="Script" path="res://Skripts/UI/FloatValueUI.gd" id="2_ykiv5"]

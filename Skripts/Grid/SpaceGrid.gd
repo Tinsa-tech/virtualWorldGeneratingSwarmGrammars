@@ -12,8 +12,8 @@ func _init(grid_size : float, grid_cell_size : float):
 	size = grid_size
 	
 	cell_nr = floor(grid_size / grid_cell_size)
-	cells.resize(pow(cell_nr, 3))
-	cell_nr_sq = pow(cell_nr, 2)
+	cells.resize(int(pow(cell_nr, 3)))
+	cell_nr_sq = int(pow(cell_nr, 2))
 
 func add_element(grid_element : GridElement):
 	var pos = grid_element.position
@@ -22,7 +22,7 @@ func add_element(grid_element : GridElement):
 	pos = pos / cell_size
 	pos = pos.floor()
 	var index = pos.x * cell_nr_sq + pos.y * cell_nr + pos.z
-	if index <= 0 or index >= cells.size():
+	if index <= 0 or index >= cells.size() or is_nan(index):
 		return
 	var cell = cells[index]
 	if !cell:
@@ -143,7 +143,7 @@ func update_grid():
 func get_neigbours(position : Vector3, radius : float) -> Array[GridElement]:
 	var ret : Array[GridElement] = []
 	var index = get_index_from_position(position)
-	if index >= cells.size() or index < 0:
+	if index >= cells.size() or index < 0 or is_nan(index):
 		return []
 	var cell = cells[index];
 	if !cell:
