@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://brlquc24yftlm"]
 
-[ext_resource type="Script" path="res://Skripts/UI/UIListElementString.gd" id="1_8t2qk"]
+[ext_resource type="Script" path="res://Scripts/UI/UIListElementString.gd" id="1_8t2qk"]
 
 [node name="HBoxContainer" type="HBoxContainer" node_paths=PackedStringArray("delete_button")]
 script = ExtResource("1_8t2qk")

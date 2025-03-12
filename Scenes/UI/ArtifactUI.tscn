@@ -1,10 +1,10 @@
 [gd_scene load_steps=8 format=3 uid="uid://b30hfnx3h7qoa"]
 
-[ext_resource type="Script" path="res://Skripts/UI/ArtifactUI.gd" id="1_40ggn"]
-[ext_resource type="Script" path="res://Skripts/UI/ToggleHiddenUI.gd" id="1_x0kyx"]
-[ext_resource type="Script" path="res://Skripts/UI/FloatValueUI.gd" id="2_gdrql"]
-[ext_resource type="Script" path="res://Skripts/UI/StringValueUI.gd" id="2_pdshn"]
-[ext_resource type="Script" path="res://Skripts/UI/UIList.gd" id="3_vohp1"]
+[ext_resource type="Script" path="res://Scripts/UI/ArtifactUI.gd" id="1_40ggn"]
+[ext_resource type="Script" path="res://Scripts/UI/ToggleHiddenUI.gd" id="1_x0kyx"]
+[ext_resource type="Script" path="res://Scripts/UI/FloatValueUI.gd" id="2_gdrql"]
+[ext_resource type="Script" path="res://Scripts/UI/StringValueUI.gd" id="2_pdshn"]
+[ext_resource type="Script" path="res://Scripts/UI/UIList.gd" id="3_vohp1"]
 [ext_resource type="PackedScene" uid="uid://bxwpsaad71848" path="res://Scenes/UI/UIInfluence.tscn" id="4_242dq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_veigs"]

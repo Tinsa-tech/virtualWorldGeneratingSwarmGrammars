@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://dmrybd2flyjwa"]
 
-[ext_resource type="Script" path="res://Skripts/UI/EvolutionScreen.gd" id="1_uyub7"]
+[ext_resource type="Script" path="res://Scripts/UI/EvolutionScreen.gd" id="1_uyub7"]
 
-[node name="EvolutionScreen" type="Control" node_paths=PackedStringArray("grid_container", "play_button", "step_button")]
+[node name="EvolutionScreen" type="Control" node_paths=PackedStringArray("grid_container", "play_button", "step_button", "next_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,6 +13,7 @@ script = ExtResource("1_uyub7")
 grid_container = NodePath("MarginContainer/VBoxContainer/GridContainer")
 play_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Play")
 step_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Step")
+next_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Next")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

@@ -1,13 +1,13 @@
 [gd_scene load_steps=12 format=3 uid="uid://coi6wrq5vkuuu"]
 
-[ext_resource type="Script" path="res://Skripts/UI/UI.gd" id="1_sdbs3"]
-[ext_resource type="Script" path="res://Skripts/UI/ToggleHiddenUI.gd" id="2_88kfb"]
+[ext_resource type="Script" path="res://Scripts/UI/UI.gd" id="1_sdbs3"]
+[ext_resource type="Script" path="res://Scripts/UI/ToggleHiddenUI.gd" id="2_88kfb"]
 [ext_resource type="PackedScene" uid="uid://df4jyaendlpnl" path="res://Scenes/UI/AgentUI.tscn" id="2_rcqxb"]
-[ext_resource type="Script" path="res://Skripts/UI/FloatValueUI.gd" id="2_ykiv5"]
+[ext_resource type="Script" path="res://Scripts/UI/FloatValueUI.gd" id="2_ykiv5"]
 [ext_resource type="PackedScene" uid="uid://d4b56o8i5kgjv" path="res://Scenes/UI/ProductionUI.tscn" id="4_futyw"]
 [ext_resource type="PackedScene" uid="uid://b30hfnx3h7qoa" path="res://Scenes/UI/ArtifactUI.tscn" id="5_a31jf"]
-[ext_resource type="Script" path="res://Skripts/UI/MiscUI.gd" id="6_6dg4x"]
-[ext_resource type="Script" path="res://Skripts/UI/UIList.gd" id="7_dxgr6"]
+[ext_resource type="Script" path="res://Scripts/UI/MiscUI.gd" id="6_6dg4x"]
+[ext_resource type="Script" path="res://Scripts/UI/UIList.gd" id="7_dxgr6"]
 [ext_resource type="PackedScene" uid="uid://brlquc24yftlm" path="res://Scenes/UI/UIListElementString.tscn" id="9_w50h6"]
 
 [sub_resource type="Theme" id="Theme_jmvuw"]

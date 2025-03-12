@@ -1,12 +1,12 @@
 [gd_scene load_steps=9 format=3 uid="uid://d4b56o8i5kgjv"]
 
-[ext_resource type="Script" path="res://Skripts/UI/ProductionUI.gd" id="1_5cm3a"]
-[ext_resource type="Script" path="res://Skripts/UI/StringValueUI.gd" id="1_uvksx"]
-[ext_resource type="Script" path="res://Skripts/UI/FloatValueUI.gd" id="2_3o7bu"]
-[ext_resource type="Script" path="res://Skripts/UI/ToggleHiddenUI.gd" id="3_577nk"]
-[ext_resource type="Script" path="res://Skripts/UI/UIList.gd" id="4_4f2oh"]
+[ext_resource type="Script" path="res://Scripts/UI/ProductionUI.gd" id="1_5cm3a"]
+[ext_resource type="Script" path="res://Scripts/UI/StringValueUI.gd" id="1_uvksx"]
+[ext_resource type="Script" path="res://Scripts/UI/FloatValueUI.gd" id="2_3o7bu"]
+[ext_resource type="Script" path="res://Scripts/UI/ToggleHiddenUI.gd" id="3_577nk"]
+[ext_resource type="Script" path="res://Scripts/UI/UIList.gd" id="4_4f2oh"]
 [ext_resource type="PackedScene" uid="uid://brlquc24yftlm" path="res://Scenes/UI/UIListElementString.tscn" id="5_cm5sf"]
-[ext_resource type="Script" path="res://Skripts/UI/BoolValueUI.gd" id="6_wtcje"]
+[ext_resource type="Script" path="res://Scripts/UI/BoolValueUI.gd" id="6_wtcje"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ixqnv"]
 bg_color = Color(1, 0.313479, 0.456498, 1)
