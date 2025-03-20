@@ -1,14 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://d3lfiwv0crfwg"]
+[gd_scene load_steps=5 format=3 uid="uid://d3lfiwv0crfwg"]
 
 [ext_resource type="Script" path="res://Scripts/FreeLookCamera.gd" id="1_atydh"]
-[ext_resource type="Script" path="res://Scenes/SwarmScene.gd" id="1_wrjgf"]
+[ext_resource type="Script" path="res://Scripts/vSG/SwarmScene.gd" id="1_wrjgf"]
 [ext_resource type="PackedScene" uid="uid://daiyl4pnslsqs" path="res://Scenes/UI/HUD.tscn" id="2_ef4an"]
+[ext_resource type="PackedScene" uid="uid://coi6wrq5vkuuu" path="res://Scenes/UI/SwarmInfo.tscn" id="4_7fnbg"]
 
-[node name="Node3D" type="Node3D" node_paths=PackedStringArray("hud", "parent", "camera")]
+[node name="Node3D" type="Node3D" node_paths=PackedStringArray("hud", "parent", "camera", "swarm_info")]
 script = ExtResource("1_wrjgf")
 hud = NodePath("Camera3D/CanvasLayer")
 parent = NodePath("vSG")
 camera = NodePath("Camera3D")
+swarm_info = NodePath("HBoxContainer")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.813963, 0.580916, 0, -0.580916, 0.813963, 0, 1.8284, 1.59893)
@@ -24,8 +26,11 @@ light_energy = 10.0
 light_indirect_energy = 2.524
 shadow_enabled = true
 
-[node name="OmniLight3D" type="OmniLight3D" parent="DirectionalLight3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0878067)
-shadow_enabled = true
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.576882, 0)
+light_energy = 2.0
 
 [node name="vSG" type="Node3D" parent="."]
+
+[node name="HBoxContainer" parent="." instance=ExtResource("4_7fnbg")]
+visible = false

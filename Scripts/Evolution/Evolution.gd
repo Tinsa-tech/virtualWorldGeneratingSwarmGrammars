@@ -2,12 +2,15 @@ class_name Evolution
 
 var population : Array[EvolutionElement]
 var mutation_probability = 0.05
+var generation : int = 0
 
 func initialize_population(population_size : int):
 	population = []
 	for i in range(population_size):
 		var ee = EvolutionElement.new()
 		population.append(ee)
+	
+	save_generation()
 
 func perform_cycle():
 	## select parents
@@ -18,10 +21,13 @@ func perform_cycle():
 	mutate(offspring)
 	
 	population = offspring
+	generation += 1
+	
+	save_generation()
 
 func fitness_proportional_selection() -> Array:
 	## calculate the sum of all fitnesses:
-	var sum_fitness : float
+	var sum_fitness : float = 0.0
 	for member in population:
 		sum_fitness += member.fitness
 	
@@ -81,7 +87,7 @@ func recombine_parents(parents : Array) -> Array[EvolutionElement]:
 		
 		var parent2_agents : Array[AgentTemplate] = []
 		var parent2_artifacts : Array[ArtifactTemplate] = []
-		for template in parent1.genotypes.templates:
+		for template in parent2.genotypes.templates:
 			if template is AgentTemplate:
 				parent2_agents.append(template)
 			else:
@@ -165,8 +171,8 @@ func recombine_parents(parents : Array) -> Array[EvolutionElement]:
 			template.type = "agent" + str(i)
 			child_agents.append(template)
 			
-			var p1_mut : AgentMutationStepSizes = parent1_agents_mut.pop_front()
-			var p2_mut : AgentMutationStepSizes = parent2_agents_mut.pop_front()
+			var p1_mut : AgentMutationStepSizes = parent1_agents_mut[i]
+			var p2_mut : AgentMutationStepSizes = parent2_agents_mut[i]
 			
 			var child_mut = AgentMutationStepSizes.new()
 			
@@ -211,6 +217,9 @@ func recombine_parents(parents : Array) -> Array[EvolutionElement]:
 				child_agents.append(parent1_agents[i])
 				child_mutation_sizes.append(parent1_agents_mut.pop_front())
 		
+
+			
+		
 		if parent1_artifacts.size() < parent2_artifacts.size():
 			size = parent1_artifacts.size()
 		else:
@@ -241,6 +250,7 @@ func recombine_parents(parents : Array) -> Array[EvolutionElement]:
 				else:
 					child_artifact.influences[key] = p2_a.influences[key]
 			
+			child_artifact.type = "artifact" + str(i)
 			child_artifacts.append(child_artifact)
 			
 			var p1_mut = parent1_artifacts_mut.pop_front()
@@ -263,6 +273,10 @@ func recombine_parents(parents : Array) -> Array[EvolutionElement]:
 			for i in range(size, parent1_artifacts.size()):
 				child_artifacts.append(parent1_artifacts[i])
 				child_mutation_sizes.append(parent1_artifacts_mut.pop_front())
+		
+		for agent in child_mutation_sizes:
+			while agent.influences.size() < child_agents.size():
+				agent.influences.append(1.0)
 		
 		if parent1.genotypes.productions.size() < parent2.genotypes.productions.size():
 			size = parent1.genotypes.productions.size()
@@ -314,6 +328,10 @@ func recombine_parents(parents : Array) -> Array[EvolutionElement]:
 		child_data.templates = child_agents
 		child_data.templates.append_array(child_artifacts)
 		child_data.productions = child_prods
+		
+		child_data.first_generation.clear()
+		for agent in child_agents:
+			child_data.first_generation.append(agent.type)
 		
 		var child = EvolutionElement.new()
 		child.genotypes = child_data
@@ -570,7 +588,6 @@ func uniform_crossover_arrays(array1 : Array[String], array2 : Array[String]) ->
 		for i in range(lower_size, lower_size + size_diff):
 			ret.append(array1[i])
 	elif size_diff < 0:
-		var abs_size_diff = abs(size_diff)
 		for i in range(lower_size, lower_size + size_diff):
 			ret.append(array2[i])
 	return ret
@@ -596,7 +613,18 @@ func blend_crossover_arrays(array1 : Array[float], array2 : Array[float]) -> Arr
 			ret.append(array2[i])
 	return ret
 	
-	
+func save_generation():
+	var p = ProjectSettings.globalize_path("res://")
+	var path_parts : PackedStringArray = p.split("/", false)
+	var path : String = ""
+	for i in range(path_parts.size() - 1):
+		var part = path_parts[i]
+		path += part + "/"
+	path += "Evo/gen" + str(generation)
+	DirAccess.make_dir_recursive_absolute(path)
+	for i in range(population.size()):
+		var member = population[i]
+		member.genotypes.save_data(path + "/type" + str(i) + ".json")
 	
 	
 	

@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://dwn6ivu0ftmu3"]
+
+[ext_resource type="Script" path="res://Scripts/Sandbox/LoadActor.gd" id="1_x3ewb"]
+
+[node name="LoadActor" type="HBoxContainer" node_paths=PackedStringArray("label", "load_button")]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_x3ewb")
+label = NodePath("Label")
+load_button = NodePath("LoadButton")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LoadButton" type="Button" parent="."]
+layout_mode = 2
+text = "Load"

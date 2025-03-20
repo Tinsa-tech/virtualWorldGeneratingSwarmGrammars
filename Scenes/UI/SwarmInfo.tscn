@@ -1,0 +1,207 @@
+[gd_scene load_steps=11 format=3 uid="uid://coi6wrq5vkuuu"]
+
+[ext_resource type="Script" path="res://Scripts/UI/SwarmInfo.gd" id="1_l6fv6"]
+[ext_resource type="Script" path="res://Scripts/UI/ToggleHiddenUI.gd" id="2_88kfb"]
+[ext_resource type="PackedScene" uid="uid://df4jyaendlpnl" path="res://Scenes/UI/AgentUI.tscn" id="2_rcqxb"]
+[ext_resource type="Script" path="res://Scripts/UI/FloatValueUI.gd" id="2_ykiv5"]
+[ext_resource type="PackedScene" uid="uid://d4b56o8i5kgjv" path="res://Scenes/UI/ProductionUI.tscn" id="4_futyw"]
+[ext_resource type="PackedScene" uid="uid://b30hfnx3h7qoa" path="res://Scenes/UI/ArtifactUI.tscn" id="5_a31jf"]
+[ext_resource type="Script" path="res://Scripts/UI/MiscUI.gd" id="6_6dg4x"]
+[ext_resource type="Script" path="res://Scripts/UI/UIList.gd" id="7_dxgr6"]
+[ext_resource type="PackedScene" uid="uid://brlquc24yftlm" path="res://Scenes/UI/UIListElementString.tscn" id="9_w50h6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hwhf5"]
+bg_color = Color(0.244776, 0.244776, 0.244776, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" node_paths=PackedStringArray("agents_container", "productions_container", "artifacts_container", "misc")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 5
+script = ExtResource("1_l6fv6")
+agents_container = NodePath("Agents/ScrollContainer/AgentsContainer")
+productions_container = NodePath("Productions/ScrollContainer/ProductionsContainer")
+artifacts_container = NodePath("VBoxContainer3/Artifacts/ScrollContainer/ArtifactContainer")
+misc = NodePath("VBoxContainer3/Misc/ScrollContainer/MiscContainer")
+
+[node name="Agents" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Agents"]
+layout_mode = 2
+text = "Agents
+"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Agents"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AgentsContainer" type="VBoxContainer" parent="Agents/ScrollContainer" node_paths=PackedStringArray("add_button", "list_parent")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("7_dxgr6")
+add_button = NodePath("Button")
+scene_to_add = ExtResource("2_rcqxb")
+list_parent = NodePath(".")
+
+[node name="Button" type="Button" parent="Agents/ScrollContainer/AgentsContainer"]
+layout_mode = 2
+text = "+"
+
+[node name="Productions" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Productions"]
+layout_mode = 2
+text = "Productions"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Productions"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ProductionsContainer" type="VBoxContainer" parent="Productions/ScrollContainer" node_paths=PackedStringArray("add_button", "list_parent")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("7_dxgr6")
+add_button = NodePath("Button")
+scene_to_add = ExtResource("4_futyw")
+list_parent = NodePath(".")
+
+[node name="Button" type="Button" parent="Productions/ScrollContainer/ProductionsContainer"]
+layout_mode = 2
+text = "+"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Artifacts" type="VBoxContainer" parent="VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer3/Artifacts"]
+layout_mode = 2
+text = "Artifacts
+"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer3/Artifacts"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ArtifactContainer" type="VBoxContainer" parent="VBoxContainer3/Artifacts/ScrollContainer" node_paths=PackedStringArray("add_button", "list_parent")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("7_dxgr6")
+add_button = NodePath("Button")
+scene_to_add = ExtResource("5_a31jf")
+list_parent = NodePath(".")
+
+[node name="Button" type="Button" parent="VBoxContainer3/Artifacts/ScrollContainer/ArtifactContainer"]
+layout_mode = 2
+text = "+"
+
+[node name="Misc" type="VBoxContainer" parent="VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer3/Misc"]
+layout_mode = 2
+text = "Misc"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer3/Misc"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MiscContainer" type="PanelContainer" parent="VBoxContainer3/Misc/ScrollContainer" node_paths=PackedStringArray("first_gen_obj", "t_obj", "terrain_size_obj")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("6_6dg4x")
+first_gen_obj = NodePath("FirstGeneration/VBoxContainer")
+t_obj = NodePath("FirstGeneration/T")
+terrain_size_obj = NodePath("FirstGeneration/TerrainSize")
+
+[node name="Panel" type="Panel" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hwhf5")
+
+[node name="FirstGeneration" type="VBoxContainer" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration" node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("2_88kfb")
+to_toggle = NodePath("../VBoxContainer")
+toggle_button = NodePath("ExpandButton")
+
+[node name="Label" type="Label" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/HBoxContainer"]
+layout_mode = 2
+text = "first generation"
+
+[node name="Control" type="Control" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ExpandButton" type="Button" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "<"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration" node_paths=PackedStringArray("add_button", "list_parent")]
+visible = false
+layout_mode = 2
+script = ExtResource("7_dxgr6")
+add_button = NodePath("Button")
+scene_to_add = ExtResource("9_w50h6")
+list_parent = NodePath(".")
+
+[node name="Button" type="Button" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/VBoxContainer"]
+layout_mode = 2
+text = "+"
+
+[node name="T" type="HBoxContainer" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration"]
+layout_mode = 2
+script = ExtResource("2_ykiv5")
+
+[node name="Label" type="Label" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/T"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "t"
+
+[node name="HSlider" type="HSlider" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/T"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/T"]
+layout_mode = 2
+
+[node name="TerrainSize" type="HBoxContainer" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration"]
+layout_mode = 2
+script = ExtResource("2_ykiv5")
+
+[node name="Label" type="Label" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/TerrainSize"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "terrain size"
+
+[node name="HSlider" type="HSlider" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/TerrainSize"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/TerrainSize"]
+layout_mode = 2

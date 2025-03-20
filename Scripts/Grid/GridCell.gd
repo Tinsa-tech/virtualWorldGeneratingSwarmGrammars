@@ -3,9 +3,8 @@ class_name GridCell
 var position : Vector3
 var elements : Array[GridElement] = []
 
-var neighbours : Array[int] = []
+var neighbours : Array[Vector3] = []
 
-var index : int
 var nr_elements : int = 0
 
 func add_element(element : GridElement):
@@ -20,7 +19,18 @@ func remove_element(element : GridElement):
 		elements.pop_back()
 		nr_elements -= 1
 		return
+	
 	var last = elements.pop_back()
 	last.index_in_cell = element_index
+
 	elements[element_index] = last
+	element.grid_cell = null
 	nr_elements -= 1
+
+func clean_up():
+	for element in elements:
+		element.disconnect_obj()
+		element.grid_cell = null
+	
+	elements.clear()
+	neighbours.clear()

@@ -1,0 +1,80 @@
+[gd_scene load_steps=3 format=3 uid="uid://cvfoohav4v2lh"]
+
+[ext_resource type="Script" path="res://Scripts/UI/ToggleHiddenUI.gd" id="1_8ldr8"]
+[ext_resource type="Script" path="res://Scripts/Sandbox/VsgToLoad.gd" id="1_mjbad"]
+
+[node name="VsgToLoad" type="VBoxContainer" node_paths=PackedStringArray("agent_list", "label", "artifact_list")]
+size_flags_vertical = 3
+script = ExtResource("1_mjbad")
+agent_list = NodePath("VBoxContainer3/AgentList")
+label = NodePath("HBoxContainer/Label")
+artifact_list = NodePath("VBoxContainer3/ArtifactList")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("1_8ldr8")
+to_toggle = NodePath("../VBoxContainer3")
+toggle_button = NodePath("Button")
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "name of the vsg"
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+text = "<"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer3" node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("1_8ldr8")
+to_toggle = NodePath("../AgentList")
+toggle_button = NodePath("Button2")
+
+[node name="Label2" type="Label" parent="VBoxContainer3/HBoxContainer"]
+layout_mode = 2
+text = "agents"
+
+[node name="Control2" type="Control" parent="VBoxContainer3/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button2" type="Button" parent="VBoxContainer3/HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+text = "<"
+
+[node name="AgentList" type="VBoxContainer" parent="VBoxContainer3"]
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer3" node_paths=PackedStringArray("to_toggle", "toggle_button")]
+layout_mode = 2
+script = ExtResource("1_8ldr8")
+to_toggle = NodePath("../ArtifactList")
+toggle_button = NodePath("Button3")
+
+[node name="Label3" type="Label" parent="VBoxContainer3/HBoxContainer2"]
+layout_mode = 2
+text = "artifacts"
+
+[node name="Control3" type="Control" parent="VBoxContainer3/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button3" type="Button" parent="VBoxContainer3/HBoxContainer2"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+text = "<"
+
+[node name="ArtifactList" type="VBoxContainer" parent="VBoxContainer3"]
+visible = false
+layout_mode = 2

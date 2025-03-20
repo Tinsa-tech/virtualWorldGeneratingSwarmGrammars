@@ -1,12 +1,12 @@
 [gd_scene load_steps=4 format=3 uid="uid://cqsdxdcqs26ll"]
 
-[ext_resource type="PackedScene" uid="uid://d3lfiwv0crfwg" path="res://Scenes/Main.tscn" id="1_57kwe"]
+[ext_resource type="PackedScene" uid="uid://d3lfiwv0crfwg" path="res://Scenes/SwarmScene.tscn" id="1_57kwe"]
 [ext_resource type="Script" path="res://Scripts/UI/EvoElementUI.gd" id="1_850mx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1qjvr"]
 bg_color = Color(0.197937, 0.197937, 0.197937, 1)
 
-[node name="Control" type="Control" node_paths=PackedStringArray("viewport", "slider", "label", "swarm_scene", "panel", "play", "step", "end")]
+[node name="Control" type="Control" node_paths=PackedStringArray("viewport", "slider", "label", "swarm_scene", "panel", "play", "step", "save", "end", "save_window", "line_edit", "okay_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,7 +24,11 @@ swarm_scene = NodePath("PanelContainer/MarginContainer/VBoxContainer/SubViewport
 panel = NodePath("PanelContainer/Panel")
 play = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/Play")
 step = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/Step")
+save = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/Save")
 end = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/End")
+save_window = NodePath("Window")
+line_edit = NodePath("Window/Control/VBoxContainer/HBoxContainer/LineEdit")
+okay_button = NodePath("Window/Control/VBoxContainer/Okay")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -97,6 +101,52 @@ layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 2
 
+[node name="Save" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Save
+"
+
 [node name="End" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 text = "End"
+
+[node name="Window" type="Window" parent="."]
+disable_3d = true
+title = "Save Swarm Grammar"
+initial_position = 1
+size = Vector2i(300, 70)
+visible = false
+
+[node name="Control" type="Control" parent="Window"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Control/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Name:"
+
+[node name="LineEdit" type="LineEdit" parent="Window/Control/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Okay" type="Button" parent="Window/Control/VBoxContainer"]
+layout_mode = 2
+text = "Okay"

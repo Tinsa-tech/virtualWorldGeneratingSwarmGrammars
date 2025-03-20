@@ -1,0 +1,86 @@
+[gd_scene load_steps=4 format=3 uid="uid://dysm1sde2r8cl"]
+
+[ext_resource type="Script" path="res://Scripts/UI/SwarmCreation.gd" id="1_d77xv"]
+[ext_resource type="PackedScene" uid="uid://coi6wrq5vkuuu" path="res://Scenes/UI/SwarmInfo.tscn" id="2_560qk"]
+
+[sub_resource type="Theme" id="Theme_jmvuw"]
+
+[node name="Control" type="Control" node_paths=PackedStringArray("swarm_info", "load_button", "file_dialog_load", "save_button", "file_dialog_save", "random_button", "start_button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_jmvuw")
+script = ExtResource("1_d77xv")
+swarm_info = NodePath("MarginContainer/VBoxContainer/SwarmInfo")
+load_button = NodePath("MarginContainer/VBoxContainer/Footer/LoadButton")
+file_dialog_load = NodePath("FileDialogLoad")
+save_button = NodePath("MarginContainer/VBoxContainer/Footer/SaveButton")
+file_dialog_save = NodePath("FileDialogSave")
+random_button = NodePath("MarginContainer/VBoxContainer/Footer/RandomButton")
+start_button = NodePath("MarginContainer/VBoxContainer/Footer/StartButton")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Configure your Swarm!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SwarmInfo" parent="MarginContainer/VBoxContainer" instance=ExtResource("2_560qk")]
+layout_mode = 2
+
+[node name="Footer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LoadButton" type="Button" parent="MarginContainer/VBoxContainer/Footer"]
+layout_mode = 2
+text = "Load"
+
+[node name="SaveButton" type="Button" parent="MarginContainer/VBoxContainer/Footer"]
+layout_mode = 2
+text = "Save"
+
+[node name="RandomButton" type="Button" parent="MarginContainer/VBoxContainer/Footer"]
+layout_mode = 2
+text = "Random"
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/Footer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer/Footer"]
+layout_mode = 2
+text = "Start"
+
+[node name="FileDialogLoad" type="FileDialog" parent="."]
+title = "Open a File"
+initial_position = 2
+size = Vector2i(700, 500)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+
+[node name="FileDialogSave" type="FileDialog" parent="."]
+initial_position = 2
+size = Vector2i(700, 500)
+access = 2

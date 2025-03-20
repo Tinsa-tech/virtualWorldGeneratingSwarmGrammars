@@ -43,7 +43,7 @@ func _init(data : Database, camera : FreeLookCamera, parent_node : Node3D, heads
 			if template.distance_params[Database.distance_params.VIEW] < min_view_dist:
 				min_view_dist = template.distance_params[Database.distance_params.VIEW]
 	
-	grid = SpaceGrid.new(database.t * database.terrain_size, min_view_dist)
+	grid = SpaceGrid.new(min_view_dist)
 	
 	#for i in range(1000):
 		#database.first_generation.append(database.templates[0].type)
@@ -175,11 +175,11 @@ func apply_productions():
 							successor.individual_world_center = agent.actor_position
 					else:
 						if successor.influence_on_terrain > 0:
-							terrain.influencers.append(successor)
+							terrain.add_influencer(successor)
 					parent.add_child(successor_obj)
 					# add_to_octree(successor)
 					add_to_grid(successor_obj)
-					
+				
 				calculate_energies(successors, agent, persist[i])
 				if !persist[i]:
 					remove.append(agent_obj)
@@ -210,6 +210,12 @@ func recalculate_terrain():
 
 func calculate_energies(successors : Array, predecessor : Agent, persist : bool):
 	var count = successors.size()
+	if predecessor.energy <= 0:
+		for successor in successors:
+			successor.actor.energy = predecessor.energy_calculations.zero_energy
+		
+		return
+	
 	match predecessor.energy_calculations.successor_mode:
 		Energy.successor.CONST:
 			var value = predecessor.energy_calculations.successor_value

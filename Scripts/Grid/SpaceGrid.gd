@@ -1,115 +1,73 @@
 class_name SpaceGrid
 
-var cells : Array[GridCell] = []
-var cell_nr : int
-var cell_nr_sq : int
+var cells : Dictionary = {}
 
 var cell_size : float
-var size : float
 
-func _init(grid_size : float, grid_cell_size : float):
+func _init(grid_cell_size : float):
 	cell_size = grid_cell_size
-	size = grid_size
 	
-	cell_nr = floor(grid_size / grid_cell_size)
-	cells.resize(int(pow(cell_nr, 3)))
-	cell_nr_sq = int(pow(cell_nr, 2))
 
 func add_element(grid_element : GridElement):
 	var pos = grid_element.position
-	var offset = size / 2
-	pos = Vector3(pos.x + offset, pos.y + offset, pos.z + offset)
 	pos = pos / cell_size
 	pos = pos.floor()
-	var index = pos.x * cell_nr_sq + pos.y * cell_nr + pos.z
-	if index <= 0 or index >= cells.size() or is_nan(index):
-		return
-	var cell = cells[index]
-	if !cell:
+
+	var cell : GridCell
+	if !cells.has(pos):
 		cell = GridCell.new()
-		cell.index = index
 		cell.position = pos
 		var neighbours = get_neighbours_cell(cell)
 		for neighbour in neighbours:
-			if !neighbour:
+			if !cells.has(neighbour):
 				continue
 			cell.neighbours.append(neighbour)
-	
+		cells[pos] = cell
+	else:
+		cell = cells[pos]
 	cell.add_element(grid_element)
 
-func get_neighbours_cell(cell : GridCell) -> Array[int]:
+func get_neighbours_cell(cell : GridCell) -> Array[Vector3]:
 	if !cell:
 		return []
 	
 	var pos = cell.position
-	var neighbours : Array[int] = []
-	
-	var x : int = int(pos.x) * cell_nr_sq
-	var y : int = int(pos.y) * cell_nr
+	var neighbours : Array[Vector3] = []
+
+	var x : int = int(pos.x)
+	var y : int = int(pos.y) 
 	var z : int = int(pos.z)
 	
-	var x_p : int = (int(pos.x) + 1) * cell_nr_sq
-	var x_m : int = (int(pos.x) - 1) * cell_nr_sq
+	neighbours.append(Vector3(x + 1, y + 1, z + 1))
+	neighbours.append(Vector3(x + 1, y + 1, z))
+	neighbours.append(Vector3(x + 1, y + 1, z - 1))
+	neighbours.append(Vector3(x + 1, y, z + 1))
+	neighbours.append(Vector3(x + 1, y, z))
+	neighbours.append(Vector3(x + 1, y, z - 1))
+	neighbours.append(Vector3(x + 1, y - 1, z + 1))
+	neighbours.append(Vector3(x + 1, y - 1, z))
+	neighbours.append(Vector3(x + 1, y - 1, z - 1))
 	
-	var y_p : int = (int(pos.y) + 1) * cell_nr
-	var y_m : int = (int(pos.y) - 1) * cell_nr
+	neighbours.append(Vector3(x, y + 1, z + 1))
+	neighbours.append(Vector3(x, y + 1, z))
+	neighbours.append(Vector3(x, y + 1, z - 1))
+	neighbours.append(Vector3(x, y, z + 1))
+	neighbours.append(Vector3(x, y, z))
+	neighbours.append(Vector3(x, y, z - 1))
+	neighbours.append(Vector3(x, y - 1, z + 1))
+	neighbours.append(Vector3(x, y - 1, z))
+	neighbours.append(Vector3(x, y - 1, z - 1))
 	
+	neighbours.append(Vector3(x - 1, y + 1, z + 1))
+	neighbours.append(Vector3(x - 1, y + 1, z))
+	neighbours.append(Vector3(x - 1, y + 1, z - 1))
+	neighbours.append(Vector3(x - 1, y, z + 1))
+	neighbours.append(Vector3(x - 1, y, z))
+	neighbours.append(Vector3(x - 1, y, z - 1))
+	neighbours.append(Vector3(x - 1, y - 1, z + 1))
+	neighbours.append(Vector3(x - 1, y - 1, z))
+	neighbours.append(Vector3(x - 1, y - 1, z - 1))
 	
-	if pos.x - 1 >= 0:
-		if pos.y - 1 >= 0:
-			if pos.z - 1 >= 0:
-				neighbours.append(x_m + y_m + z - 1)
-			neighbours.append(x_m + y_m + z)
-			if pos.z + 1 <= cell_nr - 1:
-				neighbours.append(x_m + y_m + z + 1)
-		if pos.z - 1 >= 0:
-			neighbours.append(x_m + y + z - 1)
-		neighbours.append(x_m + y + z)
-		if pos.z + 1 <= cell_nr - 1:
-			neighbours.append(x_m + y + z + 1)
-		if pos.y + 1 <= cell_nr - 1:
-			if pos.z - 1 >= 0:
-				neighbours.append(x_m + y_p + z - 1)
-			neighbours.append(x_m + y_p + z)
-			if pos.z + 1 <= cell_nr - 1:
-				neighbours.append(x_m + y_p + z + 1)
-	
-	if pos.y - 1 >= 0:
-		if pos.z - 1 >= 0:
-			neighbours.append(x + y_m + z - 1)
-		neighbours.append(x + y_m + z)
-		if pos.z + 1 <= cell_nr - 1:
-			neighbours.append(x + y_m + z + 1)
-	if pos.z - 1 >= 0:
-		neighbours.append(x + y + z - 1)
-	neighbours.append(x + y + z)
-	if pos.z + 1 <= cell_nr - 1:
-		neighbours.append(x + y + z + 1)
-	if pos.y + 1 <= cell_nr - 1:
-		if pos.z - 1 >= 0:
-			neighbours.append(x + y_p + z - 1)
-		neighbours.append(x + y_p + z)
-		if pos.z + 1 <= cell_nr - 1:
-			neighbours.append(x + y_p + z + 1)
-	
-	if pos.x + 1 <= cell_nr - 1:
-		if pos.y - 1 >= 0:
-			if pos.z - 1 >= 0:
-				neighbours.append(x_p + y_m + z - 1)
-			neighbours.append(x_p + y_m + z)
-			if pos.z + 1 <= cell_nr - 1:
-				neighbours.append(x_p + y_m + z + 1)
-		if pos.z - 1 >= 0:
-			neighbours.append(x_p + y + z - 1)
-		neighbours.append(x_p + y + z)
-		if pos.z + 1 <= cell_nr - 1:
-			neighbours.append(x_p + y + z + 1)
-		if pos.y + 1 <= cell_nr - 1:
-			if pos.z - 1 >= 0:
-				neighbours.append(x_p + y_p + z - 1)
-			neighbours.append(x_p + y_p + z)
-			if pos.z + 1 <= cell_nr - 1:
-				neighbours.append(x_p + y_p + z + 1)
 	return neighbours
 
 func remove_element(grid_element : GridElement):
@@ -117,13 +75,14 @@ func remove_element(grid_element : GridElement):
 	cell.remove_element(grid_element)
 	grid_element.grid_cell = null
 	if cell.nr_elements == 0:
-		for neighbour : int in cell.neighbours:
-			cells[neighbour].neighbours.erase(cell.index)
+		for neighbour : Vector3 in cell.neighbours:
+			cells[neighbour].neighbours.erase(cell.position)
 		cell.neighbours.clear()
-		cells[cell.index] = null
+		cells[cell.position] = null
 
 func update_grid():
-	for cell in cells:
+	for key in cells.keys():
+		var cell = cells[key]
 		if !cell:
 			continue
 		if cell.nr_elements <= 0:
@@ -131,21 +90,30 @@ func update_grid():
 		var elements = cell.elements
 		for element : GridElement in elements:
 			element.position = element.obj.actor.actor_position
-			var index = get_index_from_position(element.position)
-			if index == cell.index:
+			var pos = get_pos_from_position(element.position)
+			if pos == cell.position:
 				continue
-			elif index >= cells.size() or index < 0:
-				cell.remove_element(element)
 			else:
 				cell.remove_element(element)
-				cells[index].add_element(element)
+				if cells.has(pos):
+					cells[pos].add_element(element)
+				else:
+					var new_cell = GridCell.new()
+					new_cell.position = pos
+					var neighbours = get_neighbours_cell(new_cell)
+					for neighbour in neighbours:
+						if !cells.has(neighbour):
+							continue
+						new_cell.neighbours.append(neighbour)
+					cells[pos] = cell
+					new_cell.add_element(element)
 
 func get_neigbours(position : Vector3, radius : float) -> Array[GridElement]:
 	var ret : Array[GridElement] = []
-	var index = get_index_from_position(position)
-	if index >= cells.size() or index < 0 or is_nan(index):
+	var pos = get_pos_from_position(position)
+	if !cells.has(pos):
 		return []
-	var cell = cells[index];
+	var cell = cells[pos];
 	if !cell:
 		return []
 	if radius <= cell_size:
@@ -155,10 +123,10 @@ func get_neigbours(position : Vector3, radius : float) -> Array[GridElement]:
 	else:
 		var depth = radius / cell_size
 		depth = ceili(depth)
-		var neighbours : Array[int] = []
-		var look_at : Array[int] = []
-		var new_neighbours : Array[int] = []
-		new_neighbours.append(cell)
+		var neighbours : Array[Vector3] = []
+		var look_at : Array[Vector3] = []
+		var new_neighbours : Array[Vector3] = []
+		new_neighbours.append(cell.position)
 		for i in range(depth):
 			look_at.clear()
 			for new_neighbour in new_neighbours:
@@ -173,26 +141,20 @@ func get_neigbours(position : Vector3, radius : float) -> Array[GridElement]:
 			ret.append_array(cells[neighbour].elements)
 	return ret
 
-func get_index_from_position(position : Vector3) -> int:
+func get_pos_from_position(position : Vector3) -> Vector3:
 	var pos = position
-	var offset = size / 2
-	pos = Vector3(pos.x + offset, pos.y + offset, pos.z + offset)
 	pos = pos / cell_size
 	pos = pos.floor()
-	return pos.x * cell_nr_sq + pos.y * cell_nr + pos.z
+	return pos
 
 func clean_up():
-	for cell in cells:
+	for key in cells.keys():
+		var cell = cells[key]
 		if !cell:
 			continue
 		if cell.nr_elements <= 0:
 			continue
 		
-		var elements = cell.elements.duplicate(true)
-		for element in elements:
-			cell.remove_element(element)
+		cell.clean_up()
 		
-		cell.elements.clear()
-		elements.clear()
-		
-		cells[cell.index] = null
+		cells[cell.position] = null

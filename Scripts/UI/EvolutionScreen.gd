@@ -30,9 +30,9 @@ func _ready() -> void:
 	
 	for member : EvolutionElement in evolution.population:
 		var em : EvoElementUI = evo_element.instantiate()
+		grid_container.add_child(em)
 		em.init_vsg(member.genotypes)
 		em.slider.value_changed.connect(member.set_fitness)
-		grid_container.add_child(em)
 		vsgs.append(em)
 	
 	
@@ -56,6 +56,7 @@ func _on_next_button_pressed():
 		var vsg : EvoElementUI = vsgs[i]
 		vsg.init_vsg(member.genotypes)
 		vsg.slider.value_changed.connect(member.set_fitness)
+		vsg.slider.set_value_no_signal(1)
 		
 	
 	

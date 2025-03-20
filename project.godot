@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="VirtualEnvironmentGeneratingSwarmGrammars"
-run/main_scene="res://Scenes/UI.tscn"
+run/main_scene="res://Scenes/UI/MainMenu.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
+
+[debug]
+
+shapes/collision/shape_color=Color(0, 0.6, 0.701961, 1)
 
 [display]
 

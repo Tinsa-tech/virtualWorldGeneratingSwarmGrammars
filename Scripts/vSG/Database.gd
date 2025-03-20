@@ -344,3 +344,34 @@ static func energy_params_modes_to_int(energy_params_mode : String) -> int:
 		_:
 			ret = -1
 	return ret
+
+func add(other : Database):
+	for template in other.templates:
+		for compare in templates:
+			if template.type == compare.type:
+				other.change_type(template.type, template.type + "double")
+		templates.append(template)
+	for production in other.productions:
+		productions.append(production)
+
+func change_type(to_change : String, new_type : String):
+	for template in templates:
+		if template.type == to_change:
+			template.type = new_type
+		if template is AgentTemplate:
+			for type in template.energy_calculations.zero_successors:
+				if type == to_change:
+					type = to_change
+		for key in template.influences.keys():
+			if key == to_change:
+				template.influences[new_type] = template.influences[key]
+				template.influences.erase(key)
+	
+	for prod in productions:
+		if prod.context == to_change:
+			prod.context = new_type
+		for successor in prod.successor:
+			if successor == to_change:
+				successor = new_type
+		if prod.predecessor == to_change:
+			prod.predecessor = new_type

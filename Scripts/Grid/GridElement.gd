@@ -13,3 +13,9 @@ func _init(actor_obj : ActorObject) -> void:
 
 func _obj_destroyed():
 	grid_cell.remove_element(self)
+	grid_cell = null
+	disconnect_obj()
+	obj = null
+
+func disconnect_obj():
+	obj.destroyed.disconnect(_obj_destroyed)

@@ -35,7 +35,10 @@ func from_dict(dict : Dictionary):
 	successor_mode = successor_to_int(dict["successor_mode"])
 	predecessor_value = dict["predecessor"]
 	predecessor_mode = predecessor_to_int(dict["predecessor_mode"])
-	zero_successors = dict["zero_successors"]
+	var zs : Array = dict["zero_successors"]
+	for i in range(zs.size()):
+		zero_successors.append(zs[i])
+	# zero_successors = dict["zero_successors"]
 	zero_energy = dict["zero_energy"]
 
 func to_dict() -> Dictionary:

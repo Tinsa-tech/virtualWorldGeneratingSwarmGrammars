@@ -1,0 +1,82 @@
+[gd_scene load_steps=10 format=3 uid="uid://ddeootjabtfma"]
+
+[ext_resource type="Script" path="res://Scripts/Sandbox/Move.gd" id="1_dobwk"]
+[ext_resource type="ArrayMesh" uid="uid://c6xmuft5s6yvh" path="res://Resources/Arrow.obj" id="2_vctcr"]
+[ext_resource type="Script" path="res://Scripts/FreeLookCamera.gd" id="3_solbv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_olvqt"]
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 1)
+disable_receive_shadows = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_l8iq0"]
+size = Vector3(6.4, 1.6, 1.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mtfk8"]
+shading_mode = 0
+albedo_color = Color(0, 1, 0, 1)
+heightmap_scale = 1.331
+disable_receive_shadows = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kdhmj"]
+size = Vector3(1.6, 6.4, 1.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j75sh"]
+shading_mode = 0
+albedo_color = Color(0, 0, 1, 1)
+disable_receive_shadows = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gcm15"]
+size = Vector3(1.6, 1.6, 6.4)
+
+[node name="Node3D" type="Node3D" node_paths=PackedStringArray("x_arrow", "y_arrow", "z_arrow")]
+top_level = true
+script = ExtResource("1_dobwk")
+x_arrow = NodePath("Arrows/XArrow")
+y_arrow = NodePath("Arrows/YArrow")
+z_arrow = NodePath("Arrows/ZArrow")
+
+[node name="Arrows" type="Node3D" parent="."]
+
+[node name="XArrow" type="StaticBody3D" parent="Arrows"]
+
+[node name="XArrow" type="MeshInstance3D" parent="Arrows/XArrow"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = ExtResource("2_vctcr")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_olvqt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arrows/XArrow"]
+transform = Transform3D(0.999994, -3.46172e-08, 0.00335103, 2.5695e-08, 1, 2.66822e-06, -0.00335103, -2.66811e-06, 0.999994, 3.2, 0, 0)
+shape = SubResource("BoxShape3D_l8iq0")
+
+[node name="YArrow" type="StaticBody3D" parent="Arrows"]
+
+[node name="YArrow" type="MeshInstance3D" parent="Arrows/YArrow"]
+mesh = ExtResource("2_vctcr")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_mtfk8")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Arrows/YArrow"]
+transform = Transform3D(0.999994, -3.46172e-08, 0.00335103, 2.5695e-08, 1, 2.66822e-06, -0.00335103, -2.66811e-06, 0.999994, 0, 3.2, 0)
+shape = SubResource("BoxShape3D_kdhmj")
+
+[node name="ZArrow" type="StaticBody3D" parent="Arrows"]
+
+[node name="ZArrow" type="MeshInstance3D" parent="Arrows/ZArrow"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = ExtResource("2_vctcr")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_j75sh")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Arrows/ZArrow"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.2)
+shape = SubResource("BoxShape3D_gcm15")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.707107, -0.34724, 0.615974, 0, 0.871119, 0.491071, -0.707107, -0.34724, 0.615974, 10.9956, 7.25341, 15.696)
+script = ExtResource("3_solbv")
+
+[connection signal="input_event" from="Arrows/XArrow" to="." method="_on_x_arrow_input_event"]
+[connection signal="input_event" from="Arrows/YArrow" to="." method="_on_y_arrow_input_event"]
+[connection signal="input_event" from="Arrows/ZArrow" to="." method="_on_z_arrow_input_event"]
