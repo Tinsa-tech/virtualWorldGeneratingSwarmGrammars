@@ -1,12 +1,35 @@
-[gd_scene load_steps=3 format=3 uid="uid://dqp32vngfco1t"]
+[gd_scene load_steps=6 format=3 uid="uid://dqp32vngfco1t"]
 
 [ext_resource type="Script" path="res://Scripts/vSG/ArtifactObject.gd" id="1_hg5qk"]
+[ext_resource type="PackedScene" uid="uid://ddeootjabtfma" path="res://Scenes/Sandbox/Move.tscn" id="2_yhwly"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_r6tn8"]
 
-[node name="Artifact" type="Node3D"]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
-script = ExtResource("1_hg5qk")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gydlv"]
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 1)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[sub_resource type="SphereShape3D" id="SphereShape3D_jd4f8"]
+
+[node name="Artifact" type="Node3D" node_paths=PackedStringArray("move", "static_body")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
+script = ExtResource("1_hg5qk")
+move = NodePath("Node3D2/Node3D")
+static_body = NodePath("Node3D2/StaticBody3D")
+
+[node name="Node3D2" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D2"]
 mesh = SubResource("SphereMesh_r6tn8")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_gydlv")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Node3D2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D2/StaticBody3D"]
+shape = SubResource("SphereShape3D_jd4f8")
+
+[node name="Node3D" parent="Node3D2" node_paths=PackedStringArray("to_move") instance=ExtResource("2_yhwly")]
+top_level = false
+visible = false
+to_move = NodePath("..")

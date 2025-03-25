@@ -71,13 +71,13 @@ func _on_slider_value_changed(new_value : float):
 func _on_focus_entered():
 	swarm_scene.enable_camera()
 	var stylebox : StyleBoxFlat = panel.get_theme_stylebox("panel").duplicate()
-	stylebox.bg_color = Color.DIM_GRAY
+	stylebox.bg_color = Color.GREEN
 	panel.add_theme_stylebox_override("panel", stylebox)
 
 func _on_focus_exited():
 	swarm_scene.disable_camera()
 	var stylebox : StyleBoxFlat = panel.get_theme_stylebox("panel").duplicate()
-	stylebox.bg_color = Color(.2, .2, .2, 1)
+	stylebox.bg_color = Color.DARK_GREEN
 	panel.add_theme_stylebox_override("panel", stylebox)
 
 func _on_play_button_pressed():

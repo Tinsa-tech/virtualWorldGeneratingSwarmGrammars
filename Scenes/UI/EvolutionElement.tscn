@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://Scripts/UI/EvoElementUI.gd" id="1_850mx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1qjvr"]
-bg_color = Color(0.197937, 0.197937, 0.197937, 1)
+bg_color = Color(0, 0.392, 0, 1)
 
 [node name="Control" type="Control" node_paths=PackedStringArray("viewport", "slider", "label", "swarm_scene", "panel", "play", "step", "save", "end", "save_window", "line_edit", "okay_button")]
 layout_mode = 3

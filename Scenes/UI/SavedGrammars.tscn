@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://cssi7du8oxh1r"]
+[gd_scene load_steps=3 format=3 uid="uid://cssi7du8oxh1r"]
 
 [ext_resource type="Script" path="res://Scripts/UI/SavedGrammars.gd" id="1_wmqhe"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nkdgm"]
+bg_color = Color(0, 0.301961, 0, 1)
 
 [node name="SavedGrammars" type="Control" node_paths=PackedStringArray("grid_container")]
 layout_mode = 3
@@ -12,9 +15,9 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_wmqhe")
-grid_container = NodePath("MarginContainer/ScrollContainer/GridContainer")
+grid_container = NodePath("PanelContainer/MarginContainer/ScrollContainer/GridContainer")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,12 +25,25 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
+[node name="Panel" type="Panel" parent="PanelContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nkdgm")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/ScrollContainer"]
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/h_separation = 5
+theme_override_constants/v_separation = 5
 columns = 5

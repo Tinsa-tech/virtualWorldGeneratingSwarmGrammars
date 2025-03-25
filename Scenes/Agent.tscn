@@ -1,16 +1,37 @@
-[gd_scene load_steps=4 format=3 uid="uid://sqlc1wqhmdsb"]
+[gd_scene load_steps=6 format=3 uid="uid://sqlc1wqhmdsb"]
 
 [ext_resource type="Script" path="res://Scripts/vSG/AgentObject.gd" id="1_2v8sn"]
+[ext_resource type="PackedScene" uid="uid://ddeootjabtfma" path="res://Scenes/Sandbox/Move.tscn" id="2_a1kjp"]
 [ext_resource type="ArrayMesh" uid="uid://lfgytrqpw8c7" path="res://Resources/Cone.obj" id="2_rjxnm"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6rtng"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_cs37d"]
+radius = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_islkv"]
+shading_mode = 0
 albedo_color = Color(1, 0, 0, 1)
 
-[node name="Agent" type="Node3D"]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+[node name="Agent" type="Node3D" node_paths=PackedStringArray("move", "static_body")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
 script = ExtResource("1_2v8sn")
+move = NodePath("Node3D2/Node3D")
+static_body = NodePath("Node3D2/StaticBody3D")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="Node3D2" type="Node3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Node3D2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D2/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -1)
+shape = SubResource("CylinderShape3D_cs37d")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D2"]
 transform = Transform3D(1.91069e-15, -4.37114e-08, 1, -1, -4.37114e-08, 0, 4.37114e-08, -1, -4.37114e-08, 0, 0, 0)
 mesh = ExtResource("2_rjxnm")
-surface_material_override/0 = SubResource("StandardMaterial3D_6rtng")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_islkv")
+
+[node name="Node3D" parent="Node3D2" node_paths=PackedStringArray("to_move") instance=ExtResource("2_a1kjp")]
+top_level = false
+visible = false
+to_move = NodePath("..")

@@ -56,7 +56,7 @@ func _on_next_button_pressed():
 		var vsg : EvoElementUI = vsgs[i]
 		vsg.init_vsg(member.genotypes)
 		vsg.slider.value_changed.connect(member.set_fitness)
-		vsg.slider.set_value_no_signal(1)
+		vsg.slider.set_value(1)
 		
 	
 	

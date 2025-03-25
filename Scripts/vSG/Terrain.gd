@@ -78,8 +78,8 @@ func get_height_at(point : Vector3) -> float:
 	var x : float = point.x
 	var y : float = point.z
 	
-	var x_vertex_pos = x - (float(size_x) - 1) * distance_between_vertices / 2
-	var y_vertex_pos = y - (float(size_y) - 1) * distance_between_vertices / 2
+	var x_vertex_pos = x + (float(size_x) - 1) * distance_between_vertices / 2
+	var y_vertex_pos = y + (float(size_y) - 1) * distance_between_vertices / 2
 	
 	var p = Vector2(x, y)
 	
@@ -131,9 +131,21 @@ func get_height_at(point : Vector3) -> float:
 	
 	if bc.length() == 0 or ap.length() == 0:
 		return 0.0
-
-	var h_s = (B.y + C.y) * (bs.length() / bc.length())
-	var p_h = (h_s + A.y) * (ass.length() / ap.length())
+	var h_s
+	var quot
+	if bc.length() == 0:
+		h_s = B.y
+	else:
+		quot = bs.length() / bc.length()
+		h_s = B.y * (1 - quot) + C.y * quot
+	
+	var p_h
+	if ap.length() == 0:
+		p_h = A.y
+	else:
+		quot = ass.length() / ap.length()
+		p_h = A.y * (1 - quot) + h_s * quot
+		
 	return p_h
 
 func update_terrain() -> void:
@@ -177,6 +189,7 @@ func update_vertex(vertex_index : int):
 	
 	avg_heights[vertex_index] = avg_height
 	influence_factors[vertex_index] = influences
+	# print("vert_id: " + str(vertex_index) + " avg height: " + str(avg_height) + " influences: " + str(influences))
 	avg_height /= influences
 	vertex = Vector3(vertex.x, avg_height, vertex.z)
 	vertices[vertex_index] = vertex
@@ -236,3 +249,11 @@ func smooth_normals():
 	
 func add_influencer(influencer : Artifact):
 	new_influencers.append(influencer)
+
+func _on_influencer_moved():
+	new_influencers.append_array(influencers.duplicate())
+	influencers.clear()
+	for i in range(vertices.size()):
+		avg_heights[i] = 0.0
+		influence_factors[i] = 0.0
+	update_terrain()

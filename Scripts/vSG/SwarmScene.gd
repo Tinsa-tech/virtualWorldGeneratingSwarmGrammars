@@ -15,6 +15,8 @@ var should_step : bool = false
 @export
 var swarm_info : SwarmInfo
 
+var keep_running : bool = false
+
 func _ready() -> void:
 	camera.active = false
 	
@@ -58,9 +60,13 @@ func set_vsg(to_set : vSG):
 	vsg = to_set
 
 func init_vsg(database : Database):
-	for child in parent.get_children():
-		child.queue_free()
-	vsg = vSG.new(database, camera, parent, hud)
+	#for child in parent.get_children():
+		#child.queue_free()
+	if vsg:
+		vsg.database = database
+	else:
+		vsg = vSG.new(database, camera, parent, hud)
+	vsg.keep_running = keep_running
 	swarm_info.set_data(database)
 
 func save(save_path):
@@ -73,3 +79,18 @@ func toggle_info():
 	else:
 		swarm_info.show()
 		hud.hide()
+
+func add_actor(type : String):
+	should_play = false
+	vsg.add_actor(type)
+
+func hide_scene():
+	self.hide()
+	hud.hide()
+
+func show_scene():
+	self.show()
+	hud.show()
+
+func set_keep_running(new_value : bool):
+	keep_running = new_value

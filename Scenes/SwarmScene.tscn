@@ -22,6 +22,7 @@ script = ExtResource("1_atydh")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.891576, 0.45287, 0, -0.45287, 0.891576, 0, 0.576882, 0)
+visible = false
 light_energy = 10.0
 light_indirect_energy = 2.524
 shadow_enabled = true

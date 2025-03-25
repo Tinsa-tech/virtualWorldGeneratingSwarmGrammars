@@ -5,6 +5,7 @@ var templates : Array[ActorTemplate]
 var productions : Array[Production]
 var t : float = 1.0
 var terrain_size : int = 100
+var colors : Dictionary
 
 enum movement_urges {SEPARATION, ALIGNMENT, COHESION, RANDOM, BIAS,
 CENTER, FLOOR, NORMAL, GRADIENT, SLOPE, NOCLIP, PACE, SEED}
@@ -72,6 +73,8 @@ func load_data(path_to_load : String) -> void:
 	
 	t = dict["t"]
 	terrain_size = dict["terrain_size"]
+	
+	create_colors()
 	
 	save_file.close()
 
@@ -175,6 +178,8 @@ func random():
 	
 	for agent in agents:
 		first_generation.append(agent.type)
+	
+	create_colors()
 
 func clear():
 	templates.clear()
@@ -375,3 +380,23 @@ func change_type(to_change : String, new_type : String):
 				successor = new_type
 		if prod.predecessor == to_change:
 			prod.predecessor = new_type
+
+func create_colors():
+	var agent_nr = 0
+	for template in templates:
+		if template is AgentTemplate:
+			agent_nr += 1
+
+	var color_distance : float = 1.0 / float(agent_nr)
+	var colors_to_distribute : Array[Color] = []
+	
+	for i in range(agent_nr):
+		var deg : float = color_distance * float(i)
+		var col = Color.from_hsv(deg, 1.0, 1.0)
+		colors_to_distribute.append(col)
+	
+	var i = 0
+	for template in templates:
+		if template is AgentTemplate:
+			colors[template.type] = colors_to_distribute[i]
+			i += 1

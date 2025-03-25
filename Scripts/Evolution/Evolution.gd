@@ -333,6 +333,8 @@ func recombine_parents(parents : Array) -> Array[EvolutionElement]:
 		for agent in child_agents:
 			child_data.first_generation.append(agent.type)
 		
+		child_data.create_colors()
+		
 		var child = EvolutionElement.new()
 		child.genotypes = child_data
 		child.actors_mutation_step_sizes = child_mutation_sizes

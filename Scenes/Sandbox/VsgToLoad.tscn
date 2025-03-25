@@ -4,6 +4,11 @@
 [ext_resource type="Script" path="res://Scripts/Sandbox/VsgToLoad.gd" id="1_mjbad"]
 
 [node name="VsgToLoad" type="VBoxContainer" node_paths=PackedStringArray("agent_list", "label", "artifact_list")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_vertical = 3
 script = ExtResource("1_mjbad")
 agent_list = NodePath("VBoxContainer3/AgentList")

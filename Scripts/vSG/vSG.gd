@@ -18,6 +18,7 @@ var octree : Octree
 var grid : SpaceGrid
 
 var finished : bool = false
+var keep_running : bool = false
 
 var hud : HUD
 var parent : Node3D
@@ -54,11 +55,9 @@ func _init(data : Database, camera : FreeLookCamera, parent_node : Node3D, heads
 				var obj = instantiate(template)
 				var real_actor = obj.actor
 				real_actor.energy = 30
-				real_actor.id = get_new_id()
 				real_actor.actor_position = Vector3(0, 0, 0)
 				obj.position = Vector3.ZERO
 				# obj.velocity = Vector3.UP
-				parent.add_child.call_deferred(obj)
 				# add_to_octree(real_actor)
 				add_to_grid(obj)
 	
@@ -77,10 +76,10 @@ func step() -> void:
 	hud.set_agent_count(agents.size())
 	hud.set_artifact_count(artifacts.size())
 	
-	if agents.size() > 2000 or artifacts.size() > 2000 or agents.size() <= 0:
+	if agents.size() > 2000 or terrain.new_influencers.size() > 100 or agents.size() <= 0:
 		clean_up()
-		print("finished")
-		finished = true
+		if !keep_running:
+			print("finished")
 		return
 
 	#movement()
@@ -121,8 +120,11 @@ func instantiate(template : ActorTemplate) -> ActorObject:
 		agent.id = get_new_id()
 		obj.actor = agent
 		obj.instantiate()
+		obj.name = agent.type + str(agent.id)
 		actors.append(obj)
 		agents.append(obj)
+		parent.add_child(obj)
+		obj.set_color(database.colors[template.type])
 		return obj
 	else:
 		var obj : ArtifactObject = SceneManager.get_instance().artifact_scene.instantiate()
@@ -130,9 +132,12 @@ func instantiate(template : ActorTemplate) -> ActorObject:
 		artifact.take_values(template)
 		artifact.id = get_new_id()
 		obj.actor = artifact
+		obj.name = artifact.type + str(artifact.id)
 		actors.append(obj)
 		artifacts.append(obj)
 		terrain_changed = true
+		parent.add_child(obj)
+		obj.set_color()
 		return obj
 
 func apply_productions():
@@ -167,8 +172,8 @@ func apply_productions():
 					var successor = successor_obj.actor
 					successor.back_reference = agent
 					successor.actor_position = agent.actor_position
-					successor_obj.position = agent_obj.position
-					successor_obj.name = successor.type + str(successor.id)
+					successor_obj.position = agent.actor_position
+					
 					if successor is Agent:
 						successor.velocity = agent.velocity
 						if agent.movement_urges.has(database.movement_urges.SEED):
@@ -176,7 +181,6 @@ func apply_productions():
 					else:
 						if successor.influence_on_terrain > 0:
 							terrain.add_influencer(successor)
-					parent.add_child(successor_obj)
 					# add_to_octree(successor)
 					add_to_grid(successor_obj)
 				
@@ -288,5 +292,27 @@ func clean_up():
 	hud.set_artifact_count(artifacts.size())
 	recalculate_terrain()
 	terrain.smooth_normals()
-	grid.clean_up()
-	finished = true
+	if !keep_running:
+		grid.clean_up()
+		finished = true
+
+func add_actor(type : String):
+	var template : ActorTemplate
+	for t in database.templates:
+		if t.type == type:
+			template = t
+	var obj : ActorObject = instantiate(template)
+	obj.position = Vector3(0,5,0)
+	obj.actor.actor_position = Vector3(0,5,0)
+	obj.editable = true
+	if obj is ArtifactObject:
+		if obj.actor.influence_on_terrain > 0:
+			terrain.add_influencer(obj.actor)
+			terrain.update_terrain()
+			obj.moved.connect(terrain._on_influencer_moved)
+		obj.set_color()
+	hud.set_agent_count(agents.size())
+	hud.set_artifact_count(artifacts.size())
+	add_to_grid(obj)
+	
+	

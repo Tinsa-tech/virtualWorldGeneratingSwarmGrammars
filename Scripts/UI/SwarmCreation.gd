@@ -57,7 +57,6 @@ func _on_file_load_chosen(path : String):
 	clear()
 	data.load_data(path)
 	swarm_info.set_data(data)
-	fill_ui()
 
 func _on_file_save_chosen(path : String):
 	gather_data()
