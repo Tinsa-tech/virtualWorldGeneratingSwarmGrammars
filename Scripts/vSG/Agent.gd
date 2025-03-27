@@ -14,7 +14,7 @@ var constraints : Vector3 # per axis constraint vector
 var forward : Vector3
 var velocity : Vector3 # actual velocity of this agent
 var new_velocity : Vector3
-var individual_world_center : Vector3 #world center for this specific agent
+var individual_world_center : Vector3 # world center for this specific agent
 
 func take_values(template : ActorTemplate):
 	movement_urges = template.movement_urges
@@ -200,6 +200,8 @@ func update_position(terrain : Terrain):
 	if movement_urges.has(Database.movement_urges.NOCLIP):
 		if movement_urges[Database.movement_urges.NOCLIP] == false and floor_height > new_pos.y:
 			new_pos = Vector3(new_pos.x, floor_height, new_pos.z)
+	
+	print("type: " + type + " pos: " + str(new_pos) + " velo: " + str(new_velocity) + " floor_height: " + str(floor_height))
 	
 	velocity = new_velocity
 	actor_position = new_pos

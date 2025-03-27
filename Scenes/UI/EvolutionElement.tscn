@@ -62,7 +62,7 @@ stretch = true
 [node name="SubViewport" type="SubViewport" parent="PanelContainer/MarginContainer/VBoxContainer/SubViewportContainer"]
 own_world_3d = true
 handle_input_locally = false
-size = Vector2i(2, 2)
+size = Vector2i(1142, 569)
 render_target_update_mode = 4
 
 [node name="Node3D" parent="PanelContainer/MarginContainer/VBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("1_57kwe")]

@@ -36,3 +36,13 @@ func set_value(to_set : Vector3):
 	x.text = str(to_set.x)
 	y.text = str(to_set.y)
 	z.text = str(to_set.z)
+
+func lock():
+	x.editable = false
+	y.editable = false
+	z.editable = false
+
+func unlock():
+	x.editable = true
+	y.editable = true
+	z.editable = true

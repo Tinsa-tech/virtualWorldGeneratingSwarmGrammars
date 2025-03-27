@@ -62,3 +62,15 @@ func clear():
 func set_data(database : Database):
 	data = database
 	fill_ui()
+
+func lock():
+	agents_container.lock()
+	productions_container.lock()
+	artifacts_container.lock()
+	misc.lock()
+
+func unlock():
+	agents_container.unlock()
+	productions_container.unlock()
+	artifacts_container.unlock()
+	misc.unlock()

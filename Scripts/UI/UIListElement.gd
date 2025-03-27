@@ -17,3 +17,9 @@ func _on_delete_button_pressed():
 
 func set_index(new_index : int):
 	index = new_index
+
+func lock():
+	delete_button.hide()
+
+func unlock():
+	delete_button.show()

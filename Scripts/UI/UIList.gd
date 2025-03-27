@@ -64,3 +64,13 @@ func clear():
 		element.queue_free()
 	
 	list_elements.clear()
+
+func lock():
+	for element in list_elements:
+		element.lock()
+	add_button.hide()
+
+func unlock():
+	for element in list_elements:
+		element.unlock()
+	add_button.show()

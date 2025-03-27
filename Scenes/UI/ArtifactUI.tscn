@@ -10,12 +10,13 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_veigs"]
 bg_color = Color(0.319443, 0.695199, 0.363721, 1)
 
-[node name="Artifact" type="PanelContainer" node_paths=PackedStringArray("type_obj", "influence_terrain_obj", "influences_obj", "artifact_label")]
+[node name="Artifact" type="PanelContainer" node_paths=PackedStringArray("type_obj", "influence_terrain_obj", "influences_obj", "artifact_label", "delete_button")]
 script = ExtResource("1_40ggn")
 type_obj = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Type")
 influence_terrain_obj = NodePath("VBoxContainer/PanelContainer/VBoxContainer/InfluenceTerrain")
 influences_obj = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Influences/VBoxContainer")
 artifact_label = NodePath("VBoxContainer/HBoxContainer/Label")
+delete_button = NodePath("VBoxContainer/HBoxContainer/DeleteButton")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 2

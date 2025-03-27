@@ -158,3 +158,5 @@ func clean_up():
 		cell.clean_up()
 		
 		cells[cell.position] = null
+	
+	cells.clear()

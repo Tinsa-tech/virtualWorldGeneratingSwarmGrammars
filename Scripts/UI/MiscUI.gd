@@ -22,3 +22,8 @@ func get_data(database : Database):
 		database.first_generation.append(member.value)
 	database.t = t_obj.value
 	database.terrain_size = terrain_size_obj.value
+
+func lock():
+	first_gen_obj.lock()
+	t_obj.lock()
+	terrain_size_obj.lock()

@@ -48,3 +48,21 @@ func get_data():
 
 func _on_predecessor_changed(new_value : String):
 	prod_label.text = new_value
+
+func lock():
+	predecessor_obj.lock()
+	context_obj.lock()
+	distance_obj.lock()
+	successors_obj.lock()
+	theta_obj.lock()
+	persist_obj.lock()
+	super.lock()
+
+func unlock():
+	predecessor_obj.unlock()
+	context_obj.unlock()
+	distance_obj.unlock()
+	successors_obj.unlock()
+	theta_obj.unlock()
+	persist_obj.unlock()
+	super.unlock()

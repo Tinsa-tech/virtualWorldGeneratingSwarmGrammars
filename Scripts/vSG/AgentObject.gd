@@ -26,9 +26,8 @@ func update_position(terrain : Terrain):
 			up = Vector3.RIGHT
 		
 		
-		if actor.back_reference:
+		#if actor.back_reference:
 			# print("id: " + str(agent.id) + " type: " + str(agent.type) + " position: " + str(self.position) + " velocity: " + str(agent.velocity) + " pred id: " + str(actor.back_reference.id))
-			pass
 		
 		#print("--------------------------------------------------")
 		#print("target: " + str(target))

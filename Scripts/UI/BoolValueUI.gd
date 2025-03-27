@@ -21,3 +21,9 @@ func _on_button_toggled(new_value : bool):
 func set_value(to_set : bool):
 	value = to_set
 	check_button.set_pressed_no_signal(to_set)
+
+func lock():
+	check_button.disabled = true
+
+func unlock():
+	check_button.disabled = false

@@ -19,15 +19,21 @@ var data : Database
 
 var type_names : Array[String] = []
 
+@export
+var back_button : Button
+
 func _ready() -> void:
 	data = Database.new()
 	add_button.pressed.connect(_on_add_button_pressed)
 	saved_grammars.loaded.connect(_on_vsg_loaded)
+	saved_grammars.hide_on_back = true
+	back_button.pressed.connect(_on_back_button_pressed)
 	
 	subviewport.focus_entered.connect(_viewport_gets_focus)
 	subviewport.focus_exited.connect(_viewport_looses_focus)
 	
 	swarm_scene.enable_camera()
+	swarm_scene.has_focus = true
 	swarm_scene.set_keep_running(true)
 
 func _on_add_button_pressed():
@@ -50,7 +56,7 @@ func _on_vsg_loaded(vsg_loaded : Database, name_loaded : String):
 	data.first_generation.clear()
 	data.colors.clear()
 	data.create_colors()
-	swarm_scene.init_vsg(data)
+	swarm_scene.new_data(data)
 
 func _load_actor(loaded_type : String):
 	swarm_scene.add_actor(loaded_type)
@@ -62,3 +68,6 @@ func _viewport_gets_focus():
 
 func _viewport_looses_focus():
 	subviewport.get_child(0).physics_object_picking = false
+
+func _on_back_button_pressed():
+	SceneManager.get_instance().back()

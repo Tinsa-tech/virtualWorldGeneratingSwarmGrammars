@@ -1,4 +1,4 @@
-class_name SavedGrammars extends Node
+class_name SavedGrammars extends Control
 
 @export
 var grid_container : GridContainer
@@ -11,7 +11,12 @@ var saved_grammar : PackedScene = preload("res://Scenes/UI/SavedGrammar.tscn")
 
 signal loaded(vsg_loaded, name_loaded)
 
+@export
+var back_button : Button
+var hide_on_back : bool = false
+
 func _ready() -> void:
+	back_button.pressed.connect(_on_back_button_pressed)
 	load_grammars()
 
 func load_grammars():
@@ -37,3 +42,9 @@ func load_grammars():
 func _on_loaded(vsg_loaded : Database, name_loaded : String):
 	loaded.emit(vsg_loaded, name_loaded)
 	get_child(0).hide()
+
+func _on_back_button_pressed():
+	if hide_on_back:
+		self.hide()
+	else:
+		SceneManager.get_instance().back()

@@ -39,4 +39,11 @@ func set_value(to_set : float):
 	value = to_set
 	slider.set_value_no_signal(to_set)
 	input.text = str(to_set)
-	
+
+func lock():
+	slider.editable = false
+	input.editable = false
+
+func unlock():
+	slider.editable = true
+	input.editabel = true

@@ -28,3 +28,9 @@ func fill_options():
 func set_value(to_set : int):
 	value = to_set
 	options_button.select(to_set)
+
+func lock():
+	options_button.disabled = true
+
+func unlock():
+	options_button.disabled = false

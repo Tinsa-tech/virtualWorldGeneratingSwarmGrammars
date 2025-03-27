@@ -4,6 +4,7 @@ var l_system : LSystem
 var actors : Array[ActorObject]
 var agents : Array[AgentObject]
 var artifacts : Array[ArtifactObject]
+var connections : Array[Node3D] = []
 
 var database : Database
 
@@ -165,26 +166,8 @@ func apply_productions():
 			var agent = agent_obj.actor 
 			if id_a_p == agent.id:
 				var successors = instantiated[i]
-				#print("i: " + str(i) + " successor_count: " + str(len(successors)))
-				#for successor in successors:
-					#print(successor.get_parent())
-				for successor_obj in successors:
-					var successor = successor_obj.actor
-					successor.back_reference = agent
-					successor.actor_position = agent.actor_position
-					successor_obj.position = agent.actor_position
-					
-					if successor is Agent:
-						successor.velocity = agent.velocity
-						if agent.movement_urges.has(database.movement_urges.SEED):
-							successor.individual_world_center = agent.actor_position
-					else:
-						if successor.influence_on_terrain > 0:
-							terrain.add_influencer(successor)
-					# add_to_octree(successor)
-					add_to_grid(successor_obj)
-				
-				calculate_energies(successors, agent, persist[i])
+				replace_agent(agent, successors, persist[i])
+				calculate_energies(agent, successors, persist[i])
 				if !persist[i]:
 					remove.append(agent_obj)
 		i += 1
@@ -211,8 +194,30 @@ func movement_agent(agent_index : int):
 func recalculate_terrain():
 	terrain.update_terrain()
 
+func replace_agent(agent_parent : Agent, new_actors : Array, persist : bool):
+	for new_actor_obj in new_actors:
+		var new_actor = new_actor_obj.actor
+		new_actor.actor_position = agent_parent.actor_position
+		new_actor_obj.position = agent_parent.actor_position
+		
+		if new_actor is Agent:
+			if agent_parent.back_reference:
+				new_actor.back_reference = agent_parent.back_reference
+			new_actor.velocity = agent_parent.velocity
+			if agent_parent.movement_urges.has(database.movement_urges.SEED):
+				new_actor.individual_world_center = agent_parent.actor_position
+		else:
+			if agent_parent.back_reference:
+				new_actor.back_reference = agent_parent.back_reference
+			agent_parent.back_reference = new_actor
+			if new_actor.back_reference:
+				connect_with_line(new_actor.back_reference.actor_position, new_actor.actor_position)
+			if new_actor.influence_on_terrain > 0:
+				terrain.add_influencer(new_actor)
+		# add_to_octree(successor)
+		add_to_grid(new_actor_obj)
 
-func calculate_energies(successors : Array, predecessor : Agent, persist : bool):
+func calculate_energies(predecessor : Agent, successors : Array, persist : bool):
 	var count = successors.size()
 	if predecessor.energy <= 0:
 		for successor in successors:
@@ -314,5 +319,91 @@ func add_actor(type : String):
 	hud.set_agent_count(agents.size())
 	hud.set_artifact_count(artifacts.size())
 	add_to_grid(obj)
+
+func connect_with_line(pointA : Vector3, pointB : Vector3):
+	if pointA.is_equal_approx(pointB):
+		return
+	var connector : Node3D = SceneManager.get_instance().connector.instantiate()
+	parent.add_child(connector)
+	connector.name = "Connector"
+	var ab = pointB - pointA
+	var mid = ab * 0.5 + pointA
+	connector.position = mid
+	connector.scale.z = ab.length()
+	connector.look_at(pointB)
+	connections.append(connector)
+
+func restart_swarm():
+	for actor in actors:
+		actor._on_destroyed()
+		actor.queue_free()
+	actors.clear()
+	agents.clear()
+	artifacts.clear()
+	for connection in connections:
+		connection.queue_free()
+	connections.clear()
+	terrain.queue_free()
+	grid.clean_up()
 	
+	terrain = SceneManager.get_instance().terrain_scene.instantiate()
+	terrain.generate_terrain(database.t, database.terrain_size)
+	parent.add_child.call_deferred(terrain)
 	
+	var min_view_dist = 1000
+	for template in database.templates:
+		if template is AgentTemplate:
+			if template.distance_params[Database.distance_params.VIEW] < min_view_dist:
+				min_view_dist = template.distance_params[Database.distance_params.VIEW]
+	
+	grid = SpaceGrid.new(min_view_dist)
+	
+	for actor in database.first_generation:
+		for template in database.templates:
+			if actor == template.type:
+				var obj = instantiate(template)
+				var real_actor = obj.actor
+				real_actor.energy = 30
+				real_actor.actor_position = Vector3(0, 0, 0)
+				obj.position = Vector3.ZERO
+				add_to_grid(obj)
+	
+	hud.set_agent_count(agents.size())
+	hud.set_artifact_count(artifacts.size())
+
+#region hiding and showing objects
+func hide_agents():
+	for actor in actors:
+		if actor is AgentObject:
+			actor.hide()
+
+func show_agents():
+	for actor in actors:
+		if actor is AgentObject:
+			actor.show()
+
+func hide_artifacts():
+	for actor in actors:
+		if actor is ArtifactObject:
+			actor.hide()
+
+func show_artifacts():
+	for actor in actors:
+		if actor is ArtifactObject:
+			actor.show()
+
+func hide_connections():
+	for connection in connections:
+		connection.hide()
+
+func show_connections():
+	for connection in connections:
+		connection.show()
+
+func hide_terrain():
+	terrain.hide()
+
+func show_terrain():
+	terrain.show()
+
+#endregion

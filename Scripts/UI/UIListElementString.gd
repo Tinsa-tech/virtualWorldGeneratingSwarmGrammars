@@ -32,3 +32,11 @@ func set_index(new_index : int):
 func set_value(new_value : String):
 	value = new_value
 	input.text = new_value
+
+func lock():
+	input.editable = false
+	super.lock()
+
+func unlock():
+	input.editable = true
+	super.unlock()

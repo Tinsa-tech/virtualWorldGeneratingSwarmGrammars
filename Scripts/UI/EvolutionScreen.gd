@@ -14,6 +14,9 @@ var step_button : Button
 @export
 var next_button : Button
 
+@export
+var back_button : Button
+
 var vsgs : Array
 
 var evolution : Evolution
@@ -24,13 +27,20 @@ func _ready() -> void:
 	play_button.pressed.connect(_on_play_button_pressed)
 	step_button.pressed.connect(_on_step_button_pressed)
 	next_button.pressed.connect(_on_next_button_pressed)
+	back_button.pressed.connect(_on_back_button_pressed)
 	
 	evolution = Evolution.new()
 	evolution.initialize_population(10)
 	
+	var show_controls = true
 	for member : EvolutionElement in evolution.population:
 		var em : EvoElementUI = evo_element.instantiate()
 		grid_container.add_child(em)
+		if show_controls:
+			em.swarm_scene.show_controls()
+			show_controls = false
+		else:
+			em.swarm_scene.hide_controls()
 		em.init_vsg(member.genotypes)
 		em.slider.value_changed.connect(member.set_fitness)
 		vsgs.append(em)
@@ -54,9 +64,11 @@ func _on_next_button_pressed():
 	for i in range(evolution.population.size()):
 		var member : EvolutionElement = evolution.population[i]
 		var vsg : EvoElementUI = vsgs[i]
+		if i != 0:
+			vsg.swarm_scene.hide_controls()
 		vsg.init_vsg(member.genotypes)
 		vsg.slider.value_changed.connect(member.set_fitness)
 		vsg.slider.set_value(1)
 		
-	
-	
+func _on_back_button_pressed():
+	SceneManager.get_instance().back()

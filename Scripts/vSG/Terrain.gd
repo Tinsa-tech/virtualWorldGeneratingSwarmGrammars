@@ -1,6 +1,4 @@
-class_name Terrain
-
-extends Node
+class_name Terrain extends Node3D
 
 @export
 var material : ShaderMaterial
@@ -146,6 +144,7 @@ func get_height_at(point : Vector3) -> float:
 		quot = ass.length() / ap.length()
 		p_h = A.y * (1 - quot) + h_s * quot
 		
+	# print("A: " + str(A) + " B: " + str(B) + " C: " + str(C) + " height: " + str(p_h) + " point: " + str(point))
 	return p_h
 
 func update_terrain() -> void:

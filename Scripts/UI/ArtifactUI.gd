@@ -38,3 +38,15 @@ func get_data():
 
 func _on_type_changed(new_type : String):
 	artifact_label.text = new_type
+
+func lock():
+	type_obj.lock()
+	influence_terrain_obj.lock()
+	influences_obj.lock()
+	super.lock()
+
+func unlock():
+	type_obj.unlock()
+	influence_terrain_obj.unlock()
+	influences_obj.unlock()
+	super.unlock()

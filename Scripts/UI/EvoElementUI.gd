@@ -61,6 +61,8 @@ func _ready() -> void:
 	
 	if !DirAccess.dir_exists_absolute("user://Saved"):
 		DirAccess.make_dir_absolute("user://Saved")
+	
+	swarm_scene.has_focus = false
 
 func set_viewport_size(new_size : Vector2i):
 	viewport.size = new_size
@@ -73,12 +75,14 @@ func _on_focus_entered():
 	var stylebox : StyleBoxFlat = panel.get_theme_stylebox("panel").duplicate()
 	stylebox.bg_color = Color.GREEN
 	panel.add_theme_stylebox_override("panel", stylebox)
+	swarm_scene.has_focus = true
 
 func _on_focus_exited():
 	swarm_scene.disable_camera()
 	var stylebox : StyleBoxFlat = panel.get_theme_stylebox("panel").duplicate()
 	stylebox.bg_color = Color.DARK_GREEN
 	panel.add_theme_stylebox_override("panel", stylebox)
+	swarm_scene.has_focus = false
 
 func _on_play_button_pressed():
 	swarm_scene.play()
@@ -96,6 +100,7 @@ func _on_end_button_pressed():
 
 func _on_save_button_pressed():
 	save_window.show()
+	swarm_scene.hide_controls()
 
 func init_vsg(database : Database):
 	swarm_scene.init_vsg(database)
@@ -103,6 +108,7 @@ func init_vsg(database : Database):
 func _window_close_requested():
 	line_edit.text = ""
 	save_window.hide()
+	swarm_scene.show_controls()
 
 func _on_okay_button_pressed():
 	var save_name = line_edit.text

@@ -1,25 +1,25 @@
 [gd_scene load_steps=5 format=3 uid="uid://wplir175fgmd"]
 
 [ext_resource type="Script" path="res://Scripts/Sandbox/SelectActor.gd" id="1_d7s0a"]
+[ext_resource type="Theme" uid="uid://daypr7artvlu3" path="res://Materials/Theme.tres" id="1_fh1gy"]
 [ext_resource type="PackedScene" uid="uid://cssi7du8oxh1r" path="res://Scenes/UI/SavedGrammars.tscn" id="2_hoqkm"]
 [ext_resource type="PackedScene" uid="uid://d3lfiwv0crfwg" path="res://Scenes/SwarmScene.tscn" id="3_4cwix"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4oh46"]
-bg_color = Color(0, 0.309804, 0, 1)
-
-[node name="SelectActor" type="Control" node_paths=PackedStringArray("vsg_list", "add_button", "saved_grammars", "swarm_scene", "subviewport")]
+[node name="SelectActor" type="Control" node_paths=PackedStringArray("vsg_list", "add_button", "saved_grammars", "swarm_scene", "subviewport", "back_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_fh1gy")
 script = ExtResource("1_d7s0a")
 vsg_list = NodePath("MarginContainer/HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/VsgList")
 add_button = NodePath("MarginContainer/HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/HBoxContainer/Add")
 saved_grammars = NodePath("SavedGrammars")
 swarm_scene = NodePath("MarginContainer/HBoxContainer/SubViewportContainer/SubViewport/Node3D")
 subviewport = NodePath("MarginContainer/HBoxContainer/SubViewportContainer")
+back_button = NodePath("MarginContainer/HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/HBoxContainer/Back")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -35,22 +35,23 @@ layout_mode = 2
 [node name="SubViewportContainer" type="SubViewportContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
 stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="MarginContainer/HBoxContainer/SubViewportContainer"]
 own_world_3d = true
 handle_input_locally = false
-size = Vector2i(1097, 648)
+size = Vector2i(861, 648)
 render_target_update_mode = 4
 
 [node name="Node3D" parent="MarginContainer/HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("3_4cwix")]
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Panel" type="Panel" parent="MarginContainer/HBoxContainer/PanelContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_4oh46")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/PanelContainer"]
 layout_mode = 2
@@ -63,6 +64,10 @@ size_flags_vertical = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
+
+[node name="Back" type="Button" parent="MarginContainer/HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Back"
 
 [node name="Control" type="Control" parent="MarginContainer/HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2

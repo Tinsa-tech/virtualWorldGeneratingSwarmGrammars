@@ -15,6 +15,8 @@ var file_dialog_save : FileDialog
 var random_button : Button
 @export
 var start_button : Button
+@export
+var back_button : Button
 
 var data : Database
 
@@ -26,16 +28,17 @@ func _ready() -> void:
 	file_dialog_save.file_selected.connect(_on_file_save_chosen)
 	start_button.pressed.connect(_on_start_button_pressed)
 	random_button.pressed.connect(_on_random_button_pressed)
+	back_button.pressed.connect(_on_back_button_pressed)
 	
 	data = Database.new()
 
 func _on_load_button_pressed():
-	file_dialog_load.current_dir = "/Users/jonas/Documents/BachelorArbeit/implementation/virtualWorldGeneratingSwarmGrammars"
+	file_dialog_load.current_dir = ProjectSettings.globalize_path("user://")
 	file_dialog_load.add_filter("*.json")
 	file_dialog_load.show()
 
 func _on_save_button_pressed():
-	file_dialog_save.current_dir = "/Users/jonas/Documents/BachelorArbeit/implementation/virtualWorldGeneratingSwarmGrammars"
+	file_dialog_save.current_dir = ProjectSettings.globalize_path("user://")
 	file_dialog_save.add_filter("*.json")
 	file_dialog_save.show()
 
@@ -51,7 +54,11 @@ func _on_start_button_pressed():
 	get_tree().root.add_child(swarm_scene)
 	swarm_scene.init_vsg(data)
 	swarm_scene.enable_camera()
+	swarm_scene.has_focus = true
 	self.hide()
+
+func _on_back_button_pressed():
+	SceneManager.get_instance().back()
 
 func _on_file_load_chosen(path : String):
 	clear()

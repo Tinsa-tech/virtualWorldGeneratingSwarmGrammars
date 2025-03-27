@@ -8,7 +8,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_du7hu"]
 bg_color = Color(0, 0.211765, 0, 1)
 
-[node name="Control" type="Control" node_paths=PackedStringArray("swarm_info", "load_button", "file_dialog_load", "save_button", "file_dialog_save", "random_button", "start_button")]
+[node name="Control" type="Control" node_paths=PackedStringArray("swarm_info", "load_button", "file_dialog_load", "save_button", "file_dialog_save", "random_button", "start_button", "back_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,6 +26,7 @@ save_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/Footer/Save
 file_dialog_save = NodePath("FileDialogSave")
 random_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/Footer/RandomButton")
 start_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/Footer/StartButton")
+back_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/Footer/BackButton")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -62,6 +63,14 @@ layout_mode = 2
 [node name="Footer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
+[node name="BackButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Footer"]
+layout_mode = 2
+text = "Back"
+
+[node name="Control" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/Footer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
 [node name="LoadButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Footer"]
 layout_mode = 2
 text = "Load"
@@ -74,7 +83,7 @@ text = "Save"
 layout_mode = 2
 text = "Random"
 
-[node name="Control" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/Footer"]
+[node name="Control2" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/Footer"]
 layout_mode = 2
 size_flags_horizontal = 3
 

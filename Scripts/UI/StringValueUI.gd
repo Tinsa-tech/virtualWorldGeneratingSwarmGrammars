@@ -20,3 +20,9 @@ func _on_text_changed(new_text : String):
 func set_value(to_set : String):
 	value = to_set
 	line_edit.text = to_set
+
+func lock():
+	line_edit.editable = false
+
+func unlock():
+	line_edit.editable = true
