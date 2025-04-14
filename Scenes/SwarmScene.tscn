@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/FreeLookCamera.gd" id="1_atydh"]
 [ext_resource type="Script" path="res://Scripts/vSG/SwarmScene.gd" id="1_wrjgf"]
-[ext_resource type="PackedScene" uid="uid://daiyl4pnslsqs" path="res://Scenes/UI/HUD.tscn" id="2_ef4an"]
+[ext_resource type="PackedScene" uid="uid://daiyl4pnslsqs" path="res://Scenes/UI/SwarmHUD.tscn" id="2_ef4an"]
 [ext_resource type="PackedScene" uid="uid://coi6wrq5vkuuu" path="res://Scenes/UI/SwarmInfo.tscn" id="4_7fnbg"]
 
 [node name="Node3D" type="Node3D" node_paths=PackedStringArray("hud", "parent", "camera", "swarm_info")]

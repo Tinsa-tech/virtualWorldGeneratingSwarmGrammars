@@ -38,3 +38,39 @@ var velocity_norm : float = 1.0
 
 func _init() -> void:
 	count = 28
+
+func to_dict() -> Dictionary:
+	var dict = {
+		"a_max" : a_max,
+		"beta" : beta,
+		"constraints_x" : constraints_x,
+		"constraints_y" : constraints_y,
+		"constraints_z" : constraints_z,
+		"distance_separation" : distance_separation,
+		"distance_view" : distance_view,
+		"move_energy" : move_energy,
+		"predecessor_energy" : predecessor_energy,
+		"successor_energy" : successor_energy,
+		"successor_const_dist_energy" : successor_const_dist_energy,
+		"zero_energy" : zero_energy,
+		"alignment" : alignment,
+		"bias_x" : bias_x,
+		"bias_y" : bias_y,
+		"bias_z" : bias_z,
+		"center" : center,
+		"cohesion" : cohesion,
+		"floor" : floor,
+		"gradient" : gradient,
+		"normal" : normal,
+		"pace" : pace,
+		"random" : random,
+		"separation" : separation,
+		"slope" : slope,
+		"velocity_max" : velocity_max,
+		"velocity_norm" : velocity_norm
+	}
+	
+	for i in range(influences.size()):
+		dict["influence" + str(i)] = influences[i]
+	
+	return dict

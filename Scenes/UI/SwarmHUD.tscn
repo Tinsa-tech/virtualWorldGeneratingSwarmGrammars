@@ -1,15 +1,17 @@
 [gd_scene load_steps=3 format=3 uid="uid://daiyl4pnslsqs"]
 
-[ext_resource type="Script" path="res://Scripts/UI/hud.gd" id="1_j22xi"]
+[ext_resource type="Script" path="res://Scripts/UI/SwarmHUD.gd" id="1_d2ij8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_47i3b"]
 bg_color = Color(0, 0.309804, 0, 0.266667)
 
-[node name="CanvasLayer" type="CanvasLayer" node_paths=PackedStringArray("agent_count", "artifact_count", "controls", "control_text")]
+[node name="CanvasLayer" type="CanvasLayer" node_paths=PackedStringArray("agent_count", "artifact_count", "step_count", "finish_reason", "controls", "control_text")]
 layer = 2
-script = ExtResource("1_j22xi")
+script = ExtResource("1_d2ij8")
 agent_count = NodePath("MarginContainer/Control/VBoxContainer/HBoxContainer/AgentCount")
 artifact_count = NodePath("MarginContainer/Control/VBoxContainer/HBoxContainer2/ArtifactCount")
+step_count = NodePath("MarginContainer/Control/VBoxContainer/HBoxContainer4/StepCount")
+finish_reason = NodePath("MarginContainer/Control/VBoxContainer/HBoxContainer3/FinishReason")
 controls = NodePath("MarginContainer/Controls")
 control_text = NodePath("MarginContainer/Controls/PanelContainer/MarginContainer/VBoxContainer/Label")
 
@@ -28,6 +30,7 @@ theme_override_constants/margin_bottom = 5
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Control"]
 layout_mode = 1
@@ -54,8 +57,25 @@ text = "Artifacts: "
 [node name="ArtifactCount" type="Label" parent="MarginContainer/Control/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Control/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "Steps: "
+
+[node name="StepCount" type="Label" parent="MarginContainer/Control/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="FinishReason" type="Label" parent="MarginContainer/Control/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+
 [node name="Controls" type="Control" parent="MarginContainer"]
 layout_mode = 2
+mouse_filter = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Controls"]
 layout_mode = 1

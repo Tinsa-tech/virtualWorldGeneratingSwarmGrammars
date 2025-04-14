@@ -4,15 +4,23 @@ var population : Array[EvolutionElement]
 var mutation_probability = 0.05
 var generation : int = 0
 
+var save_path : String
+
 func initialize_population(population_size : int):
 	population = []
 	for i in range(population_size):
 		var ee = EvolutionElement.new()
 		population.append(ee)
 	
+	if !DirAccess.dir_exists_absolute("user://EvoCSV"):
+		DirAccess.make_dir_absolute("user://EvoCSV")
+	save_path = "user://EvoCSV/" + Time.get_datetime_string_from_system().replace(":","") + ".csv"
+	
 	save_generation()
 
 func perform_cycle():
+	csv()
+	
 	## select parents
 	var parents = fitness_proportional_selection()
 	## recombine pairs of parents
@@ -44,6 +52,7 @@ func fitness_proportional_selection() -> Array:
 			random_nr -= prob
 			if random_nr <= 0:
 				selected.append(member)
+				break
 		
 		if selected.is_empty():
 			selected.append(population.back())
@@ -55,6 +64,7 @@ func fitness_proportional_selection() -> Array:
 			random_nr -= prob
 			if random_nr <= 0:
 				selected.append(member)
+				break
 		
 		if selected.size() == 1:
 			selected.append(population.back())
@@ -155,7 +165,7 @@ func recombine_parents(parents : Array) -> Array[EvolutionElement]:
 					template.influences[key] = p2_template.influences[key]
 			
 			for key in p1_template.movement_urges.keys():
-				if key == Database.movement_urges.NOCLIP or key == Database.movement_urges.SEED:
+				if key == Database.movement_urges.NOCLIP:
 					template.movement_urges[key] = uniform_crossover(p1_template.movement_urges[key], p2_template.movement_urges[key])
 				elif key == Database.movement_urges.BIAS:
 					var bias_x = blend_crossover(p1_template.movement_urges[key].x, p2_template.movement_urges[key].x)
@@ -325,13 +335,15 @@ func recombine_parents(parents : Array) -> Array[EvolutionElement]:
 				child_prod_muts.append(p1_prod_muts.pop_front())
 			
 		var child_data = Database.new()
-		child_data.templates = child_agents
+		child_data.templates = child_agents.duplicate()
 		child_data.templates.append_array(child_artifacts)
 		child_data.productions = child_prods
 		
 		child_data.first_generation.clear()
-		for agent in child_agents:
-			child_data.first_generation.append(agent.type)
+		
+		child_data.first_generation = uniform_crossover_arrays(parent1.genotypes.first_generation, parent2.genotypes.first_generation)
+		
+		child_data.use_rng_seed = false
 		
 		child_data.create_colors()
 		
@@ -349,6 +361,14 @@ func recombine_parents(parents : Array) -> Array[EvolutionElement]:
 func mutate(offspring : Array[EvolutionElement]):
 	for evo_element : EvolutionElement in offspring:
 		adjust_step_sizes(evo_element)
+		
+		var first_generation = evo_element.genotypes.first_generation
+		var agent_templates = []
+		for template in evo_element.genotypes.templates:
+			if template is AgentTemplate:
+				agent_templates.append(template.type)
+		
+		first_generation = mutate_array(first_generation, agent_templates)
 		
 		for i in range(evo_element.genotypes.templates.size()):
 			var actor = evo_element.genotypes.templates[i]
@@ -368,6 +388,7 @@ func mutate(offspring : Array[EvolutionElement]):
 				actor.constraints.x = mutate_float(actor.constraints.x, step_sizes.constraints_x)
 				actor.constraints.y = mutate_float(actor.constraints.y, step_sizes.constraints_y)
 				actor.constraints.z = mutate_float(actor.constraints.z, step_sizes.constraints_z)
+				actor.seed = mutate_bool(actor.seed)
 				
 				actor.distance_params[Database.distance_params.VIEW] = mutate_float(actor.distance_params[Database.distance_params.VIEW], step_sizes.distance_view)
 				actor.distance_params[Database.distance_params.SEPARATION] = mutate_float(actor.distance_params[Database.distance_params.SEPARATION], step_sizes.distance_separation)
@@ -387,7 +408,6 @@ func mutate(offspring : Array[EvolutionElement]):
 				actor.movement_urges[Database.movement_urges.PACE] = mutate_float(actor.movement_urges[Database.movement_urges.PACE], step_sizes.pace)
 				
 				actor.movement_urges[Database.movement_urges.NOCLIP] = mutate_bool(actor.movement_urges[Database.movement_urges.NOCLIP])
-				actor.movement_urges[Database.movement_urges.SEED] = mutate_bool(actor.movement_urges[Database.movement_urges.SEED]) 
 				
 				var energy : Energy = actor.energy_calculations
 				energy.move_value = mutate_float(energy.move_value, step_sizes.move_energy)
@@ -610,7 +630,6 @@ func blend_crossover_arrays(array1 : Array[float], array2 : Array[float]) -> Arr
 		for i in range(lower_size, lower_size + size_diff):
 			ret.append(array1[i])
 	elif size_diff < 0:
-		var abs_size_diff = abs(size_diff)
 		for i in range(lower_size, lower_size + size_diff):
 			ret.append(array2[i])
 	return ret
@@ -628,9 +647,151 @@ func save_generation():
 		var member = population[i]
 		member.genotypes.save_data(path + "/type" + str(i) + ".json")
 	
+func csv():
+
+	var write_to_file = "Gen" + str(generation) + "\n"
+	for evo_ele in population:
+		var e_dict = evo_ele.to_dict()
+		var agents = e_dict["Data"]["agents"]
+		var artifacts = e_dict["Data"]["artifacts"]
+		var productions = e_dict["Data"]["productions"]
+		
+		var mms_agents = e_dict["MutationStepSizes"]["Agents"]
+		var mms_artifacts = e_dict["MutationStepSizes"]["Artifacts"]
+		var mms_productions = e_dict["MutationStepSizes"]["Productions"]
+		
+		write_to_file += "fitness:," + str(e_dict["Fitness"]) + "\n"
+		
+		var value_q : Array = [agents[0]]
+		while !value_q.is_empty():
+			var value = value_q.pop_front()
+			if value is Dictionary:
+				for key in value.keys():
+					if value[key] is Dictionary:
+						value_q.append(value[key])
+					else:
+						write_to_file += key + ","
+		# write_to_file += ","
+		value_q = [artifacts[0]]
+		while !value_q.is_empty():
+			var value = value_q.pop_front()
+			if value is Dictionary:
+				for key in value.keys():
+					if value[key] is Dictionary:
+						value_q.append(value[key])
+					else:
+						write_to_file += key + ","
+		
+		value_q = [productions[0]]
+		while !value_q.is_empty():
+			var value = value_q.pop_front()
+			if value is Dictionary:
+				for key in value.keys():
+					if value[key] is Dictionary:
+						value_q.append(value[key])
+					else:
+						write_to_file += key + ","
+		
+		value_q = [mms_agents[0]]
+		while !value_q.is_empty():
+			var value = value_q.pop_front()
+			if value is Dictionary:
+				for key in value.keys():
+					if value[key] is Dictionary:
+						value_q.append(value[key])
+					else:
+						write_to_file += key + ","
+		
+		value_q = [mms_artifacts[0]]
+		while !value_q.is_empty():
+			var value = value_q.pop_front()
+			if value is Dictionary:
+				for key in value.keys():
+					if value[key] is Dictionary:
+						value_q.append(value[key])
+					else:
+						write_to_file += key + ","
+						
+		value_q = [mms_productions[0]]
+		while !value_q.is_empty():
+			var value = value_q.pop_front()
+			if value is Dictionary:
+				for key in value.keys():
+					if value[key] is Dictionary:
+						value_q.append(value[key])
+					else:
+						write_to_file += key + ","
+		
+		write_to_file += "\n"
+		for i in range(agents.size()):
+			var val_q : Array = [agents[i]]
+			while !val_q.is_empty():
+				var value = val_q.pop_front()
+				if value is Dictionary:
+					for key in value.keys():
+						if value[key] is Dictionary:
+							val_q.append(value[key])
+						else:
+							write_to_file += str(value[key]).replace(",",";") + ","
+			val_q = [artifacts[i]]
+			while !val_q.is_empty():
+				var value = val_q.pop_front()
+				if value is Dictionary:
+					for key in value.keys():
+						if value[key] is Dictionary:
+							val_q.append(value[key])
+						else:
+							write_to_file += str(value[key]).replace(",",";") + ","
+			val_q = [productions[i]]
+			while !val_q.is_empty():
+				var value = val_q.pop_front()
+				if value is Dictionary:
+					for key in value.keys():
+						if value[key] is Dictionary:
+							val_q.append(value[key])
+						else:
+							write_to_file += str(value[key]).replace(",",";") + ","
+			val_q = [mms_agents[i]]
+			while !val_q.is_empty():
+				var value = val_q.pop_front()
+				if value is Dictionary:
+					for key in value.keys():
+						if value[key] is Dictionary:
+							val_q.append(value[key])
+						else:
+							write_to_file += str(value[key]).replace(",",";") + ","
+			val_q = [mms_artifacts[i]]
+			while !val_q.is_empty():
+				var value = val_q.pop_front()
+				if value is Dictionary:
+					for key in value.keys():
+						if value[key] is Dictionary:
+							val_q.append(value[key])
+						else:
+							write_to_file += str(value[key]).replace(",",";") + ","
+			val_q = [mms_productions[i]]
+			while !val_q.is_empty():
+				var value = val_q.pop_front()
+				if value is Dictionary:
+					for key in value.keys():
+						if value[key] is Dictionary:
+							val_q.append(value[key])
+						else:
+							write_to_file += str(value[key]).replace(",",";") + ","
+			write_to_file += "\n"
 	
-	
-	
+	var file
+	if FileAccess.file_exists(save_path):
+		file = FileAccess.open(save_path, FileAccess.READ_WRITE)
+	else:
+		file = FileAccess.open(save_path, FileAccess.WRITE_READ)
+	print(file.get_open_error())
+	var file_content = file.get_as_text()
+	#for line in write_to_file.split("\n"):
+		#file.store_line(line)
+	write_to_file = file_content + write_to_file
+	file.store_string(write_to_file)
+	file.close()
 	
 	
 	

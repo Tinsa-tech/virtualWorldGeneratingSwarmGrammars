@@ -10,10 +10,11 @@ var distance_params : Dictionary # params for distance stuff (String : float) pa
 var beta : float # angle the agent can see
 var influences : Dictionary # influences on other agents or the terrain (String : float) pairs, where the string is the type of the agent that gets influenced
 var constraints : Vector3 # per axis constraint vector
+var seed : bool
 
 var forward : Vector3
 var velocity : Vector3 # actual velocity of this agent
-var new_velocity : Vector3
+var acceleration : Vector3
 var individual_world_center : Vector3 # world center for this specific agent
 
 func take_values(template : ActorTemplate):
@@ -25,23 +26,25 @@ func take_values(template : ActorTemplate):
 	distance_params = template.distance_params
 	beta = template.beta
 	influences = template.influences
+	seed = template.seed
 	super.take_values(template)
 
 func movement(neighbours : Array[Actor], terrain : Terrain):
-	var acceleration : Vector3 = Vector3.ZERO
+	acceleration = Vector3.ZERO
 	
 	var alignment : Vector3 = Vector3.ZERO
 	var cohesion : Vector3 = Vector3.ZERO
 	var separation : Vector3 = Vector3.ZERO
 	var center : Vector3 = Vector3.ZERO
-	var random : Vector3 = Vector3.ZERO
 	var bias : Vector3 = Vector3.ZERO
 	var floor_urge : Vector3 = Vector3.ZERO
 	var gradient : Vector3 = Vector3.ZERO	
 	var slope : Vector3 = Vector3.ZERO
 	var normal : Vector3 = Vector3.ZERO
 	
-	if movement_urges.has(Database.movement_urges.ALIGNMENT):
+	## random urge gets done in update_position()
+	
+	if movement_urges[Database.movement_urges.ALIGNMENT] != 0:
 		var count : float = 0
 		for neighbour in neighbours:
 			if neighbour.id == self.id:
@@ -91,12 +94,6 @@ func movement(neighbours : Array[Actor], terrain : Terrain):
 		#center.normalized()
 		acceleration += center * movement_urges[Database.movement_urges.CENTER]
 	
-	if movement_urges.has(Database.movement_urges.RANDOM):
-		var rng = RandomNumberGenerator.new()
-		random = Vector3(rng.randf_range(-1.0, 1.0), rng.randf_range(-1.0, 1.0), rng.randf_range(-1.0, 1.0))
-		#random.normalized()
-		acceleration += random * movement_urges[Database.movement_urges.RANDOM]
-	
 	if movement_urges.has(Database.movement_urges.BIAS):
 		bias = movement_urges[Database.movement_urges.BIAS]
 		#bias.normalized()
@@ -117,7 +114,7 @@ func movement(neighbours : Array[Actor], terrain : Terrain):
 		if movement_urges.has(Database.movement_urges.GRADIENT):
 			acceleration += gradient * movement_urges[Database.movement_urges.GRADIENT]
 		
-		if gradient == Vector3.ZERO:
+		if gradient.is_zero_approx():
 			slope = gradient
 		else:
 			var norm_grad = gradient.normalized() * terrain.distance_between_vertices * 0.5
@@ -143,39 +140,20 @@ func movement(neighbours : Array[Actor], terrain : Terrain):
 		var minus_x = terrain.get_height_at(actor_position - offset_x)
 		var diff_x = plus_x - minus_x
 		var diff_z = plus_z - minus_z
-		if is_nan(plus_x) or is_nan(minus_x) or is_nan(plus_z) or is_nan(minus_x):
-			print("actor_position: " + str(actor_position))
-			print("offset_x: " + str(offset_x) + " offset_z: " + str(offset_z))
-			print("terrain_height for normal calculation: plus z: " + str(plus_z) + " minus z: " + str(minus_z)
-			+ " plus_x: " + str(plus_x) + " minus x: " + str(minus_x))
-			print("actor_position")
-			print("ALARM")
-			terrain.get_height_at(actor_position + offset_x)
-			terrain.get_height_at(actor_position - offset_x)
-			terrain.get_height_at(actor_position + offset_z)
-			terrain.get_height_at(actor_position - offset_z)
+		#if is_nan(plus_x) or is_nan(minus_x) or is_nan(plus_z) or is_nan(minus_x):
+			#print("actor_position: " + str(actor_position))
+			#print("offset_x: " + str(offset_x) + " offset_z: " + str(offset_z))
+			#print("terrain_height for normal calculation: plus z: " + str(plus_z) + " minus z: " + str(minus_z)
+			#+ " plus_x: " + str(plus_x) + " minus x: " + str(minus_x))
+			#print("actor_position")
+			#print("ALARM")
+			#terrain.get_height_at(actor_position + offset_x)
+			#terrain.get_height_at(actor_position - offset_x)
+			#terrain.get_height_at(actor_position + offset_z)
+			#terrain.get_height_at(actor_position - offset_z)
 		normal = Vector3(0, diff_z, 1).cross(Vector3(1, diff_x, 0))
 		acceleration += normal * movement_urges[Database.movement_urges.NORMAL]
 
-
-	acceleration = Vector3(acceleration.x * constraints.x, acceleration.y * constraints.y, acceleration.z * constraints.z)
-	
-	if acceleration.length() > a_max and acceleration.length() != 0:
-		acceleration = acceleration * (a_max / acceleration.length())
-	
-	new_velocity = velocity + acceleration
-	if new_velocity.length() > velocity_params[Database.velocity_params.MAX] and new_velocity.length() != 0:
-		new_velocity = new_velocity * (velocity_params[Database.velocity_params.MAX] / new_velocity.length())
-	
-	
-
-	if movement_urges.has(Database.movement_urges.PACE):
-		var pace_keeping = movement_urges[Database.movement_urges.PACE]
-		if pace_keeping > 0.0:
-			var new_velocity_norm = new_velocity
-			if new_velocity_norm.length() > velocity_params[Database.velocity_params.NORM] and new_velocity_norm.length() != 0:
-				new_velocity_norm = new_velocity_norm * (velocity_params[Database.velocity_params.NORM] / new_velocity_norm.length())
-			new_velocity = pace_keeping * new_velocity_norm + (1 - pace_keeping) * new_velocity
 	
 	if is_nan(velocity.x) or is_nan(velocity.y) or is_nan(velocity.z):
 		print("----------------------ALAAAAARM---------------------------")
@@ -183,7 +161,6 @@ func movement(neighbours : Array[Actor], terrain : Terrain):
 		print("cohesion: " + str(cohesion))
 		print("separation: " + str(separation))
 		print("center: " + str(center))
-		print("random: " + str(random))
 		print("bias: " + str(bias))
 		print("floor: " + str(floor_urge))
 		print("gradient: " + str(gradient))
@@ -193,7 +170,32 @@ func movement(neighbours : Array[Actor], terrain : Terrain):
 		print("actor_position: " + str(actor_position))
 		print("----------------------ALAAAAARM---------------------------")
 
-func update_position(terrain : Terrain):
+func update_position(terrain : Terrain, rng : Random):
+	## We have to add the random vector here, because the other method gets multithreaded
+	## making it undeterministic in case we want to use a seed.
+	var random : Vector3 = Vector3.ZERO
+	if movement_urges.has(Database.movement_urges.RANDOM):
+		random = Vector3(rng.randf_range(-1.0, 1.0), rng.randf_range(-1.0, 1.0), rng.randf_range(-1.0, 1.0))
+		#random.normalized()
+		acceleration += random * movement_urges[Database.movement_urges.RANDOM]
+	
+	acceleration = Vector3(acceleration.x * constraints.x, acceleration.y * constraints.y, acceleration.z * constraints.z)
+	
+	if acceleration.length() > a_max and acceleration.length() != 0:
+		acceleration = acceleration * (a_max / acceleration.length())
+	
+	var new_velocity = velocity + acceleration
+	if new_velocity.length() > velocity_params[Database.velocity_params.MAX] and new_velocity.length() != 0:
+		new_velocity = new_velocity * (velocity_params[Database.velocity_params.MAX] / new_velocity.length())
+
+	if movement_urges.has(Database.movement_urges.PACE):
+		var pace_keeping = movement_urges[Database.movement_urges.PACE]
+		if pace_keeping > 0.0:
+			var new_velocity_norm = new_velocity
+			if new_velocity_norm.length() > velocity_params[Database.velocity_params.NORM] and new_velocity_norm.length() != 0:
+				new_velocity_norm = new_velocity_norm * (velocity_params[Database.velocity_params.NORM] / new_velocity_norm.length())
+			new_velocity = pace_keeping * new_velocity_norm + (1 - pace_keeping) * new_velocity
+	
 	var new_pos = actor_position + new_velocity
 	var floor_height = terrain.get_height_at(new_pos)
 	
@@ -201,7 +203,7 @@ func update_position(terrain : Terrain):
 		if movement_urges[Database.movement_urges.NOCLIP] == false and floor_height > new_pos.y:
 			new_pos = Vector3(new_pos.x, floor_height, new_pos.z)
 	
-	print("type: " + type + " pos: " + str(new_pos) + " velo: " + str(new_velocity) + " floor_height: " + str(floor_height))
+	# print("type: " + type + " pos: " + str(new_pos) + " velo: " + str(new_velocity) + " floor_height: " + str(floor_height))
 	
 	velocity = new_velocity
 	actor_position = new_pos

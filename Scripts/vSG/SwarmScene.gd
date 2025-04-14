@@ -3,7 +3,7 @@ class_name SwarmScene extends Node3D
 var vsg : vSG
 
 @export
-var hud : HUD
+var hud : SwarmHUD
 @export
 var parent : Node3D
 
@@ -47,6 +47,7 @@ func step():
 
 func end():
 	vsg.clean_up()
+	_on_finished(vSG.finish_code.MANUAL)
 
 func _input(event: InputEvent) -> void:
 	if !has_focus:
@@ -77,15 +78,46 @@ func enable_camera():
 	camera.active = true
 
 func set_vsg(to_set : vSG):
+	if vsg:
+		vsg.on_finished.disconnect(_on_finished)
+	
 	vsg = to_set
+	
+	if agents_hidden:
+		vsg.hide_agents()
+	if artifacts_hidden:
+		vsg.hide_artifacts()
+	if connections_hidden:
+		vsg.hide_connections()
+	if terrain_hidden:
+		vsg.hide_terrain()
+	
+	vsg.keep_running = keep_running
+	
+	vsg.on_finished.connect(_on_finished)
 
 func init_vsg(database : Database):
+	
 	for child in parent.get_children():
 		child.queue_free()
 	if vsg:
 		swarm_info.clear()
+	hud.clear()
 	vsg = vSG.new(database, camera, parent, hud)
+	
+	if agents_hidden:
+		vsg.hide_agents()
+	if artifacts_hidden:
+		vsg.hide_artifacts()
+	if connections_hidden:
+		vsg.hide_connections()
+	if terrain_hidden:
+		vsg.hide_terrain()
+	
 	vsg.keep_running = keep_running
+	
+	vsg.on_finished.connect(_on_finished)
+	
 	swarm_info.set_data(database)
 	swarm_info.lock()
 
@@ -95,6 +127,7 @@ func new_data(database : Database):
 	else:
 		vsg = vSG.new(database, camera, parent, hud)
 	vsg.keep_running = keep_running
+	swarm_info.clear_ui()
 	swarm_info.set_data(database)
 	swarm_info.lock()
 
@@ -109,9 +142,9 @@ func toggle_info():
 		swarm_info.show()
 		hud.hide()
 
-func add_actor(type : String):
+func add_actor(type : String) -> ActorObject:
 	should_play = false
-	vsg.add_actor(type)
+	return vsg.add_actor(type)
 
 func hide_scene():
 	self.hide()
@@ -153,10 +186,16 @@ func toggle_terrain():
 	terrain_hidden = !terrain_hidden
 
 func restart_swarm():
+	new_data(swarm_info.gather_data())
+	hud.clear()
 	vsg.restart_swarm()
+	
 
 func hide_controls():
 	hud.hide_controls()
 
 func show_controls():
 	hud.show_controls()
+
+func _on_finished(finish_reason : int):
+	hud.set_finish_reason(finish_reason)

@@ -5,16 +5,18 @@ var templates : Array[ActorTemplate]
 var productions : Array[Production]
 var t : float = 1.0
 var terrain_size : int = 100
+var rng_seed : int
+var use_rng_seed : bool
 var colors : Dictionary
 
 enum movement_urges {SEPARATION, ALIGNMENT, COHESION, RANDOM, BIAS,
-CENTER, FLOOR, NORMAL, GRADIENT, SLOPE, NOCLIP, PACE, SEED}
+CENTER, FLOOR, NORMAL, GRADIENT, SLOPE, NOCLIP, PACE}
 enum velocity_params {NORM, MAX}
 enum distance_params {VIEW, SEPARATION}
 enum energy_params {SUCCESSOR, PERSIST, MOVE}
 enum energy_params_modes {CONST, INHERIT, DISTANCE}
 
-func save_data(path_to_save : String):
+func to_dict() -> Dictionary:
 	var dict = {
 		"first_generation" : first_generation,
 	}
@@ -40,16 +42,19 @@ func save_data(path_to_save : String):
 	
 	dict["t"] = t
 	dict["terrain_size"] = terrain_size
+	dict["use_rng_seed"] = use_rng_seed
+	dict["rng_seed"] = rng_seed
+	
+	return dict
+
+func save_data(path_to_save : String):
+	var dict = to_dict()
 	
 	var save_file = FileAccess.open(path_to_save, FileAccess.WRITE)
 	save_file.store_line(JSON.stringify(dict, "\t"))
 	save_file.close()
 
-func load_data(path_to_load : String) -> void:
-	var save_file = FileAccess.open(path_to_load, FileAccess.READ)
-	var json_string = save_file.get_as_text()
-	
-	var dict = JSON.parse_string(json_string)
+func from_dict(dict : Dictionary) -> void:
 	var agent_templates = dict["agents"]
 	for agent in agent_templates:
 		var template = AgentTemplate.new()
@@ -73,15 +78,25 @@ func load_data(path_to_load : String) -> void:
 	
 	t = dict["t"]
 	terrain_size = dict["terrain_size"]
+	use_rng_seed = dict["use_rng_seed"]
+	rng_seed = dict["rng_seed"]
 	
 	create_colors()
+
+func load_data(path_to_load : String) -> void:
+	var save_file = FileAccess.open(path_to_load, FileAccess.READ)
+	var json_string = save_file.get_as_text()
+	
+	var dict = JSON.parse_string(json_string)
+	from_dict(dict)
 	
 	save_file.close()
 
 ## generates a random vSG
 func random():
 	var rng = RandomNumberGenerator.new	()
-	var nr_agents = rng.randi_range(1,5)
+	var nr_agents = 3
+	# var nr_agents = rng.randi_range(1,5)
 	var agents : Array[AgentTemplate] = []
 	
 	for i in range(nr_agents):
@@ -98,12 +113,13 @@ func random():
 		agent.movement_urges[Database.movement_urges.SLOPE] = rng.randf_range(0.0, 10.0)
 		agent.movement_urges[Database.movement_urges.NOCLIP] = rng.randf() > 0.5
 		agent.movement_urges[Database.movement_urges.PACE] = rng.randf_range(0.0, 10.0)
-		agent.movement_urges[Database.movement_urges.SEED] = rng.randf() > 0.5
 		agent.movement_urges[Database.movement_urges.BIAS] = Vector3(rng.randf_range(-1.0, 1.0), rng.randf_range(-1.0, 1.0), rng.randf_range(-1.0, 1.0))
 		
 		agent.a_max = rng.randf() # between 0 and 1 inclusive
 		agent.beta = rng.randf_range(0.0, 360.0)
 		agent.constraints = Vector3(rng.randf_range(-1.0, 1.0), rng.randf_range(-1.0, 1.0), rng.randf_range(-1.0, 1.0))
+		
+		agent.seed = rng.randf() > 0.5
 		
 		agent.distance_params[Database.distance_params.VIEW] = rng.randf_range(1.0, 5.0)
 		agent.distance_params[Database.distance_params.SEPARATION] = rng.randf_range(0.0, 5.0)
@@ -128,7 +144,8 @@ func random():
 		templates.append(agent)
 		agents.append(agent)
 	
-	var nr_artifacts = rng.randi_range(1, 5)
+	# var nr_artifacts = rng.randi_range(1, 5)
+	var nr_artifacts = 3
 	var artifacts : Array[ArtifactTemplate] = []
 	
 	for i in range(nr_artifacts):
@@ -147,14 +164,16 @@ func random():
 			template.influences[influenced.type] = rng.randf_range(0.0, 5.0)
 		
 		if template is AgentTemplate:
-			var e_zero_successor_count = rng.randi_range(0, 5)
+			# var e_zero_successor_count = rng.randi_range(0, 5)
+			var e_zero_successor_count = 3
 			for i in range(e_zero_successor_count):
 				var selected = rng.randi_range(0, templates.size() - 2)
 				var self_index = templates.find(template)
 				if selected >= self_index:
 					selected += 1
 				template.energy_calculations.zero_successors.append(templates[selected].type)
-	var prod_count = rng.randi_range(0, 5)
+	# var prod_count = rng.randi_range(0, 5)
+	var prod_count = 3
 	
 	for i in range(prod_count):
 		var production = Production.new()
@@ -169,7 +188,8 @@ func random():
 		production.persist = rng.randf() > 0.5
 		production.theta = rng.randf_range(0.0, 100)
 		
-		var successor_count = rng.randi_range(1, 3)
+		# var successor_count = rng.randi_range(1, 3)
+		var successor_count = 3
 		
 		for j in range(successor_count):
 			production.successor.append(Utility.select_random_from_array(templates, rng).type)
@@ -177,7 +197,11 @@ func random():
 		productions.append(production)
 	
 	for agent in agents:
-		first_generation.append(agent.type)
+		if rng.randf() > 0.5:
+			first_generation.append(agent.type)
+	
+	if first_generation.is_empty():
+		first_generation.append(agents[0].type)
 	
 	create_colors()
 
@@ -215,8 +239,6 @@ static func movement_urge_to_string(movement_urge : int) -> String:
 			ret = "noclip"
 		movement_urges.PACE:
 			ret = "pace"
-		movement_urges.SEED:
-			ret = "seed"
 		_:
 			ret = "integer out of bounds"
 	return ret
@@ -248,8 +270,6 @@ static func movement_urge_to_int(movement_urge : String) -> int:
 			ret = movement_urges.NOCLIP
 		"pace":
 			ret = movement_urges.PACE
-		"seed":
-			ret = movement_urges.SEED
 		_:
 			ret = -1
 	return ret

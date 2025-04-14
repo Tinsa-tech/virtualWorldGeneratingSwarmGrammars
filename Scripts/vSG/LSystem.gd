@@ -2,7 +2,7 @@ class_name LSystem
 
 var productions : Array[Production]
 
-func apply_productions(actors : Array[ActorObject]) -> Array:
+func apply_productions(actors : Array[ActorObject], random : Random) -> Array:
 	var ids_apply_productions_to : Array[int] = []
 	var persist : Array[bool] = []
 	var types_to_instantiate : Array[Array] = []
@@ -32,17 +32,16 @@ func apply_productions(actors : Array[ActorObject]) -> Array:
 		if applicable_prods.is_empty():
 			continue
 		
-		var select_random : Array[Production]
+		var select_random = PackedFloat32Array([])
 		for production in applicable_prods:
-			for i in range(production.theta):
-				select_random.append(production)
+			select_random.append(production.theta)
 		
 		if select_random.is_empty():
 			return []
 		
-		var rng = RandomNumberGenerator.new()
-		var index = rng.randi_range(0, len(select_random) - 1)
+		var index = random.rand_weighted(select_random)
 		ids_apply_productions_to.append(agent.id)
-		persist.append(select_random[index].persist)
-		types_to_instantiate.append(select_random[index].successor)
+		persist.append(applicable_prods[index].persist)
+		types_to_instantiate.append(applicable_prods[index].successor)
+		print("prod: " + str(applicable_prods[index].predecessor))
 	return [ids_apply_productions_to, persist, types_to_instantiate]

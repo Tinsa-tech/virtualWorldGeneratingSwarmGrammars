@@ -97,6 +97,8 @@ func get_data():
 	agent_template.a_max = a_max_obj.value
 	agent_template.beta = beta_obj.value
 	agent_template.constraints = constraints_obj.value
+	agent_template.seed = see_obj.value
+	
 	agent_template.distance_params = {
 		Database.distance_params.VIEW : view_distance_obj.value,
 		Database.distance_params.SEPARATION : separation_distance_obj.value
@@ -133,12 +135,12 @@ func get_data():
 		Database.movement_urges.SLOPE : slo_obj.value,
 		Database.movement_urges.PACE : pac_obj.value,
 		Database.movement_urges.NOCLIP : noc_obj.value,
-		Database.movement_urges.SEED : see_obj.value
 	}
 	agent_template.velocity_params = {
 		Database.velocity_params.NORM : v_norm_obj.value,
 		Database.velocity_params.MAX : v_max_obj.value
 	}
+
 
 func set_type(new_type : String):
 	type_obj.set_value(new_type)
@@ -172,8 +174,6 @@ func set_movement_urges(movement_urges : Dictionary):
 				pac_obj.set_value(value)
 			Database.movement_urges.NOCLIP:
 				noc_obj.set_value(value)
-			Database.movement_urges.SEED:
-				see_obj.set_value(value)
 
 func set_energy(energy : Energy):
 	energy_successor_mode_obj.set_value(energy.successor_mode)
@@ -201,6 +201,7 @@ func set_movement_parameters(template : AgentTemplate):
 	beta_obj.set_value(template.beta)
 	separation_distance_obj.set_value(template.distance_params[Database.distance_params.SEPARATION])
 	constraints_obj.set_value(template.constraints)
+	see_obj.set_value(template.seed)
 
 func set_influences(influences : Dictionary):
 	for key in influences.keys():

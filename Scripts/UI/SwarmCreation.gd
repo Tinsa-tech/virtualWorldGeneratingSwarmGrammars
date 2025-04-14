@@ -50,6 +50,7 @@ func _on_random_button_pressed():
 
 func _on_start_button_pressed():
 	gather_data()
+	data.create_colors()
 	var swarm_scene : SwarmScene = SceneManager.get_instance().swarm_scene.instantiate()
 	get_tree().root.add_child(swarm_scene)
 	swarm_scene.init_vsg(data)

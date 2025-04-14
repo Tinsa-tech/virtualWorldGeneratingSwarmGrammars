@@ -4,6 +4,7 @@ extends ActorTemplate
 
 var movement_urges : Dictionary
 var energy_calculations : Energy = Energy.new()
+var seed : bool
 var a_max : float
 var velocity_params : Dictionary
 var constraints : Vector3
@@ -43,6 +44,7 @@ func to_dict() -> Dictionary:
 		"constraints" : const_arr,
 		"distance_params" : distance_params_strings,
 		"beta" : beta,
+		"seed" : seed,
 		"influences" : influences
 	}
 	var ret = {
@@ -87,5 +89,7 @@ func from_dict(dictionary : Dictionary) -> void:
 		distance_params[dp] = distance_params_strings[key]
 	
 	beta = dict_agent["beta"]
+	seed = dict_agent["seed"]
+	
 	influences = dict_agent["influences"]
 	

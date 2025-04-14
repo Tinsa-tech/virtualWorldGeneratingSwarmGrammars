@@ -5,9 +5,9 @@ func instantiate() -> void:
 	var agent : Agent = actor
 	agent.forward = -self.basis.z
 
-func update_position(terrain : Terrain):
+func update_position(terrain : Terrain, rng : Random):
 	var agent : Agent = actor
-	agent.update_position(terrain)
+	agent.update_position(terrain, rng)
 	self.position = agent.actor_position
 	if agent.velocity.length() > 0:
 		var target = self.global_position + agent.velocity

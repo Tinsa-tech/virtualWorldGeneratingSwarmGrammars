@@ -59,6 +59,11 @@ func clear():
 	productions_container.clear()
 	data.clear()
 
+func clear_ui():
+	agents_container.clear()
+	artifacts_container.clear()
+	productions_container.clear()
+
 func set_data(database : Database):
 	data = database
 	fill_ui()

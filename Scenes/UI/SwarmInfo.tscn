@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://coi6wrq5vkuuu"]
+[gd_scene load_steps=13 format=3 uid="uid://coi6wrq5vkuuu"]
 
 [ext_resource type="Script" path="res://Scripts/UI/SwarmInfo.gd" id="1_l6fv6"]
 [ext_resource type="Theme" uid="uid://daypr7artvlu3" path="res://Materials/Theme.tres" id="1_oaqh0"]
@@ -10,6 +10,8 @@
 [ext_resource type="Script" path="res://Scripts/UI/MiscUI.gd" id="6_6dg4x"]
 [ext_resource type="Script" path="res://Scripts/UI/UIList.gd" id="7_dxgr6"]
 [ext_resource type="PackedScene" uid="uid://brlquc24yftlm" path="res://Scenes/UI/UIListElementString.tscn" id="9_w50h6"]
+[ext_resource type="Script" path="res://Scripts/UI/BoolValueUI.gd" id="11_f416a"]
+[ext_resource type="Script" path="res://Scripts/UI/StringValueUI.gd" id="12_hggdl"]
 
 [node name="HBoxContainer" type="HBoxContainer" node_paths=PackedStringArray("agents_container", "productions_container", "artifacts_container", "misc")]
 anchors_preset = 15
@@ -124,7 +126,7 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MiscContainer" type="PanelContainer" parent="VBoxContainer3/Misc/ScrollContainer" node_paths=PackedStringArray("first_gen_obj", "t_obj", "terrain_size_obj")]
+[node name="MiscContainer" type="PanelContainer" parent="VBoxContainer3/Misc/ScrollContainer" node_paths=PackedStringArray("first_gen_obj", "t_obj", "terrain_size_obj", "use_rng_seed_obj", "rng_seed_obj")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -132,6 +134,8 @@ script = ExtResource("6_6dg4x")
 first_gen_obj = NodePath("FirstGeneration/VBoxContainer")
 t_obj = NodePath("FirstGeneration/T")
 terrain_size_obj = NodePath("FirstGeneration/TerrainSize")
+use_rng_seed_obj = NodePath("FirstGeneration/UseSeed")
+rng_seed_obj = NodePath("FirstGeneration/Seed")
 
 [node name="Panel" type="Panel" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer"]
 layout_mode = 2
@@ -172,6 +176,7 @@ text = "+"
 
 [node name="T" type="HBoxContainer" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration"]
 layout_mode = 2
+tooltip_text = "Distance between vertices on the terrain"
 script = ExtResource("2_ykiv5")
 
 [node name="Label" type="Label" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/T"]
@@ -189,6 +194,7 @@ layout_mode = 2
 
 [node name="TerrainSize" type="HBoxContainer" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration"]
 layout_mode = 2
+tooltip_text = "Number of vertices on a side of the terrain square"
 script = ExtResource("2_ykiv5")
 
 [node name="Label" type="Label" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/TerrainSize"]
@@ -202,4 +208,37 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="LineEdit" type="LineEdit" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/TerrainSize"]
+layout_mode = 2
+
+[node name="UseSeed" type="HBoxContainer" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration"]
+layout_mode = 2
+tooltip_text = "If true, use a seed for the simulation.
+If false, use a random seed."
+script = ExtResource("11_f416a")
+
+[node name="Label" type="Label" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/UseSeed"]
+layout_mode = 2
+text = "Use seed"
+
+[node name="Control" type="Control" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/UseSeed"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/UseSeed"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Seed" type="HBoxContainer" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration"]
+layout_mode = 2
+script = ExtResource("12_hggdl")
+
+[node name="Label" type="Label" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/Seed"]
+layout_mode = 2
+text = "Seed"
+
+[node name="Control" type="Control" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/Seed"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer3/Misc/ScrollContainer/MiscContainer/FirstGeneration/Seed"]
 layout_mode = 2

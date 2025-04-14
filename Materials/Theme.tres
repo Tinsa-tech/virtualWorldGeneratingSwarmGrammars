@@ -1,7 +1,8 @@
 [gd_resource type="Theme" load_steps=2 format=3 uid="uid://daypr7artvlu3"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boun1"]
-bg_color = Color(0, 0.309804, 0, 0.713726)
+[ext_resource type="StyleBox" uid="uid://m16cta2sfhof" path="res://Materials/GreenStylebox.tres" id="1_tqh08"]
 
 [resource]
-Panel/styles/panel = SubResource("StyleBoxFlat_boun1")
+Panel/styles/panel = ExtResource("1_tqh08")
+TabContainer/styles/panel = ExtResource("1_tqh08")
+TabContainer/styles/tab_focus = ExtResource("1_tqh08")

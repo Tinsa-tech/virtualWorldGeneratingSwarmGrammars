@@ -24,9 +24,12 @@ func _on_load_button_pressed():
 	var data : Database = Database.new()
 	data.load_data("user://Saved/" + label.text + ".json")
 	if instantiate_scene:
+		data.use_rng_seed = true
 		get_tree().root.add_child(obj)
 		obj.init_vsg(data)
+		obj.swarm_info.misc.use_rng_seed_obj.unlock()
 		obj.enable_camera()
+
 	
 	loaded.emit(data, label.text)
 		

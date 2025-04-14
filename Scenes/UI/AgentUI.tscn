@@ -44,7 +44,7 @@ gra_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/Mo
 slo_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Slope")
 pac_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Pace")
 noc_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Noclip")
-see_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Seed")
+see_obj = NodePath("Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Seed")
 energy_move_mode_obj = NodePath("Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move/VBoxContainer/Mode")
 energy_move_value_obj = NodePath("Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Move/VBoxContainer/Value")
 energy_successor_mode_obj = NodePath("Agent/AgentContainer/VBoxContainer/EnergyCalculations/VBoxContainer/PanelContainer/VBoxContainer/Successor/VBoxContainer/Mode")
@@ -423,24 +423,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="CheckButton" type="CheckButton" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Noclip"]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-
-[node name="Seed" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
-layout_mode = 2
-script = ExtResource("5_4rn61")
-
-[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Seed"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-text = "seed"
-vertical_alignment = 1
-
-[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Seed"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="CheckButton" type="CheckButton" parent="Agent/AgentContainer/VBoxContainer/MovementUrgesContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Seed"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
@@ -983,6 +965,24 @@ text = "z:"
 layout_mode = 2
 text = "0"
 placeholder_text = "0"
+
+[node name="Seed" type="HBoxContainer" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("5_4rn61")
+
+[node name="Label" type="Label" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Seed"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "seed"
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Seed"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CheckButton" type="CheckButton" parent="Agent/AgentContainer/VBoxContainer/MovementParamsContainer/MovementUrgesContainer/MovementUrges/VBoxContainer/Seed"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
 
 [node name="InfluencesContainer" type="PanelContainer" parent="Agent/AgentContainer/VBoxContainer"]
 layout_mode = 2

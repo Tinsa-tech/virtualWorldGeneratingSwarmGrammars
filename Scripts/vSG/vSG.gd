@@ -1,5 +1,7 @@
 class_name vSG
 
+enum finish_code {AGENTS_DEAD, TOO_MANY_AGENTS, TOO_MANY_ARTIFACTS, TOO_MANY_STEPS, MANUAL}
+
 var l_system : LSystem
 var actors : Array[ActorObject]
 var agents : Array[AgentObject]
@@ -21,13 +23,31 @@ var grid : SpaceGrid
 var finished : bool = false
 var keep_running : bool = false
 
-var hud : HUD
+@export
+var editable : bool = false
+
+var step_count : int = 0
+
+var hud : SwarmHUD
 var parent : Node3D
 
-func _init(data : Database, camera : FreeLookCamera, parent_node : Node3D, heads_up_display : HUD):
+var random : Random
+
+signal on_finished(reason : int)
+
+
+func _init(data : Database, camera : FreeLookCamera, parent_node : Node3D, 
+			heads_up_display : SwarmHUD):
 	database = data
 	parent = parent_node
 	hud = heads_up_display
+	
+	random = Random.new()
+	if database.use_rng_seed:
+		random.set_seed(database.rng_seed)
+	else:
+		random.randomize()
+		database.rng_seed = random.get_seed()
 	
 	var terrain_size = database.t * database.terrain_size
 	camera.position = Vector3(0, terrain_size / 4, terrain_size /2)
@@ -67,6 +87,7 @@ func _init(data : Database, camera : FreeLookCamera, parent_node : Node3D, heads
 	
 	hud.set_agent_count(agents.size())
 	hud.set_artifact_count(artifacts.size())
+	hud.set_step_count(step_count)
 
 func step() -> void:
 	if reproduce:
@@ -77,10 +98,17 @@ func step() -> void:
 	hud.set_agent_count(agents.size())
 	hud.set_artifact_count(artifacts.size())
 	
-	if agents.size() > 2000 or terrain.new_influencers.size() > 100 or agents.size() <= 0:
-		clean_up()
+	if agents.size() > 2000 or terrain.new_influencers.size() > 100 or agents.size() <= 0 or step_count > 100:
 		if !keep_running:
-			print("finished")
+			if agents.size() <= 0: 
+				on_finished.emit(finish_code.AGENTS_DEAD)
+			elif agents.size() > 2000:
+				on_finished.emit(finish_code.TOO_MANY_AGENTS)
+			elif terrain.new_influencers.size() > 100:
+				on_finished.emit(finish_code.TOO_MANY_ARTIFACTS)
+			elif step_count > 100:
+				on_finished.emit(finish_code.TOO_MANY_STEPS)
+		clean_up()
 		return
 
 	#movement()
@@ -91,6 +119,9 @@ func step() -> void:
 	# update_octree()
 	update_grid()
 	
+	step_count += 1
+	hud.set_step_count(step_count)
+	
 	if (len(artifacts) == 0):
 		return
 	if !terrain_changed:
@@ -100,7 +131,7 @@ func step() -> void:
 
 func update_agent_positions():
 	for agent in agents:
-		agent.update_position(terrain)
+		agent.update_position(terrain, random)
 
 func update_octree():
 	octree = Octree.new(10, database.t * database.terrain_size / 2)
@@ -126,6 +157,7 @@ func instantiate(template : ActorTemplate) -> ActorObject:
 		agents.append(obj)
 		parent.add_child(obj)
 		obj.set_color(database.colors[template.type])
+		obj.editable = editable
 		return obj
 	else:
 		var obj : ArtifactObject = SceneManager.get_instance().artifact_scene.instantiate()
@@ -139,10 +171,11 @@ func instantiate(template : ActorTemplate) -> ActorObject:
 		terrain_changed = true
 		parent.add_child(obj)
 		obj.set_color()
+		obj.editable = editable
 		return obj
 
 func apply_productions():
-	var arr = l_system.apply_productions(actors)
+	var arr = l_system.apply_productions(actors, random)
 	if arr.is_empty():
 		return
 	var ids_apply_productions_to = arr[0]
@@ -166,7 +199,7 @@ func apply_productions():
 			var agent = agent_obj.actor 
 			if id_a_p == agent.id:
 				var successors = instantiated[i]
-				replace_agent(agent, successors, persist[i])
+				replace_agent(agent, successors)
 				calculate_energies(agent, successors, persist[i])
 				if !persist[i]:
 					remove.append(agent_obj)
@@ -194,7 +227,7 @@ func movement_agent(agent_index : int):
 func recalculate_terrain():
 	terrain.update_terrain()
 
-func replace_agent(agent_parent : Agent, new_actors : Array, persist : bool):
+func replace_agent(agent_parent : Agent, new_actors : Array):
 	for new_actor_obj in new_actors:
 		var new_actor = new_actor_obj.actor
 		new_actor.actor_position = agent_parent.actor_position
@@ -204,7 +237,7 @@ func replace_agent(agent_parent : Agent, new_actors : Array, persist : bool):
 			if agent_parent.back_reference:
 				new_actor.back_reference = agent_parent.back_reference
 			new_actor.velocity = agent_parent.velocity
-			if agent_parent.movement_urges.has(database.movement_urges.SEED):
+			if agent_parent.seed:
 				new_actor.individual_world_center = agent_parent.actor_position
 		else:
 			if agent_parent.back_reference:
@@ -292,8 +325,9 @@ func kill_all_agents():
 	agents.clear()
 		
 func clean_up():
+	step_count = 0
 	kill_all_agents()
-	hud.set_agent_count(agents.size())
+	# hud.set_agent_count(agents.size())
 	hud.set_artifact_count(artifacts.size())
 	recalculate_terrain()
 	terrain.smooth_normals()
@@ -301,15 +335,14 @@ func clean_up():
 		grid.clean_up()
 		finished = true
 
-func add_actor(type : String):
+func add_actor(type : String) -> ActorObject:
 	var template : ActorTemplate
 	for t in database.templates:
 		if t.type == type:
 			template = t
 	var obj : ActorObject = instantiate(template)
-	obj.position = Vector3(0,5,0)
-	obj.actor.actor_position = Vector3(0,5,0)
-	obj.editable = true
+	obj.position = Vector3(0,terrain.get_height_at(Vector3.ZERO),0)
+	obj.actor.actor_position = obj.position
 	if obj is ArtifactObject:
 		if obj.actor.influence_on_terrain > 0:
 			terrain.add_influencer(obj.actor)
@@ -319,6 +352,7 @@ func add_actor(type : String):
 	hud.set_agent_count(agents.size())
 	hud.set_artifact_count(artifacts.size())
 	add_to_grid(obj)
+	return obj
 
 func connect_with_line(pointA : Vector3, pointB : Vector3):
 	if pointA.is_equal_approx(pointB):
@@ -346,6 +380,11 @@ func restart_swarm():
 	terrain.queue_free()
 	grid.clean_up()
 	
+	if database.use_rng_seed:
+		random.set_seed(database.rng_seed)
+	else:
+		random.randomize()
+	
 	terrain = SceneManager.get_instance().terrain_scene.instantiate()
 	terrain.generate_terrain(database.t, database.terrain_size)
 	parent.add_child.call_deferred(terrain)
@@ -370,6 +409,8 @@ func restart_swarm():
 	
 	hud.set_agent_count(agents.size())
 	hud.set_artifact_count(artifacts.size())
+	
+	finished = false
 
 #region hiding and showing objects
 func hide_agents():

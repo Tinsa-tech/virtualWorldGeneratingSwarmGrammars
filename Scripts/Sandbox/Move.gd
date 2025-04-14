@@ -61,7 +61,6 @@ func _input(event: InputEvent) -> void:
 			drag_z = false
 
 func _on_x_arrow_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
-
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.is_pressed():
