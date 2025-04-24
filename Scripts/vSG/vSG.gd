@@ -34,7 +34,7 @@ var parent : Node3D
 var random : Random
 
 signal on_finished(reason : int)
-
+signal actor_added(added : ActorObject)
 
 func _init(data : Database, camera : FreeLookCamera, parent_node : Node3D, 
 			heads_up_display : SwarmHUD):
@@ -75,12 +75,13 @@ func _init(data : Database, camera : FreeLookCamera, parent_node : Node3D,
 			if actor == template.type:
 				var obj = instantiate(template)
 				var real_actor = obj.actor
-				real_actor.energy = 30
+				real_actor.energy = 10
 				real_actor.actor_position = Vector3(0, 0, 0)
 				obj.position = Vector3.ZERO
 				# obj.velocity = Vector3.UP
 				# add_to_octree(real_actor)
 				add_to_grid(obj)
+				actor_added.emit(obj)
 	
 	l_system = LSystem.new()
 	l_system.productions = database.productions
@@ -199,7 +200,7 @@ func apply_productions():
 			var agent = agent_obj.actor 
 			if id_a_p == agent.id:
 				var successors = instantiated[i]
-				replace_agent(agent, successors)
+				replace_agent(agent, successors, persist[i])
 				calculate_energies(agent, successors, persist[i])
 				if !persist[i]:
 					remove.append(agent_obj)
@@ -227,7 +228,7 @@ func movement_agent(agent_index : int):
 func recalculate_terrain():
 	terrain.update_terrain()
 
-func replace_agent(agent_parent : Agent, new_actors : Array):
+func replace_agent(agent_parent : Agent, new_actors : Array, persist : bool):
 	for new_actor_obj in new_actors:
 		var new_actor = new_actor_obj.actor
 		new_actor.actor_position = agent_parent.actor_position
@@ -249,9 +250,20 @@ func replace_agent(agent_parent : Agent, new_actors : Array):
 				terrain.add_influencer(new_actor)
 		# add_to_octree(successor)
 		add_to_grid(new_actor_obj)
+		actor_added.emit(new_actor_obj)
+	
+	if !persist:
+		return
+	
+	for new_actor_obj in new_actors:
+		if new_actor_obj.actor is Artifact:
+			agent_parent.back_reference = new_actor_obj.actor
 
 func calculate_energies(predecessor : Agent, successors : Array, persist : bool):
 	var count = successors.size()
+	if persist:
+		count += 1
+
 	if predecessor.energy <= 0:
 		for successor in successors:
 			successor.actor.energy = predecessor.energy_calculations.zero_energy
@@ -269,8 +281,6 @@ func calculate_energies(predecessor : Agent, successors : Array, persist : bool)
 				successor.actor.energy = predecessor.energy * factor
 		Energy.successor.DISTRIBUTE:
 			var offset = predecessor.energy_calculations.successor_value
-			if persist:
-				count += 1
 			for successor in successors:
 				successor.actor.energy = (predecessor.energy - offset) / float(count)
 			predecessor.energy = 0
@@ -293,7 +303,7 @@ func calculate_energies(predecessor : Agent, successors : Array, persist : bool)
 			predecessor.energy -= value
 		Energy.predecessor.PER_SUCCESSOR:
 			var factor = predecessor.energy_calculations.predecessor_value
-			predecessor.energy -= count * factor
+			predecessor.energy -= (count - 1) * factor
 		Energy.predecessor.EQUAL:
 			predecessor.energy = successors[0].actor.energy
 		Energy.predecessor.CONSTDIST:
@@ -335,7 +345,7 @@ func clean_up():
 		grid.clean_up()
 		finished = true
 
-func add_actor(type : String) -> ActorObject:
+func add_actor(type : String):
 	var template : ActorTemplate
 	for t in database.templates:
 		if t.type == type:
@@ -352,7 +362,7 @@ func add_actor(type : String) -> ActorObject:
 	hud.set_agent_count(agents.size())
 	hud.set_artifact_count(artifacts.size())
 	add_to_grid(obj)
-	return obj
+	actor_added.emit(obj)
 
 func connect_with_line(pointA : Vector3, pointB : Vector3):
 	if pointA.is_equal_approx(pointB):
@@ -406,6 +416,10 @@ func restart_swarm():
 				real_actor.actor_position = Vector3(0, 0, 0)
 				obj.position = Vector3.ZERO
 				add_to_grid(obj)
+				actor_added.emit(obj)
+	
+	step_count = 0
+	hud.set_step_count(step_count)
 	
 	hud.set_agent_count(agents.size())
 	hud.set_artifact_count(artifacts.size())

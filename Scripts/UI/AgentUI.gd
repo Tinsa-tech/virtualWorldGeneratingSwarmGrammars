@@ -113,10 +113,11 @@ func get_data():
 	agent_template.energy_calculations.predecessor_mode = energy_persist_mode_obj.value
 	agent_template.energy_calculations.zero_energy = energy_zero_value_obj.value
 	
+	agent_template.energy_calculations.zero_successors.clear()
 	for member : UIListElementString in energy_zero_successors_obj.list_elements:
 		agent_template.energy_calculations.zero_successors.append(member.value)
 
-	var dict : Dictionary
+	var dict : Dictionary = {}
 	for influence : UIInfluence in influences_obj.list_elements:
 		dict[influence.influence_on] = influence.value
 	

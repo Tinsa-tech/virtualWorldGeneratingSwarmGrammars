@@ -164,8 +164,8 @@ func random():
 			template.influences[influenced.type] = rng.randf_range(0.0, 5.0)
 		
 		if template is AgentTemplate:
-			# var e_zero_successor_count = rng.randi_range(0, 5)
-			var e_zero_successor_count = 3
+			var e_zero_successor_count = rng.randi_range(0, 5)
+			# var e_zero_successor_count = 3
 			for i in range(e_zero_successor_count):
 				var selected = rng.randi_range(0, templates.size() - 2)
 				var self_index = templates.find(template)
@@ -188,8 +188,8 @@ func random():
 		production.persist = rng.randf() > 0.5
 		production.theta = rng.randf_range(0.0, 100)
 		
-		# var successor_count = rng.randi_range(1, 3)
-		var successor_count = 3
+		var successor_count = rng.randi_range(0, 3)
+		# var successor_count = 3
 		
 		for j in range(successor_count):
 			production.successor.append(Utility.select_random_from_array(templates, rng).type)

@@ -1,11 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://daiyl4pnslsqs"]
+[gd_scene load_steps=5 format=3 uid="uid://daiyl4pnslsqs"]
 
 [ext_resource type="Script" path="res://Scripts/UI/SwarmHUD.gd" id="1_d2ij8"]
+[ext_resource type="Theme" uid="uid://daypr7artvlu3" path="res://Materials/Theme.tres" id="2_5x3bo"]
+[ext_resource type="PackedScene" uid="uid://df4jyaendlpnl" path="res://Scenes/UI/AgentUI.tscn" id="3_griti"]
+[ext_resource type="PackedScene" uid="uid://b30hfnx3h7qoa" path="res://Scenes/UI/ArtifactUI.tscn" id="4_lq6px"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_47i3b"]
-bg_color = Color(0, 0.309804, 0, 0.266667)
-
-[node name="CanvasLayer" type="CanvasLayer" node_paths=PackedStringArray("agent_count", "artifact_count", "step_count", "finish_reason", "controls", "control_text")]
+[node name="CanvasLayer" type="CanvasLayer" node_paths=PackedStringArray("agent_count", "artifact_count", "step_count", "finish_reason", "controls", "control_text", "selected_name", "position_x", "position_y", "position_z", "details_agent", "details_artifact", "arrow_button", "info")]
 layer = 2
 script = ExtResource("1_d2ij8")
 agent_count = NodePath("MarginContainer/Control/VBoxContainer/HBoxContainer/AgentCount")
@@ -14,6 +14,14 @@ step_count = NodePath("MarginContainer/Control/VBoxContainer/HBoxContainer4/Step
 finish_reason = NodePath("MarginContainer/Control/VBoxContainer/HBoxContainer3/FinishReason")
 controls = NodePath("MarginContainer/Controls")
 control_text = NodePath("MarginContainer/Controls/PanelContainer/MarginContainer/VBoxContainer/Label")
+selected_name = NodePath("MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/SelectedType")
+position_x = NodePath("MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/VBoxContainer/Position/x")
+position_y = NodePath("MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/VBoxContainer/Position2/y")
+position_z = NodePath("MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/VBoxContainer/Position3/z")
+details_agent = NodePath("MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/Agent")
+details_artifact = NodePath("MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/Artifact")
+arrow_button = NodePath("MarginContainer/Control2/HSplitContainer/Control/Button")
+info = NodePath("MarginContainer/Control2/HSplitContainer/Info")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = 15
@@ -21,6 +29,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_5x3bo")
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
@@ -88,7 +97,6 @@ grow_vertical = 0
 
 [node name="Panel" type="Panel" parent="MarginContainer/Controls/PanelContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_47i3b")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Controls/PanelContainer"]
 layout_mode = 2
@@ -105,8 +113,145 @@ layout_mode = 2
 text = "[WASD] to move camera
 [Right Click] to look around
 [Space] to play/pause simulation
-[Right Arrow] to make one step
+[P] to make one step
 [G] to hide agents
 [T] to hide terrain
 [F] to hide artifacts
-[C] to hide connections"
+[C] to hide connections
+[R] to restart simulation
+[H] to hide controls"
+
+[node name="Control2" type="Control" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/Control2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 280
+
+[node name="Control" type="Control" parent="MarginContainer/Control2/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+
+[node name="Button" type="Button" parent="MarginContainer/Control2/HSplitContainer/Control"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -30.0
+offset_bottom = 31.0
+grow_horizontal = 0
+size_flags_vertical = 0
+text = "<"
+
+[node name="Info" type="PanelContainer" parent="MarginContainer/Control2/HSplitContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+metadata/_tab_index = 1
+
+[node name="Panel" type="Panel" parent="MarginContainer/Control2/HSplitContainer/Info"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/Control2/HSplitContainer/Info"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 11
+size_flags_vertical = 3
+
+[node name="SelectedType" type="Label" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+text = "Selected Name"
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Position" type="HBoxContainer" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/VBoxContainer/Position"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+text = "Position:"
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/VBoxContainer/Position"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/VBoxContainer/Position"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+text = "x: "
+vertical_alignment = 1
+
+[node name="x" type="LineEdit" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/VBoxContainer/Position"]
+layout_mode = 2
+editable = false
+
+[node name="Position2" type="HBoxContainer" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/VBoxContainer/Position2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/VBoxContainer/Position2"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+text = "y: "
+vertical_alignment = 1
+
+[node name="y" type="LineEdit" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/VBoxContainer/Position2"]
+layout_mode = 2
+editable = false
+
+[node name="Position3" type="HBoxContainer" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/VBoxContainer/Position3"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/VBoxContainer/Position3"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+text = "z: "
+vertical_alignment = 1
+
+[node name="z" type="LineEdit" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer/VBoxContainer/Position3"]
+layout_mode = 2
+editable = false
+
+[node name="Label3" type="Label" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+text = "Details
+"
+vertical_alignment = 1
+
+[node name="Agent" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer" instance=ExtResource("3_griti")]
+visible = false
+layout_mode = 2
+
+[node name="Artifact" parent="MarginContainer/Control2/HSplitContainer/Info/ScrollContainer/MarginContainer/VBoxContainer" instance=ExtResource("4_lq6px")]
+visible = false
+layout_mode = 2

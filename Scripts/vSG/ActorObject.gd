@@ -19,12 +19,16 @@ func _ready() -> void:
 	move.moved.connect(_on_moved)
 #	move.clicked.connect(interacted_with)
 
-func _on_destroyed(): 
+func _on_destroyed():
+	var connections = selected.get_connections()
+	for connection in connections:
+		var callable = connection["callable"]
+		selected.disconnect(callable)
 	destroyed.emit()
 
 func _on_static_body_3d_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
-	if !editable:
-		return
+	#if !editable:
+		#return
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.is_pressed():
@@ -45,5 +49,5 @@ func _on_static_body_3d_input_event(camera: Node, event: InputEvent, event_posit
 	#q_hide = false
 
 func _on_moved(new_pos : Vector3):
-	actor.actor_position = new_pos 
+	actor.actor_position = new_pos
 	moved.emit()

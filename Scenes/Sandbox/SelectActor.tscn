@@ -1,13 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://wplir175fgmd"]
+[gd_scene load_steps=5 format=3 uid="uid://wplir175fgmd"]
 
 [ext_resource type="Script" path="res://Scripts/Sandbox/SelectActor.gd" id="1_d7s0a"]
 [ext_resource type="Theme" uid="uid://daypr7artvlu3" path="res://Materials/Theme.tres" id="1_fh1gy"]
 [ext_resource type="PackedScene" uid="uid://cssi7du8oxh1r" path="res://Scenes/UI/SavedGrammars.tscn" id="2_hoqkm"]
 [ext_resource type="PackedScene" uid="uid://d3lfiwv0crfwg" path="res://Scenes/SwarmScene.tscn" id="3_4cwix"]
-[ext_resource type="PackedScene" uid="uid://df4jyaendlpnl" path="res://Scenes/UI/AgentUI.tscn" id="4_x0cb2"]
-[ext_resource type="PackedScene" uid="uid://b30hfnx3h7qoa" path="res://Scenes/UI/ArtifactUI.tscn" id="5_h88u8"]
 
-[node name="SelectActor" type="Control" node_paths=PackedStringArray("vsg_list", "add_button", "saved_grammars", "swarm_scene", "subviewport", "back_button", "selected_type", "selected_pos_x", "selected_pos_y", "selected_pos_z", "selected_agent_info", "selected_artifact_info")]
+[node name="SelectActor" type="Control" node_paths=PackedStringArray("vsg_list", "add_button", "saved_grammars", "swarm_scene", "subviewport", "back_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,18 +14,12 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_fh1gy")
 script = ExtResource("1_d7s0a")
-vsg_list = NodePath("MarginContainer/HBoxContainer/TabContainer/Load/ScrollContainer/VBoxContainer/VsgList")
-add_button = NodePath("MarginContainer/HBoxContainer/TabContainer/Load/ScrollContainer/VBoxContainer/HBoxContainer/Add")
+vsg_list = NodePath("MarginContainer/HSplitContainer/Load/ScrollContainer/VBoxContainer/VsgList")
+add_button = NodePath("MarginContainer/HSplitContainer/Load/ScrollContainer/VBoxContainer/HBoxContainer/Add")
 saved_grammars = NodePath("SavedGrammars")
-swarm_scene = NodePath("MarginContainer/HBoxContainer/SubViewportContainer/SubViewport/Node3D")
-subviewport = NodePath("MarginContainer/HBoxContainer/SubViewportContainer")
-back_button = NodePath("MarginContainer/HBoxContainer/TabContainer/Load/ScrollContainer/VBoxContainer/HBoxContainer/Back")
-selected_type = NodePath("MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer/SelectedType")
-selected_pos_x = NodePath("MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer/Position/x")
-selected_pos_y = NodePath("MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer/Position/y")
-selected_pos_z = NodePath("MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer/Position/z")
-selected_agent_info = NodePath("MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer/Agent")
-selected_artifact_info = NodePath("MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer/Artifact")
+swarm_scene = NodePath("MarginContainer/HSplitContainer/SubViewportContainer/SubViewport/Node3D")
+subviewport = NodePath("MarginContainer/HSplitContainer/SubViewportContainer")
+back_button = NodePath("MarginContainer/HSplitContainer/Load/ScrollContainer/VBoxContainer/HBoxContainer/Back")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -37,137 +29,58 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="MarginContainer/HBoxContainer"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="MarginContainer/HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="MarginContainer/HBoxContainer/SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="MarginContainer/HSplitContainer/SubViewportContainer"]
 own_world_3d = true
 handle_input_locally = false
-size = Vector2i(861, 648)
+size = Vector2i(858, 648)
 render_target_update_mode = 4
 
-[node name="Node3D" parent="MarginContainer/HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("3_4cwix")]
+[node name="Node3D" parent="MarginContainer/HSplitContainer/SubViewportContainer/SubViewport" instance=ExtResource("3_4cwix")]
 
-[node name="TabContainer" type="TabContainer" parent="MarginContainer/HBoxContainer"]
+[node name="Load" type="PanelContainer" parent="MarginContainer/HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-current_tab = 1
 
-[node name="Load" type="PanelContainer" parent="MarginContainer/HBoxContainer/TabContainer"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-metadata/_tab_index = 0
-
-[node name="Panel" type="Panel" parent="MarginContainer/HBoxContainer/TabContainer/Load"]
+[node name="Panel" type="Panel" parent="MarginContainer/HSplitContainer/Load"]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/TabContainer/Load"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HSplitContainer/Load"]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/TabContainer/Load/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/Load/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/TabContainer/Load/ScrollContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer/Load/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Back" type="Button" parent="MarginContainer/HBoxContainer/TabContainer/Load/ScrollContainer/VBoxContainer/HBoxContainer"]
+[node name="Back" type="Button" parent="MarginContainer/HSplitContainer/Load/ScrollContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Back"
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/TabContainer/Load/ScrollContainer/VBoxContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="MarginContainer/HSplitContainer/Load/ScrollContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Add" type="Button" parent="MarginContainer/HBoxContainer/TabContainer/Load/ScrollContainer/VBoxContainer/HBoxContainer"]
+[node name="Add" type="Button" parent="MarginContainer/HSplitContainer/Load/ScrollContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Add"
 
-[node name="VsgList" type="VBoxContainer" parent="MarginContainer/HBoxContainer/TabContainer/Load/ScrollContainer/VBoxContainer"]
+[node name="VsgList" type="VBoxContainer" parent="MarginContainer/HSplitContainer/Load/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 2
-
-[node name="Info" type="PanelContainer" parent="MarginContainer/HBoxContainer/TabContainer"]
-layout_mode = 2
-metadata/_tab_index = 1
-
-[node name="Panel" type="Panel" parent="MarginContainer/HBoxContainer/TabContainer/Info"]
-layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/TabContainer/Info"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="SelectedType" type="Label" parent="MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-text = "Selected Name"
-vertical_alignment = 1
-
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-text = "Position:"
-vertical_alignment = 1
-
-[node name="Position" type="HBoxContainer" parent="MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer/Position"]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-text = "x: "
-vertical_alignment = 1
-
-[node name="x" type="LineEdit" parent="MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer/Position"]
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer/Position"]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-text = " y: "
-vertical_alignment = 1
-
-[node name="y" type="LineEdit" parent="MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer/Position"]
-layout_mode = 2
-
-[node name="Label3" type="Label" parent="MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer/Position"]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-text = " z: "
-vertical_alignment = 1
-
-[node name="z" type="LineEdit" parent="MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer/Position"]
-layout_mode = 2
-
-[node name="Label3" type="Label" parent="MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-text = "Details
-"
-vertical_alignment = 1
-
-[node name="Agent" parent="MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer" instance=ExtResource("4_x0cb2")]
-visible = false
-layout_mode = 2
-
-[node name="Artifact" parent="MarginContainer/HBoxContainer/TabContainer/Info/ScrollContainer/VBoxContainer" instance=ExtResource("5_h88u8")]
-visible = false
-layout_mode = 2
 
 [node name="SavedGrammars" parent="." instance=ExtResource("2_hoqkm")]
 visible = false

@@ -38,12 +38,6 @@ var selected_agent_info : AgentUI
 var selected_artifact_info : ArtifactUI
 
 func _ready() -> void:
-	selection = Selection.new()
-	selection.selection_changed.connect(_on_selection_changed)
-	
-	selected_pos_x.text_changed.connect(_on_selected_x_pos_changed)
-	selected_pos_y.text_changed.connect(_on_selected_y_pos_changed)
-	selected_pos_z.text_changed.connect(_on_selected_z_pos_changed)
 	
 	data = Database.new()
 	add_button.pressed.connect(_on_add_button_pressed)
@@ -82,9 +76,9 @@ func _on_vsg_loaded(vsg_loaded : Database, name_loaded : String):
 	swarm_scene.vsg.editable = true
 
 func _load_actor(loaded_type : String):
-	var loaded : ActorObject = swarm_scene.add_actor(loaded_type)
-	loaded.selected.connect(selection.other_selected)
-	selection.other_selected(loaded)
+	swarm_scene.add_actor(loaded_type)
+	#loaded.selected.connect(selection.other_selected)
+	#selection.other_selected(loaded)
 	# swarm_scene.show_scene()
 
 func _viewport_gets_focus():

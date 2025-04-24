@@ -352,6 +352,8 @@ func recombine_parents(parents : Array) -> Array[EvolutionElement]:
 		child.actors_mutation_step_sizes = child_mutation_sizes
 		child.productions_mutation_step_sizes = child_prod_muts
 		
+		child.parents = ["p1" + str(population.find(parent1)), "p2" + str(population.find(parent2))]
+		
 		children.append(child)
 		
 		
@@ -513,6 +515,7 @@ func adjust_step_size_float(step_size : float, n : int) -> float:
 	var threshhold = 0.1
 	var rng = RandomNumberGenerator.new()
 	
+	# TODO wrong we should use one random value to be multiplied with tau for all step sizes i think	
 	var value = step_size * pow(e, tau_dash * rng.randfn() + tau * rng.randfn())
 	if value < threshhold:
 		value = threshhold
@@ -661,6 +664,10 @@ func csv():
 		var mms_productions = e_dict["MutationStepSizes"]["Productions"]
 		
 		write_to_file += "fitness:," + str(e_dict["Fitness"]) + "\n"
+		write_to_file += "parents:,"
+		for parent in evo_ele.parents:
+			write_to_file += parent + ","
+		write_to_file += "\n"
 		
 		var value_q : Array = [agents[0]]
 		while !value_q.is_empty():
@@ -792,6 +799,7 @@ func csv():
 	write_to_file = file_content + write_to_file
 	file.store_string(write_to_file)
 	file.close()
+	
 	
 	
 	

@@ -4,6 +4,8 @@ var genotypes : Database
 var actors_mutation_step_sizes : Array[MutationStepSizes]
 var productions_mutation_step_sizes : Array[ProductionMutationStepSize]
 
+var parents : Array
+
 var fitness : int = 0
 
 func _init() -> void:

@@ -10,6 +10,7 @@ var artifacts_container : UIList
 var misc : MiscUI
 
 var data : Database
+var seed_unlocked : bool = true
 
 func _ready() -> void:
 	data = Database.new()
@@ -63,6 +64,7 @@ func clear_ui():
 	agents_container.clear()
 	artifacts_container.clear()
 	productions_container.clear()
+	misc.clear()
 
 func set_data(database : Database):
 	data = database
@@ -73,9 +75,14 @@ func lock():
 	productions_container.lock()
 	artifacts_container.lock()
 	misc.lock()
+	if seed_unlocked:
+		unlock_seed()
 
 func unlock():
 	agents_container.unlock()
 	productions_container.unlock()
 	artifacts_container.unlock()
 	misc.unlock()
+
+func unlock_seed():
+	misc.unlock_seed()

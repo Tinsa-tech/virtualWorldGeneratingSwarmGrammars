@@ -104,6 +104,8 @@ func _on_save_button_pressed():
 
 func init_vsg(database : Database):
 	swarm_scene.init_vsg(database)
+	swarm_scene.swarm_info.seed_unlocked = false
+	swarm_scene.swarm_info.lock()
 
 func _window_close_requested():
 	line_edit.text = ""

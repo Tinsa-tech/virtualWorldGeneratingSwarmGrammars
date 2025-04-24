@@ -27,7 +27,7 @@ func _on_load_button_pressed():
 		data.use_rng_seed = true
 		get_tree().root.add_child(obj)
 		obj.init_vsg(data)
-		obj.swarm_info.misc.use_rng_seed_obj.unlock()
+		obj.swarm_info.seed_unlocked = true
 		obj.enable_camera()
 
 	

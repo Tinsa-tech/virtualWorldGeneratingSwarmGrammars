@@ -24,9 +24,15 @@ var terrain_hidden : bool = false
 
 var has_focus : bool = true
 
+var selection : Selection
+
 func _ready() -> void:
-	camera.active = false
+	selection = Selection.new()
+	selection.selection_changed.connect(_on_selection_changed)
+	selection.moved.connect(hud._on_selected_position_changed)
+	hud.position_changed.connect(selection.move)
 	
+	camera.active = false
 
 func _process(delta: float) -> void:
 	if !should_play and !should_step:
@@ -56,7 +62,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed():
 		if event.keycode == KEY_SPACE:
 			should_play = !should_play
-		elif event.keycode == KEY_RIGHT:
+		elif event.keycode == KEY_P:
 			should_step = true
 		elif event.keycode == KEY_ESCAPE:
 			toggle_info()
@@ -70,6 +76,8 @@ func _input(event: InputEvent) -> void:
 			toggle_terrain()
 		elif event.keycode == KEY_R:
 			restart_swarm()
+		elif event.keycode == KEY_H:
+			toggle_controls()
 
 func disable_camera():
 	camera.active = false
@@ -80,6 +88,7 @@ func enable_camera():
 func set_vsg(to_set : vSG):
 	if vsg:
 		vsg.on_finished.disconnect(_on_finished)
+		vsg.actor_added.disconnect(_on_actor_added)
 	
 	vsg = to_set
 	
@@ -95,6 +104,10 @@ func set_vsg(to_set : vSG):
 	vsg.keep_running = keep_running
 	
 	vsg.on_finished.connect(_on_finished)
+	vsg.actor_added.connect(_on_actor_added)
+	
+	for actor in vsg.actors:
+		actor.selected.connect(selection.other_selected)
 
 func init_vsg(database : Database):
 	
@@ -117,6 +130,10 @@ func init_vsg(database : Database):
 	vsg.keep_running = keep_running
 	
 	vsg.on_finished.connect(_on_finished)
+	vsg.actor_added.connect(_on_actor_added)
+	
+	for actor in vsg.actors:
+		actor.selected.connect(selection.other_selected)
 	
 	swarm_info.set_data(database)
 	swarm_info.lock()
@@ -126,6 +143,9 @@ func new_data(database : Database):
 		vsg.database = database
 	else:
 		vsg = vSG.new(database, camera, parent, hud)
+		vsg.on_finished.connect(_on_finished)
+		vsg.actor_added.connect(_on_actor_added)
+	
 	vsg.keep_running = keep_running
 	swarm_info.clear_ui()
 	swarm_info.set_data(database)
@@ -142,9 +162,9 @@ func toggle_info():
 		swarm_info.show()
 		hud.hide()
 
-func add_actor(type : String) -> ActorObject:
+func add_actor(type : String):
 	should_play = false
-	return vsg.add_actor(type)
+	vsg.add_actor(type)
 
 func hide_scene():
 	self.hide()
@@ -185,6 +205,9 @@ func toggle_terrain():
 		vsg.hide_terrain()
 	terrain_hidden = !terrain_hidden
 
+func toggle_controls():
+	hud.toggle_controls()
+
 func restart_swarm():
 	new_data(swarm_info.gather_data())
 	hud.clear()
@@ -199,3 +222,16 @@ func show_controls():
 
 func _on_finished(finish_reason : int):
 	hud.set_finish_reason(finish_reason)
+
+func _on_selection_changed(selected : ActorObject):
+	var template : ActorTemplate
+	for t in vsg.database.templates:
+		if t.type == selected.actor.type:
+			template = t
+	hud.on_selected(selected, template)
+
+func _on_actor_added(added : ActorObject):
+	added.selected.connect(selection.other_selected)
+
+func unlock_seed():
+	swarm_info.unlock_seed()

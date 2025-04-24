@@ -31,9 +31,20 @@ func get_data(database : Database):
 	database.rng_seed = int(rng_seed_obj.value)
 	database.use_rng_seed = use_rng_seed_obj.value
 
+func clear():
+	first_gen_obj.clear()
+	t_obj.set_value(0)
+	terrain_size_obj.set_value(0)
+	use_rng_seed_obj.set_value(false)
+	rng_seed_obj.set_value("")
+
 func lock():
 	first_gen_obj.lock()
 	t_obj.lock()
 	terrain_size_obj.lock()
 	rng_seed_obj.lock()
 	use_rng_seed_obj.lock()
+
+func unlock_seed():
+	rng_seed_obj.unlock()
+	use_rng_seed_obj.unlock()

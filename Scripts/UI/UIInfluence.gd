@@ -22,6 +22,18 @@ func _value_changed(new_value : float):
 
 func set_value(new_value : float):
 	value_obj.set_value(new_value)
+	value = new_value
 
 func set_influence_on(new_value : String):
 	influence_on_obj.set_value(new_value)
+	influence_on = new_value
+
+func lock():
+	value_obj.lock()
+	influence_on_obj.lock()
+	super.lock()
+
+func unlock():
+	value_obj.unlock()
+	influence_on_obj.lock()
+	super.unlock()

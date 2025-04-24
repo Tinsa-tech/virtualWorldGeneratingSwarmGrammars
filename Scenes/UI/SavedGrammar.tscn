@@ -51,7 +51,7 @@ metadata/_edit_use_anchors_ = true
 custom_minimum_size = Vector2(0, 220)
 layout_mode = 2
 size_flags_vertical = 3
-expand_mode = 3
+expand_mode = 1
 stretch_mode = 4
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
@@ -60,11 +60,9 @@ layout_mode = 2
 
 [node name="Name" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-text = "Name"
-
-[node name="Control" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
 size_flags_horizontal = 3
+text = "Name"
+clip_text = true
 
 [node name="Delete" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
