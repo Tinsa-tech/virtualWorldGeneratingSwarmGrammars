@@ -24,19 +24,6 @@ var selection : Selection
 @export
 var back_button : Button
 
-@export
-var selected_type : Label
-@export
-var selected_pos_x : LineEdit
-@export
-var selected_pos_y : LineEdit
-@export
-var selected_pos_z : LineEdit
-@export
-var selected_agent_info : AgentUI
-@export
-var selected_artifact_info : ArtifactUI
-
 func _ready() -> void:
 	
 	data = Database.new()
@@ -90,35 +77,3 @@ func _viewport_looses_focus():
 
 func _on_back_button_pressed():
 	SceneManager.get_instance().back()
-
-func _on_selection_changed(selected : ActorObject):
-	selected_agent_info.hide()
-	selected_artifact_info.hide()
-	
-	var type = selected.actor.type
-	selected_type.text = type
-	
-	selected_pos_x.text = str(selected.actor.actor_position.x)
-	selected_pos_y.text = str(selected.actor.actor_position.y)
-	selected_pos_z.text = str(selected.actor.actor_position.z)
-
-	var template
-	for temp in data.templates:
-		if temp.type == type:
-			template = temp
-	
-	if template is AgentTemplate:
-		selected_agent_info.from_template(template)
-		selected_agent_info.show()
-	else:
-		selected_artifact_info.from_artifact(template)
-		selected_artifact_info.show()
-
-func _on_selected_x_pos_changed(new_value : String):
-	selection.move_x(float(new_value))
-
-func _on_selected_y_pos_changed(new_value : String):
-	selection.move_y(float(new_value))
-
-func _on_selected_z_pos_changed(new_value : String):
-	selection.move_z(float(new_value))

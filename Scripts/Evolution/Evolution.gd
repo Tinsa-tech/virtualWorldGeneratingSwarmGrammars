@@ -464,49 +464,51 @@ func adjust_step_sizes(evo_element : EvolutionElement):
 	for prod in evo_element.productions_mutation_step_sizes:
 		n += prod.count
 	
+	var random_float = RandomNumberGenerator.new().randfn()
+	
 	for mss in evo_element.actors_mutation_step_sizes:
 		if mss is ArtifactMutationStepSizes:
-			mss.influence_on_terrain = adjust_step_size_float(mss.influence_on_terrain, n)
+			mss.influence_on_terrain = adjust_step_size_float(mss.influence_on_terrain, n, random_float)
 			for i in range(mss.influences.size()):
-				mss.influences[i] = adjust_step_size_float(mss.influences[i], n)
+				mss.influences[i] = adjust_step_size_float(mss.influences[i], n, random_float)
 		elif mss is AgentMutationStepSizes:
-			mss.alignment = adjust_step_size_float(mss.alignment, n)
-			mss.a_max = adjust_step_size_float(mss.a_max, n)
-			mss.beta = adjust_step_size_float(mss.beta, n)
-			mss.bias_x = adjust_step_size_float(mss.bias_x, n)
-			mss.bias_y = adjust_step_size_float(mss.bias_y, n)
-			mss.bias_z = adjust_step_size_float(mss.bias_z, n)
-			mss.center = adjust_step_size_float(mss.center, n)
-			mss.cohesion = adjust_step_size_float(mss.cohesion, n)
-			mss.constraints_x = adjust_step_size_float(mss.constraints_x, n)
-			mss.constraints_y = adjust_step_size_float(mss.constraints_y, n)
-			mss.constraints_z = adjust_step_size_float(mss.constraints_z, n)
-			mss.distance_separation = adjust_step_size_float(mss.distance_separation, n)
-			mss.distance_view = adjust_step_size_float(mss.distance_view, n)
-			mss.floor = adjust_step_size_float(mss.floor, n)
-			mss.gradient = adjust_step_size_float(mss.gradient, n)
+			mss.alignment = adjust_step_size_float(mss.alignment, n, random_float)
+			mss.a_max = adjust_step_size_float(mss.a_max, n, random_float)
+			mss.beta = adjust_step_size_float(mss.beta, n, random_float)
+			mss.bias_x = adjust_step_size_float(mss.bias_x, n, random_float)
+			mss.bias_y = adjust_step_size_float(mss.bias_y, n, random_float)
+			mss.bias_z = adjust_step_size_float(mss.bias_z, n, random_float)
+			mss.center = adjust_step_size_float(mss.center, n, random_float)
+			mss.cohesion = adjust_step_size_float(mss.cohesion, n, random_float)
+			mss.constraints_x = adjust_step_size_float(mss.constraints_x, n, random_float)
+			mss.constraints_y = adjust_step_size_float(mss.constraints_y, n, random_float)
+			mss.constraints_z = adjust_step_size_float(mss.constraints_z, n, random_float)
+			mss.distance_separation = adjust_step_size_float(mss.distance_separation, n, random_float)
+			mss.distance_view = adjust_step_size_float(mss.distance_view, n, random_float)
+			mss.floor = adjust_step_size_float(mss.floor, n, random_float)
+			mss.gradient = adjust_step_size_float(mss.gradient, n, random_float)
 			
 			for i in range(mss.influences.size()):
-				mss.influences[i] = adjust_step_size_float(mss.influences[i], n)
+				mss.influences[i] = adjust_step_size_float(mss.influences[i], n, random_float)
 			
-			mss.move_energy = adjust_step_size_float(mss.move_energy, n)
-			mss.normal = adjust_step_size_float(mss.normal, n)
-			mss.pace = adjust_step_size_float(mss.pace, n)
-			mss.predecessor_energy = adjust_step_size_float(mss.predecessor_energy, n)
-			mss.random = adjust_step_size_float(mss.random, n)
-			mss.separation = adjust_step_size_float(mss.separation, n)
-			mss.slope = adjust_step_size_float(mss.slope, n)
-			mss.successor_const_dist_energy = adjust_step_size_float(mss.successor_const_dist_energy, n)
-			mss.successor_energy = adjust_step_size_float(mss.successor_energy, n)
-			mss.velocity_max = adjust_step_size_float(mss.velocity_max, n)
-			mss.velocity_norm = adjust_step_size_float(mss.velocity_norm, n)
-			mss.zero_energy = adjust_step_size_float(mss.zero_energy, n)
+			mss.move_energy = adjust_step_size_float(mss.move_energy, n, random_float)
+			mss.normal = adjust_step_size_float(mss.normal, n, random_float)
+			mss.pace = adjust_step_size_float(mss.pace, n, random_float)
+			mss.predecessor_energy = adjust_step_size_float(mss.predecessor_energy, n, random_float)
+			mss.random = adjust_step_size_float(mss.random, n, random_float)
+			mss.separation = adjust_step_size_float(mss.separation, n, random_float)
+			mss.slope = adjust_step_size_float(mss.slope, n, random_float)
+			mss.successor_const_dist_energy = adjust_step_size_float(mss.successor_const_dist_energy, n, random_float)
+			mss.successor_energy = adjust_step_size_float(mss.successor_energy, n, random_float)
+			mss.velocity_max = adjust_step_size_float(mss.velocity_max, n, random_float)
+			mss.velocity_norm = adjust_step_size_float(mss.velocity_norm, n, random_float)
+			mss.zero_energy = adjust_step_size_float(mss.zero_energy, n, random_float)
 	
 	for mss in evo_element.productions_mutation_step_sizes:
-		mss.distance = adjust_step_size_float(mss.distance, n)
-		mss.theta = adjust_step_size_float(mss.theta, n)
+		mss.distance = adjust_step_size_float(mss.distance, n, random_float)
+		mss.theta = adjust_step_size_float(mss.theta, n, random_float)
 
-func adjust_step_size_float(step_size : float, n : int) -> float:
+func adjust_step_size_float(step_size : float, n : int, random : float) -> float:
 	var tau = 1 / sqrt(2 * sqrt(n))
 	var tau_dash = 1 / sqrt(2 * n)
 	
@@ -515,8 +517,7 @@ func adjust_step_size_float(step_size : float, n : int) -> float:
 	var threshhold = 0.1
 	var rng = RandomNumberGenerator.new()
 	
-	# TODO wrong we should use one random value to be multiplied with tau for all step sizes i think	
-	var value = step_size * pow(e, tau_dash * rng.randfn() + tau * rng.randfn())
+	var value = step_size * pow(e, tau_dash * random + tau * rng.randfn())
 	if value < threshhold:
 		value = threshhold
 	step_size = value

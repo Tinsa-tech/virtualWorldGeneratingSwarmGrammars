@@ -22,7 +22,9 @@ func _ready() -> void:
 func _on_load_button_pressed():
 	var obj : SwarmScene = swarm_scene.instantiate()
 	var data : Database = Database.new()
+	
 	data.load_data("user://Saved/" + label.text + ".json")
+	print(data.to_latex_tabel())
 	if instantiate_scene:
 		data.use_rng_seed = true
 		get_tree().root.add_child(obj)

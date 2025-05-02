@@ -12,6 +12,10 @@ var is_playing : bool = false
 var step_button : Button
 
 @export
+var generation_label : Label
+var generation : int = 0
+
+@export
 var next_button : Button
 
 @export
@@ -60,6 +64,10 @@ func _on_step_button_pressed():
 		vsg._on_step_button_pressed()
 
 func _on_next_button_pressed():
+	var img = get_viewport().get_texture().get_image()
+	
+	img.save_png("res://Saved/Generation" + str(generation) + ".png")
+	
 	evolution.perform_cycle()
 	for i in range(evolution.population.size()):
 		var member : EvolutionElement = evolution.population[i]
@@ -69,6 +77,8 @@ func _on_next_button_pressed():
 		vsg.init_vsg(member.genotypes)
 		vsg.slider.value_changed.connect(member.set_fitness)
 		vsg.slider.set_value(1)
+	generation += 1
+	generation_label.text = "Generation: " + str(generation)
 		
 func _on_back_button_pressed():
 	SceneManager.get_instance().back()

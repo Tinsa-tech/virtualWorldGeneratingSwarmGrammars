@@ -420,3 +420,337 @@ func create_colors():
 		if template is AgentTemplate:
 			colors[template.type] = colors_to_distribute[i]
 			i += 1
+
+func to_latex_tabel() -> String:
+	var decimals = 4
+	var ret = ""
+	var agent_templates : Array[AgentTemplate] = []
+	var artifact_templates : Array[ArtifactTemplate] = []
+	for template in templates:
+		if template is AgentTemplate:
+			agent_templates.append(template)
+		else:
+			artifact_templates.append(template)
+	
+	var types : Dictionary = {}
+	
+	var f = 0
+	for template in agent_templates:
+		types[template.type] = "\\Delta_{" + str(f) + "}"
+		f += 1
+	
+	f = 0
+	for template in artifact_templates:
+		types[template.type] = "\\Gamma_{" + str(f) + "}"
+		f += 1
+
+	
+	ret += "\\hline \n"
+	ret += "Agents"
+	for template in agent_templates:
+		ret += " & " + template.type + "(" + wrap_math(types[template.type]) + ")"
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{blue!20} \n"
+	ret += "$c_{Sep}$"
+	for template in agent_templates:
+		ret += " & " + str(template.movement_urges[Database.movement_urges.SEPARATION]).pad_decimals(decimals)
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{blue!20} \n"
+	
+	ret += "$c_{Ali}$"
+	for template in agent_templates:
+		ret += " & " + str(template.movement_urges[Database.movement_urges.ALIGNMENT]).pad_decimals(decimals)
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{blue!20} \n"
+	
+	ret += "$c_{Coh}$"
+	for template in agent_templates:
+		ret += " & " + str(template.movement_urges[Database.movement_urges.COHESION]).pad_decimals(decimals)
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{blue!20} \n"
+	
+	ret += "$c_{Ran}$"
+	for template in agent_templates:
+		ret += " & " + str(template.movement_urges[Database.movement_urges.RANDOM]).pad_decimals(decimals)
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{blue!20} \n"
+	
+	ret += "$c_{Bias}$"
+	for template in agent_templates:
+		var bias = template.movement_urges[Database.movement_urges.BIAS]
+		ret += " & (" + wrap_math(str(bias.x).pad_decimals(decimals)) + ", " + wrap_math(str(bias.y).pad_decimals(decimals)) + ", " + wrap_math(str(bias.z).pad_decimals(decimals)) + ")"
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{blue!20} \n"
+	
+	ret += "$c_{Center}$"
+	for template in agent_templates:
+		ret += " & " + str(template.movement_urges[Database.movement_urges.CENTER]).pad_decimals(decimals)
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{blue!20} \n"
+	
+	ret += "$c_{Floor}$"
+	for template in agent_templates:
+		ret += " & " + str(template.movement_urges[Database.movement_urges.FLOOR]).pad_decimals(decimals)
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{blue!20} \n"
+	
+	ret += "$c_{Norm}$"
+	for template in agent_templates:
+		ret += " & " + str(template.movement_urges[Database.movement_urges.NORMAL]).pad_decimals(decimals)
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{blue!20} \n"
+	
+	ret += "$c_{Grad}$"
+	for template in agent_templates:
+		ret += " & " + str(template.movement_urges[Database.movement_urges.GRADIENT]).pad_decimals(decimals)
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{blue!20} \n"
+	
+	ret += "$c_{Slope}$"
+	for template in agent_templates:
+		ret += " & " + str(template.movement_urges[Database.movement_urges.SLOPE]).pad_decimals(decimals)
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{blue!20} \n"
+	
+	ret += "$c_{Pace}$"
+	for template in agent_templates:
+		ret += " & " + str(template.movement_urges[Database.movement_urges.PACE]).pad_decimals(decimals)
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	
+	ret += "\\rowcolor{red!20} \n"
+	ret += "$e_{move}$"
+	for template in agent_templates:
+		match template.energy_calculations.move_mode:
+			Energy.move.CONST:
+				ret += " & (\\textit{const}, " + str(template.energy_calculations.move_value).pad_decimals(decimals) + ")"
+			Energy.move.DISTANCE:
+				ret += " & (\\textit{dist}, " + str(template.energy_calculations.move_value).pad_decimals(decimals) + ")"
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{red!20} \n"
+	ret += "$e_{suc}$"
+	for template in agent_templates:
+		match template.energy_calculations.successor_mode:
+			Energy.successor.CONST:
+				ret += " & (\\textit{const}, " + str(template.energy_calculations.successor_value).pad_decimals(decimals) + ")"
+			Energy.successor.INHERIT:
+				ret += " & (\\textit{inherit}," + str(template.energy_calculations.successor_value).pad_decimals(decimals) + ")"
+			Energy.successor.DISTRIBUTE:
+				ret += " & (\\textit{distribute}," + str(template.energy_calculations.successor_value).pad_decimals(decimals) + ")"
+			Energy.successor.CONSTDIST:
+				ret += " & (\\textit{constdist}," + str(template.energy_calculations.successor_value).pad_decimals(decimals) + ", " + str(template.energy_calculations.successor_value_constdist).pad_decimals(decimals) + ")"
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{red!20} \n"
+	ret += "$e_{persist}$"
+	for template in agent_templates:
+		match template.energy_calculations.predecessor_mode:
+			Energy.predecessor.CONST:
+				ret += " & (\\textit{const}, " + str(template.energy_calculations.predecessor_value).pad_decimals(decimals) + ")"
+			Energy.predecessor.PER_SUCCESSOR:
+				ret += " & (\\textit{persuc}," + str(template.energy_calculations.predecessor_value).pad_decimals(decimals) + ")"
+			Energy.predecessor.EQUAL:
+				ret += " & (\\textit{distribute}," + str(template.energy_calculations.predecessor_value).pad_decimals(decimals) + ")"
+			Energy.predecessor.CONSTDIST:
+				ret += " & (\\textit{constdist}," + str(template.energy_calculations.predecessor_value).pad_decimals(decimals) + ")"
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{red!20} \n"
+	ret += "$e_{zero}$"
+	for template in agent_templates:
+		ret += " & (["
+		var i = 0
+		for value in template.energy_calculations.zero_successors:
+			if i < template.energy_calculations.zero_successors.size() - 1:
+				ret += wrap_math(types[value]) + ", "
+			else:
+				ret += wrap_math(types[value])
+			i += 1
+		ret += "], " + str(template.energy_calculations.zero_energy).pad_decimals(decimals) + ")"
+	
+	ret += " \\\\\n"
+	ret += "\\hline \n"
+	
+	ret += "\\rowcolor{green!20} \n"
+	ret += "$a_{max}$"
+	for template in agent_templates:
+		ret += " & " + str(template.a_max).pad_decimals(decimals)
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{green!20} \n"
+	ret += "$v_{max}$"
+	for template in agent_templates:
+		ret += " & " + str(template.velocity_params[Database.velocity_params.MAX]).pad_decimals(decimals)
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{green!20} \n"
+	ret += "$v_{norm}$"
+	for template in agent_templates:
+		ret += " & " + str(template.velocity_params[Database.velocity_params.NORM]).pad_decimals(decimals)
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{green!20} \n"
+	ret += "$d_{view}$"
+	for template in agent_templates:
+		ret += " & " + str(template.distance_params[Database.distance_params.VIEW]).pad_decimals(decimals)
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{green!20} \n"
+	ret += "$\\beta$"
+	for template in agent_templates:
+		ret += " & " + str(template.beta).pad_decimals(decimals)
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{green!20} \n"
+	ret += "$d_{sep}$"
+	for template in agent_templates:
+		ret += " & " + str(template.distance_params[Database.distance_params.SEPARATION]).pad_decimals(decimals)
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{green!20} \n"
+	ret += "$c_{const}$"
+	for template in agent_templates:
+		var c = template.constraints
+		ret += " & (" + wrap_math(str(c.x).pad_decimals(decimals)) + ", " + wrap_math(str(c.y).pad_decimals(decimals)) + ", " + wrap_math(str(c.z).pad_decimals(decimals)) + ")"
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{green!20} \n"
+	ret += "$c_{seed}$"
+	for template in agent_templates:
+		ret += " & " + str(template.seed)
+	ret += " \\\\\n"
+	
+	ret += "\\hline \n"
+	ret += "\\rowcolor{green!20} \n"
+	ret += "$c_{noclip}$"
+	for template in agent_templates:
+		ret += " & " + str(template.movement_urges[Database.movement_urges.NOCLIP])
+	ret += " \\\\\n"
+	ret += "\\hline \n"
+	
+	var influences : Array = []
+	for template in agent_templates:
+		var template_influences : Array = []
+		for key in template.influences.keys():
+			var string = "$\\eta_{" + types[template.type] + "," + types[key] + "} = " + str(template.influences[key]).pad_decimals(decimals) + "$ "
+			template_influences.append(string)
+		influences.append(template_influences)
+	
+	for i in range(influences.front().size()):
+		ret += "\\rowcolor{purple!20} \n"
+		if i == influences.front().size() - 1:
+			ret += "\\multirow{-" + str(influences.front().size()) + "}{*}{influences}"
+		for thing in influences:
+			ret += " & " + thing[i]
+		ret += "\\\\\n"
+	ret += "\\hline \n"
+	
+	ret += "\\hline \n"
+	ret += "Artifacts"
+	for template in artifact_templates:
+		ret += " & " + template.type + "(" + wrap_math(types[template.type]) + ")"
+	ret += "\\\\\n"
+	ret += "\\hline \n"
+	
+	ret += "\\rowcolor{green!20} \n"
+	ret += "$\\eta_{\\Gamma_{i},Terrain}$"
+	for template in artifact_templates:
+		ret += " & $\\eta_{" + types[template.type] + ", Terrain} = " + str(template.influence_on_terrain).pad_decimals(decimals) + "$"
+	ret += "\\\\\n"
+	ret += "\\hline \n"
+	
+	influences.clear()
+	for template in artifact_templates:
+		var template_influences : Array = []
+		for key in template.influences.keys():
+			var string = "$\\eta_{" + types[template.type] + "," + types[key] + "} = " + str(template.influences[key]).pad_decimals(decimals) + "$ "
+			template_influences.append(string)
+		influences.append(template_influences)
+	
+	for i in range(influences.front().size()):
+		ret += "\\rowcolor{purple!20} \n"
+		if i == influences.front().size() - 1:
+			ret += "\\multirow{-" + str(influences.front().size()) + "}{*}{influences}"
+		for thing in influences:
+			ret += " & " + thing[i]
+		ret += "\\\\\n"
+	ret += "\\hline \n"
+	
+	ret += "\\hline \n"
+	var j = 0
+	for prod in productions:
+		if j == productions.size() - 1:
+			ret += "\\multirow{-" + str(productions.size()) + "}{*}{Productions}"
+		
+		ret += "& \\multicolumn{3}{c|}{"
+		if prod.context != "":
+			ret += ("$" + types[prod.predecessor] + "<_{" + str(prod.distance).pad_decimals(decimals) + "} " + types[prod.context] + 
+			" \\xrightarrow{" + str(prod.theta).pad_decimals(decimals) + "}")
+		else:
+			ret += ("$" + types[prod.predecessor] + " \\xrightarrow{" + str(prod.theta).pad_decimals(decimals) + "}")
+		ret += "["
+		if prod.persist:
+			ret += "\\psi, "
+		var k = 0
+		for successor in prod.successor:
+			if k != prod.successor.size() - 1:
+				ret += types[successor] + ", "
+			else:
+				ret += types[successor]
+			k += 1
+		ret += "]$"
+		ret += "}\\\\\n"
+		j += 1
+	
+	ret += "\\hline \n"
+	ret += "\\hline \n"
+	
+	ret += "Axiom & \\multicolumn{3}{c|}{["
+	var l = 0
+	for template in first_generation:
+		if l == first_generation.size() - 1:
+			ret += wrap_math(types[template])
+		else:
+			ret += wrap_math(types[template]) + ", "
+		l += 1
+	ret += "]} \\\\ \n"
+	ret += "\\hline \n"
+
+	return ret
+
+func wrap_math(s : String) -> String:
+	return "$" + s + "$"

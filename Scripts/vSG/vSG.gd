@@ -305,10 +305,12 @@ func calculate_energies(predecessor : Agent, successors : Array, persist : bool)
 			var factor = predecessor.energy_calculations.predecessor_value
 			predecessor.energy -= (count - 1) * factor
 		Energy.predecessor.EQUAL:
-			predecessor.energy = successors[0].actor.energy
+			if successors.size() > 0:
+				predecessor.energy = successors[0].actor.energy
 		Energy.predecessor.CONSTDIST:
 			var offset = predecessor.energy_calculations.predecessor_value
-			predecessor.energy = predecessor.energy - offset - count * successors[0].actor.energy
+			if successors.size() > 0:
+				predecessor.energy = predecessor.energy - offset - count * successors[0].actor.energy
 
 func get_new_id() -> int:
 	var ret = id

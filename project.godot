@@ -23,6 +23,13 @@ shapes/collision/shape_color=Color(0, 0.6, 0.701961, 1)
 
 window/subwindows/embed_subwindows=false
 
+[file_customization]
+
+folder_colors={
+"res://Scenes/": "green",
+"res://Scripts/": "purple"
+}
+
 [rendering]
 
 rendering_device/driver="d3d12"

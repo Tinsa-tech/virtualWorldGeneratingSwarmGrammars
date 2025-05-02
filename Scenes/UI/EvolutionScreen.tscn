@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://daypr7artvlu3" path="res://Materials/Theme.tres" id="1_1xdex"]
 [ext_resource type="Script" path="res://Scripts/UI/EvolutionScreen.gd" id="1_uyub7"]
 
-[node name="EvolutionScreen" type="Control" node_paths=PackedStringArray("grid_container", "play_button", "step_button", "next_button", "back_button")]
+[node name="EvolutionScreen" type="Control" node_paths=PackedStringArray("grid_container", "play_button", "step_button", "generation_label", "next_button", "back_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,6 +15,7 @@ script = ExtResource("1_uyub7")
 grid_container = NodePath("PanelContainer/MarginContainer/VBoxContainer/GridContainer")
 play_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Play")
 step_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Step")
+generation_label = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Label")
 next_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Next")
 back_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Back")
 
@@ -69,6 +70,10 @@ text = "Step"
 [node name="Control2" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Generation: 0"
 
 [node name="Next" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
