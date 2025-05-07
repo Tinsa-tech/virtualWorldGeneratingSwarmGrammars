@@ -46,3 +46,6 @@ func set_color(new_color : Color):
 	mat.albedo_color = new_color
 	mi.set_surface_override_material(0, mat)
 	
+func _on_moved(new_pos : Vector3):
+	# actor.individual_world_center = new_pos
+	super._on_moved(new_pos)

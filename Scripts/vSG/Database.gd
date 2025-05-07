@@ -376,6 +376,7 @@ func add(other : Database):
 			if template.type == compare.type:
 				other.change_type(template.type, template.type + "double")
 		templates.append(template)
+	
 	for production in other.productions:
 		productions.append(production)
 
@@ -384,9 +385,13 @@ func change_type(to_change : String, new_type : String):
 		if template.type == to_change:
 			template.type = new_type
 		if template is AgentTemplate:
+			var arr : Array[String] = []
 			for type in template.energy_calculations.zero_successors:
 				if type == to_change:
-					type = to_change
+					arr.append(new_type)
+				else:
+					arr.append(type)
+			template.energy_calculations.zero_successors = arr
 		for key in template.influences.keys():
 			if key == to_change:
 				template.influences[new_type] = template.influences[key]
@@ -395,9 +400,13 @@ func change_type(to_change : String, new_type : String):
 	for prod in productions:
 		if prod.context == to_change:
 			prod.context = new_type
+		var arr : Array[String] = []
 		for successor in prod.successor:
 			if successor == to_change:
-				successor = new_type
+				arr.append(new_type)
+			else:
+				arr.append(successor)
+		prod.successor = arr
 		if prod.predecessor == to_change:
 			prod.predecessor = new_type
 
